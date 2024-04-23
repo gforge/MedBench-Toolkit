@@ -1,12 +1,6 @@
-import {
-    Button,
-    Card,
-    CardActions,
-    CardContent,
-    Typography,
-    TypographyProps,
-} from '@mui/material';
+import { Button, Card, CardActions, CardContent } from '@mui/material';
 
+import { MarkdownTypography } from '../../MarkDownTypography';
 import { OriginalNoteHeader } from './Header';
 import { OriginalNoteProps } from './Note';
 
@@ -28,30 +22,7 @@ export const OriginalNote = ({
     >
         <CardContent>
             <OriginalNoteHeader {...header} />
-            {content.split('\n\n').map((line, index) => {
-                let variant: TypographyProps['variant'] = 'body2';
-                let marginLeft = '0px';
-                if (line.startsWith('## ')) {
-                    variant = 'h6';
-                    marginLeft = '8px';
-                } else if (line.startsWith('### ')) {
-                    variant = 'subtitle1';
-                    marginLeft = '16px';
-                } else if (line.startsWith('#### ')) {
-                    variant = 'subtitle2';
-                    marginLeft = '24px';
-                }
-
-                return (
-                    <Typography
-                        variant={variant}
-                        key={index}
-                        sx={{ marginLeft }}
-                    >
-                        {line}
-                    </Typography>
-                );
-            })}
+            <MarkdownTypography content={content} />
         </CardContent>
         <CardActions sx={{ justifyContent: 'flex-end' }}>
             <Button size="small" onClick={activateNote} disabled={activated}>

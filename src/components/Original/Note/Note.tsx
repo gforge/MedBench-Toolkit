@@ -1,6 +1,6 @@
 import { Button, Card, CardActions, CardContent } from '@mui/material';
+import { MarkdownTypography } from 'components';
 
-import { MarkdownTypography } from '../../MarkdownTypography';
 import { OriginalNoteHeader } from './Header';
 
 export interface OriginalNoteProps extends Note {
