@@ -3,7 +3,7 @@ import { Meta } from '@storybook/react';
 import { buildFakeContent, buildFakeHeader } from 'components';
 import { useMemo } from 'react';
 
-import { BaseGrid } from './BaseGrid';
+import { BaseGrid } from '.';
 
 const BaseGridWrapper = ({
     noNotes,
