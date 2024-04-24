@@ -6,12 +6,14 @@ import './App.css';
 
 import { Translate } from '@mui/icons-material';
 import { List, ListItem, ListItemIcon, Paper, Typography } from '@mui/material';
+import { loadData } from 'helpers';
 import { Link, Route, Routes } from 'react-router-dom';
 
 import { Translations } from './Translations';
 import { Translator } from './Translator';
 
 function App() {
+    console.log(loadData())
     return (
         <>
             <header>MedBench toolkit</header>

@@ -1,6 +1,8 @@
 {
     "recommendations": [
         "jayfong.generate-index",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "ms-vscode.atom-keybindings"
     ]
 }
