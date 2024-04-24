@@ -1,4 +1,3 @@
-import { faker } from '@faker-js/faker';
 import { Meta } from '@storybook/react';
 import dayjs from 'dayjs';
 
@@ -36,29 +35,36 @@ export const Short = {
                 'Lab test': 'Hb',
                 'Reference interval': '120-140',
                 Unit: 'mg/dL',
-                Value: faker.number.float({ min: 80, max: 120 }),
+                Value: 130,
                 timestamp: today,
             },
             {
                 'Lab test': 'Hb',
                 'Reference interval': '120-140',
                 Unit: 'mg/dL',
-                Value: faker.number.float({ min: 80, max: 120 }),
+                Value: 111,
                 timestamp: today.add(2, 'day'),
             },
             {
                 'Lab test': 'WBC',
                 'Reference interval': '4-7',
                 Unit: 'mmol/L',
-                Value: faker.number.float({ min: 1, max: 30 }),
+                Value: 5,
                 timestamp: today.add(1, 'day'),
             },
             {
                 'Lab test': 'WBC',
                 'Reference interval': '4-7',
                 Unit: 'mmol/L',
-                Value: faker.number.float({ min: 1, max: 30 }),
-                timestamp: today.add(2, 'day'),
+                Value: 15,
+                timestamp: today.add(3, 'day'),
+            },
+            {
+                'Lab test': 'WBC',
+                'Reference interval': '4-7',
+                Unit: 'mmol/L',
+                Value: 4,
+                timestamp: today.add(4, 'day'),
             },
         ],
     },
