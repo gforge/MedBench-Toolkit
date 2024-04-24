@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Meta } from '@storybook/react';
+import dayjs from 'dayjs';
 
 import { LabValueTable } from '.';
 
@@ -9,9 +10,9 @@ const meta: Meta<typeof LabValueTable> = {
     decorators: (Story) => (
         <div
             style={{
-                width: '1200px',
+                minWidth: '800px',
                 height: '100%',
-                border: '1px solid red',
+                border: '1px solid #ccc',
                 padding: '10px',
             }}
         >
@@ -26,14 +27,39 @@ const meta: Meta<typeof LabValueTable> = {
 
 export default meta;
 
+const today = dayjs();
+
 export const Short = {
     args: {
-        labValues: Array(5).fill(null).map(() => ({ 
-            "Lab test": "test",
-            "Reference interval": "0-120",
-            Unit: "unit",
-            Value: faker.datatype.number(),
-            timestamp: new Date(),
-        })),
+        labValues: [
+            {
+                'Lab test': 'Hb',
+                'Reference interval': '120-140',
+                Unit: 'mg/dL',
+                Value: faker.number.float({ min: 80, max: 120 }),
+                timestamp: today,
+            },
+            {
+                'Lab test': 'Hb',
+                'Reference interval': '120-140',
+                Unit: 'mg/dL',
+                Value: faker.number.float({ min: 80, max: 120 }),
+                timestamp: today.add(2, 'day'),
+            },
+            {
+                'Lab test': 'WBC',
+                'Reference interval': '4-7',
+                Unit: 'mmol/L',
+                Value: faker.number.float({ min: 1, max: 30 }),
+                timestamp: today.add(1, 'day'),
+            },
+            {
+                'Lab test': 'WBC',
+                'Reference interval': '4-7',
+                Unit: 'mmol/L',
+                Value: faker.number.float({ min: 1, max: 30 }),
+                timestamp: today.add(2, 'day'),
+            },
+        ],
     },
 };
