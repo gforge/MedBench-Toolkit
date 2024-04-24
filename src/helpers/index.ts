@@ -5,5 +5,6 @@ export * from './getChartId';
 export * from './getNoteDate';
 export * from './getNoteId';
 export * from './isRawHeaderValid';
+export * from './loadData';
 export * from './timeCompareNotes';
 export * from './useDownloadTranslation';
