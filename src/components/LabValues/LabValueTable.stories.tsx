@@ -66,6 +66,20 @@ export const Short = {
                 Value: 4,
                 timestamp: today.add(4, 'day'),
             },
+            {
+                'Lab test': 'CRP',
+                'Reference interval': '<3',
+                Unit: 'mmol/L',
+                Value: 1,
+                timestamp: today.add(1, 'day'),
+            },
+            {
+                'Lab test': 'CRP',
+                'Reference interval': '<3',
+                Unit: 'mmol/L',
+                Value: 30,
+                timestamp: today.add(3, 'day'),
+            },
         ],
     },
 };

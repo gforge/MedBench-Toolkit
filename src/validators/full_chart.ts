@@ -36,6 +36,7 @@ export const medicationSchema = yup
         timestamp: yup.date().required(),
     })
     .required();
+export type MedicationValue = yup.InferType<typeof medicationSchema>;
 
 export const labSchema = yup
     .object()
