@@ -8,6 +8,7 @@ import { MarkdownSection, parseMarkdown } from './parseMarkdown';
 const Section = ({ section }: { section: MarkdownSection }) => (
     <Box
         sx={{
+            marginTop: '10px',
             marginLeft: '10px',
             borderLeft: '1px solid #ccc',
             borderRadius: '5px',
@@ -67,13 +68,13 @@ function getTypographyVariant(level: number) {
 
     switch (level) {
         case 2:
-            variant = 'h6';
+            variant = 'h5';
             break;
         case 3:
-            variant = 'subtitle1';
+            variant = 'h6';
             break;
         case 4:
-            variant = 'subtitle2';
+            variant = 'subtitle1';
             break;
         default:
             variant = 'body2';
