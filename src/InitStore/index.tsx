@@ -1,7 +1,7 @@
 import { Button } from '@mui/base';
 import { FileUpload } from '@mui/icons-material';
 import { Stack } from '@mui/material';
-import { chartsActions, selectCharts } from 'features';
+import { charts2translateActions, selectTranslationCharts } from 'features';
 import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -9,12 +9,12 @@ import { InitAlert } from './InitAlert';
 import { useLoadStoreDropzone } from './useLoadStoreDropzone';
 
 export const InitStore = () => {
-    const charts = useSelector(selectCharts);
+    const charts = useSelector(selectTranslationCharts);
     const [error, setError] = useState<string | null>(null);
     const dispatch = useDispatch();
     const initStore = useCallback(
         (args: { charts: Chart[] }) => {
-            dispatch(chartsActions.initStore(args));
+            dispatch(charts2translateActions.initStore(args));
         },
         [dispatch]
     );

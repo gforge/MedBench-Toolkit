@@ -4,11 +4,11 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
 import { buildFakeNote } from '../helpers';
-import { NoteList } from './NoteList';
+import { TranslationNoteList } from './NoteList';
 
-const meta: Meta<typeof NoteList> = {
-    title: 'Text/NoteList',
-    component: NoteList,
+const meta: Meta<typeof TranslationNoteList> = {
+    title: 'Text/TranslationNoteList',
+    component: TranslationNoteList,
     decorators: (Story) => (
         <Paper sx={{ padding: '10px', width: '500px' }}>
             <Story />

@@ -3,8 +3,8 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { NoteList, TextCapture } from '../components';
-import { chartsActions, selectCharts } from '../features';
+import { TextCapture, TranslationNoteList } from '../components';
+import { charts2translateActions, selectTranslationCharts } from '../features';
 import { InitStore } from '../InitStore';
 import { DumpTranslationCharts } from './DumpTranslationCharts';
 import { TranslationsOverviewHelp } from './Help';
@@ -21,7 +21,13 @@ export function Translations() {
             specialty: string;
             notes: Note[];
         }) => {
-            dispatch(chartsActions.createNewCase({ name, specialty, notes }));
+            dispatch(
+                charts2translateActions.createNewCase({
+                    name,
+                    specialty,
+                    notes,
+                })
+            );
         },
         [dispatch]
     );
@@ -34,34 +40,34 @@ export function Translations() {
     );
     const uploadTranslation = useCallback(
         (args: { id: string; language: string; translation: Note[] }) => {
-            dispatch(chartsActions.uploadTranslation(args));
+            dispatch(charts2translateActions.uploadTranslation(args));
         },
         [dispatch]
     );
 
     const deleteChart = useCallback(
         (args: { id: string; Language?: string }) => {
-            dispatch(chartsActions.deleteChart(args));
+            dispatch(charts2translateActions.deleteChart(args));
         },
         [dispatch]
     );
     const setChartName = useCallback(
         ({ id, name }: { id: string; name: string }) => {
-            dispatch(chartsActions.renameChart({ id, name }));
+            dispatch(charts2translateActions.renameChart({ id, name }));
         },
         [dispatch]
     );
     const setChartSpecialty = useCallback(
         ({ id, specialty }: { id: string; specialty: string }) => {
-            dispatch(chartsActions.renameChart({ id, specialty }));
+            dispatch(charts2translateActions.renameChart({ id, specialty }));
         },
         [dispatch]
     );
-    const charts = useSelector(selectCharts);
+    const charts = useSelector(selectTranslationCharts);
 
     return (
         <>
-            <NoteList
+            <TranslationNoteList
                 charts={charts}
                 translate={translate}
                 uploadTranslation={uploadTranslation}

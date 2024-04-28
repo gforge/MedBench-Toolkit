@@ -13,7 +13,7 @@ const Th = styled('th')({
     borderBottom: '1px solid #979797',
 });
 
-export const NoteList = ({
+export const TranslationNoteList = ({
     charts,
     translate,
     uploadTranslation,
