@@ -44,7 +44,7 @@ export const labSchema = yup
         'Lab test': yup.string().required(),
         'Reference interval': yup.string().required(),
         Unit: yup.string().required(),
-        Value: yup.number().required(),
+        Value: yup.mixed().oneOf([yup.string(), yup.number()]).required(),
         timestamp: yup.date().required(),
     })
     .required();

@@ -1,7 +1,7 @@
 import { Meta } from '@storybook/react';
-import dayjs from 'dayjs';
 
 import { LabValueTable } from '.';
+import { exampleLabValues } from './exampleData';
 
 const meta: Meta<typeof LabValueTable> = {
     title: 'Chart/LabValueTable',
@@ -26,60 +26,8 @@ const meta: Meta<typeof LabValueTable> = {
 
 export default meta;
 
-const today = dayjs();
-
 export const Short = {
     args: {
-        labValues: [
-            {
-                'Lab test': 'Hb',
-                'Reference interval': '120-140',
-                Unit: 'mg/dL',
-                Value: 130,
-                timestamp: today,
-            },
-            {
-                'Lab test': 'Hb',
-                'Reference interval': '120-140',
-                Unit: 'mg/dL',
-                Value: 111,
-                timestamp: today.add(2, 'day'),
-            },
-            {
-                'Lab test': 'WBC',
-                'Reference interval': '4-7',
-                Unit: 'mmol/L',
-                Value: 5,
-                timestamp: today.add(1, 'day'),
-            },
-            {
-                'Lab test': 'WBC',
-                'Reference interval': '4-7',
-                Unit: 'mmol/L',
-                Value: 15,
-                timestamp: today.add(3, 'day'),
-            },
-            {
-                'Lab test': 'WBC',
-                'Reference interval': '4-7',
-                Unit: 'mmol/L',
-                Value: 4,
-                timestamp: today.add(4, 'day'),
-            },
-            {
-                'Lab test': 'CRP',
-                'Reference interval': '<3',
-                Unit: 'mmol/L',
-                Value: 1,
-                timestamp: today.add(1, 'day'),
-            },
-            {
-                'Lab test': 'CRP',
-                'Reference interval': '<3',
-                Unit: 'mmol/L',
-                Value: 30,
-                timestamp: today.add(3, 'day'),
-            },
-        ],
+        labValues: exampleLabValues,
     },
 };
