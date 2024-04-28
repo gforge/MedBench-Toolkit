@@ -1,8 +1,8 @@
 import { buildFakeNoteContent } from './buildFakeContent';
-import { buildFakeNoteHeader } from './buildFakeHeader';
+import { buildFakeNoteHeader, FakeHeaderArgs } from './buildFakeHeader';
 
 type FakeNote = {
-    header?: Partial<Header>;
+    header?: FakeHeaderArgs;
     content?: string | number;
 };
 
