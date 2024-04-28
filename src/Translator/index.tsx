@@ -1,4 +1,4 @@
-import { selectChart } from 'features';
+import { selectTranslationChart } from 'features';
 import { useDownloadTranslation } from 'helpers';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
@@ -15,7 +15,7 @@ export function Translator() {
     }>();
 
     const chart = useSelector<RootState, Chart | null>((state) =>
-        selectChart(state, chartId)
+        selectTranslationChart(state, chartId)
     );
 
     const navigate = useNavigate();

@@ -1,5 +1,5 @@
 // useChartTranslations.ts
-import { chartsActions } from 'features';
+import { charts2translateActions } from 'features';
 import { getNoteId } from 'helpers';
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
@@ -43,7 +43,7 @@ export function useChartTranslations({
             if (!note || (!type && !content)) return;
 
             dispatch(
-                chartsActions.updateChart({
+                charts2translateActions.updateChart({
                     note: {
                         ...note,
                         header: {
@@ -64,7 +64,7 @@ export function useChartTranslations({
         ({ noteId, position, type, author }: InsertNoteArgs) => {
             if (!chartId || !chart || !language) return;
             dispatch(
-                chartsActions.insertNote({
+                charts2translateActions.insertNote({
                     chartId,
                     noteId,
                     language,
@@ -81,7 +81,7 @@ export function useChartTranslations({
         (noteId: string) => {
             if (!chartId || !chart || !language) return;
             dispatch(
-                chartsActions.deleteNote({
+                charts2translateActions.deleteNote({
                     chartId,
                     noteId,
                     language,
@@ -95,7 +95,7 @@ export function useChartTranslations({
         (noteId: string) => {
             if (!chartId || !chart || !language) return;
             dispatch(
-                chartsActions.reInsertDeletedNote({
+                charts2translateActions.reInsertDeletedNote({
                     chartId,
                     noteId,
                     language,

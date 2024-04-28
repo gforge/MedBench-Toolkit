@@ -2,13 +2,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { rememberEnhancer, rememberReducer } from 'redux-remember';
 
-import { chartsReducer } from './features';
+import { charts2translateReducer, charts4summaryReducer } from './features';
 
 const reducers = {
-    charts: chartsReducer,
+    charts2translate: charts2translateReducer,
+    charts4summary: charts4summaryReducer,
 };
 
-const rememberedKeys = ['charts'];
+const rememberedKeys = ['charts2translate', 'charts4summary'];
 
 const reducer = rememberReducer(reducers);
 

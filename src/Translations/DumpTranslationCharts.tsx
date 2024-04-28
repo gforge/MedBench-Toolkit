@@ -2,10 +2,10 @@ import { Button } from '@mui/base';
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
-import { selectCharts } from '../features';
+import { selectTranslationCharts } from '../features';
 
 export const DumpTranslationCharts = () => {
-    const charts = useSelector(selectCharts);
+    const charts = useSelector(selectTranslationCharts);
     const download = useCallback(() => {
         const a = document.createElement('a');
         const file = new Blob([JSON.stringify(charts)], {
