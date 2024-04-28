@@ -21,6 +21,7 @@ export const OriginalNote = ({
     <Card
         id={id}
         sx={{
+            marginBottom: '10px',
             minWidth: 275,
             opacity: activated ? 1 : 0.6, // Full opacity when activated, faded otherwise
             transition: 'opacity 0.3s ease-in-out', // Smooth transition for opacity change

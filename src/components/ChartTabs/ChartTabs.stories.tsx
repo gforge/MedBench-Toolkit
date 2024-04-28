@@ -1,4 +1,6 @@
 import { Meta } from '@storybook/react';
+import { buildFakeNote } from 'components';
+import dayjs from 'dayjs';
 
 import { exampleLabValues } from '../LabValues/exampleData';
 import { exampleMedications } from '../Medications/exampeData';
@@ -28,10 +30,20 @@ const meta: Meta<typeof ChartTabs> = {
 
 export default meta;
 
+const today = dayjs();
+
 export const Short = {
     args: {
         medications: exampleMedications,
         labValues: exampleLabValues,
-        notes: ['Note 1', 'Note 2'],
+        notes: Array(5)
+            .fill({})
+            .map((_, i) =>
+                buildFakeNote({
+                    header: {
+                        date: today.add(i, 'day').toDate(),
+                    },
+                })
+            ),
     },
 };
