@@ -1,6 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import { Meta } from '@storybook/react';
-import { buildFakeContent, buildFakeHeader } from 'components';
+import { buildFakeNote } from 'components';
 import { useMemo } from 'react';
 
 import { BaseGrid } from '.';
@@ -13,12 +13,7 @@ const BaseGridWrapper = ({
     'notes' | 'originalNotes' | 'translatedNotes'
 > & { noNotes: number }) => {
     const { notes } = useMemo(() => {
-        const notes = Array(noNotes)
-            .fill(null)
-            .map(() => ({
-                header: buildFakeHeader(),
-                content: buildFakeContent(),
-            }));
+        const notes = Array(noNotes).fill({}).map(buildFakeNote);
 
         return { notes };
     }, [noNotes]);

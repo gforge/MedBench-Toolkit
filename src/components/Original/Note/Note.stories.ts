@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { buildFakeContent, buildFakeHeader } from 'components';
+import { buildFakeNote } from 'components';
 
 import { OriginalNote } from './OriginalNote';
 
@@ -19,16 +19,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
     args: {
-        header: buildFakeHeader(),
-        content: buildFakeContent(),
+        ...buildFakeNote(),
         activated: false,
     },
 };
 
 export const Active: Story = {
     args: {
-        header: buildFakeHeader(),
-        content: buildFakeContent(),
+        ...buildFakeNote(),
         activated: true,
     },
 };

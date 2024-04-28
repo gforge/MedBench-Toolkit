@@ -3,7 +3,7 @@ import { Paper } from '@mui/material';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
-import { buildFakeContent, buildFakeHeader } from '../helpers';
+import { buildFakeNote } from '../helpers';
 import { NoteList } from './NoteList';
 
 const meta: Meta<typeof NoteList> = {
@@ -26,12 +26,7 @@ type Story = StoryObj<typeof meta>;
 const buildFakeChart = (name: string, specialty: string) => ({
     name,
     specialty,
-    originalNotes: Array(5)
-        .fill(null)
-        .map(() => ({
-            header: buildFakeHeader(),
-            content: buildFakeContent(2),
-        })),
+    originalNotes: Array(5).fill({}).map(buildFakeNote),
     translations: {},
 });
 

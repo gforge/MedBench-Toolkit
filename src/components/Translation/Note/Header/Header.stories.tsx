@@ -1,7 +1,7 @@
 import { Paper } from '@mui/material';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
-import { buildFakeHeader } from 'components';
+import { buildFakeNoteHeader } from 'components';
 
 import { TranslationNoteHeader } from './Header';
 
@@ -24,7 +24,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
     args: {
-        ...buildFakeHeader(),
+        ...buildFakeNoteHeader(),
         onTypeChange: action('onTypeChange'),
     },
 };

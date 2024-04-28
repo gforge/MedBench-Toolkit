@@ -1,8 +1,7 @@
 import { faker } from '@faker-js/faker';
+import { getNoteId } from 'helpers';
 
-import { getNoteId } from '../../helpers';
-
-export const buildFakeHeader = (args: Partial<Header> = {}): Header => {
+export const buildFakeNoteHeader = (args: Partial<Header> = {}): Header => {
     const d = faker.date.recent({ days: 10 }).toISOString();
     const headerBase: Omit<Header, 'id'> = {
         type: args.type ?? faker.lorem.sentence(2).slice(0, -1),

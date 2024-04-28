@@ -1,9 +1,8 @@
-import { faker } from '@faker-js/faker';
 import { Box } from '@mui/material';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { buildFakeHeader } from 'components';
+import { buildFakeNote } from 'components';
 
 import { TranslationNote } from './Note';
 
@@ -27,8 +26,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
     args: {
-        header: buildFakeHeader(),
-        content: faker.lorem.paragraph(),
+        ...buildFakeNote(),
         onUpdate: action('inactiveNote'),
         deleteNote: action('deleteNote'),
         activated: false,
@@ -39,8 +37,7 @@ export const Basic: Story = {
 
 export const Active: Story = {
     args: {
-        header: buildFakeHeader(),
-        content: faker.lorem.paragraph(),
+        ...buildFakeNote(),
         onUpdate: action('activatedNote'),
         deleteNote: action('deleteNote'),
         activated: true,
