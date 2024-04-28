@@ -4,16 +4,14 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import './App.css';
 
-import { Translate } from '@mui/icons-material';
+import { EditNote, Translate } from '@mui/icons-material';
 import { List, ListItem, ListItemIcon, Paper, Typography } from '@mui/material';
-import { loadData } from 'helpers';
 import { Link, Route, Routes } from 'react-router-dom';
 
 import { Translations } from './Translations';
 import { Translator } from './Translator';
 
 function App() {
-    console.log(loadData())
     return (
         <>
             <header>MedBench toolkit</header>
@@ -25,6 +23,7 @@ function App() {
                         path="/translator/:chartId/:language"
                         element={<Translator />}
                     />
+                    <Route path="/translations" element={<Translations />} />
                 </Routes>
             </div>
         </>
@@ -44,6 +43,12 @@ const Greet = () => (
                     <Translate />
                 </ListItemIcon>
                 <Link to="/translations">View translations</Link>
+            </ListItem>
+            <ListItem>
+                <ListItemIcon>
+                    <EditNote />
+                </ListItemIcon>
+                <Link to="/summaries">Write case summary</Link>
             </ListItem>
         </List>
     </Paper>

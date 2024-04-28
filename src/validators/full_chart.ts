@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import * as yup from 'yup';
 
 export const chartSchema = yup
@@ -56,3 +57,9 @@ export const fullChartSchema = yup.object().shape({
     Medications: yup.array().of(medicationSchema).required(),
     Lab: yup.array().of(labSchema),
 });
+
+export type FullChart2Summarise = {
+    case_id: string;
+    specialty: string;
+    chart: yup.InferType<typeof fullChartSchema>;
+};
