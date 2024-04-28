@@ -12,8 +12,11 @@ const initialState: ChartsState = {
     charts: [],
 };
 
-export const { reducer: chartsReducer, actions: chartsActions } = createSlice({
-    name: 'charts',
+export const {
+    reducer: charts2translateReducer,
+    actions: charts2translateActions,
+} = createSlice({
+    name: 'charts2translate',
     initialState,
     reducers: {
         createNewCase: (
@@ -90,7 +93,11 @@ export const { reducer: chartsReducer, actions: chartsActions } = createSlice({
         },
         updateChart: (
             state,
-            action: PayloadAction<{ note: Note; id: string; language: string }>
+            action: PayloadAction<{
+                note: Note;
+                id: string;
+                language: string;
+            }>
         ) => {
             const { id, language, note } = action.payload;
             const chart = state.charts.find(
