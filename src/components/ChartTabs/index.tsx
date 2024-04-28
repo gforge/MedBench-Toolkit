@@ -1,12 +1,11 @@
-import { Tab, Tabs } from '@mui/material';
+import { Box, Tab, Tabs } from '@mui/material';
+import { LabValueTable, MedicationsTable } from 'components';
 import { useState } from 'react';
-
-import { LabValueTable } from '../LabValues';
-import { MedicationsTable } from '../Medications';
+import { LabValue, MedicationValue } from 'validators';
 
 type ChartTabsProps = {
-    medications: string[];
-    labvalues: string[];
+    medications: MedicationValue[];
+    labValues: LabValue[];
     notes: string[];
 };
 
@@ -28,23 +27,20 @@ const TabPanel = ({
 
 export const ChartTabs = ({
     medications,
-    labvalues,
+    labValues,
     notes,
 }: ChartTabsProps) => {
     const [activeTab, setActiveTab] = useState('Notes');
 
     return (
-        <>
+        <Box sx={{ overflow: 'auto', padding: '2em' }}>
             <Tabs
                 value={activeTab}
                 onChange={(_, newValue) => setActiveTab(newValue)}
-                variant="scrollable"
-                scrollButtons="auto"
-                aria-label="scrollable auto tabs example"
             >
-                <Tab label="Notes" />
-                <Tab label="Medications" />
-                <Tab label="Lab Values" />
+                <Tab label="Notes" value="Notes" />
+                <Tab label="Medications" value="Medications" />
+                <Tab label="Lab Values" value="Lab Values" />
             </Tabs>
             <TabPanel value={activeTab} id="Notes">
                 {notes.map((note, i) => (
@@ -55,8 +51,8 @@ export const ChartTabs = ({
                 <MedicationsTable medications={medications} />
             </TabPanel>
             <TabPanel value={activeTab} id="Lab Values">
-                <LabValueTable labvalues={labvalues} />
+                <LabValueTable labValues={labValues} />
             </TabPanel>
-        </>
+        </Box>
     );
 };

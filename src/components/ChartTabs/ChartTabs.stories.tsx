@@ -1,5 +1,7 @@
 import { Meta } from '@storybook/react';
 
+import { exampleLabValues } from '../LabValues/exampleData';
+import { exampleMedications } from '../Medications/exampeData';
 import { ChartTabs } from '.';
 
 const meta: Meta<typeof ChartTabs> = {
@@ -8,10 +10,11 @@ const meta: Meta<typeof ChartTabs> = {
     decorators: (Story) => (
         <div
             style={{
-                minWidth: '800px',
-                height: '100%',
+                width: '800px',
+                height: '75vh',
                 border: '1px solid #ccc',
                 padding: '10px',
+                overflow: 'auto',
             }}
         >
             <Story />
@@ -27,6 +30,8 @@ export default meta;
 
 export const Short = {
     args: {
-        
+        medications: exampleMedications,
+        labValues: exampleLabValues,
+        notes: ['Note 1', 'Note 2'],
     },
 };
