@@ -1,47 +1,57 @@
-import { Chart4SummaryList } from 'components';
-import { charts4summaryActions, selectSummaryCharts } from 'features';
-import { loadCharts2Translate } from 'helpers';
-import { useCallback, useEffect } from 'react';
+import { TextareaAutosize } from '@mui/base';
+import { ChartTabs } from 'components';
+import { charts4summaryActions, selectSummaryChart } from 'features';
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { SummaryWriterHelp } from './Help';
+import { ChartValue } from '../validators';
 
-export function Translations() {
-    const chart4summary = useSelector(selectSummaryCharts);
+export function SummaryWriter() {
+    const { id } = useParams<{ id: string }>();
+    const chart4summary = useSelector(selectSummaryChart(id));
     const dispatch = useDispatch();
-    useEffect(() => {
-        if (chart4summary.length > 0) {
-            return;
-        }
-
-        const charts = loadCharts2Translate();
-        if (charts) {
+    const summarise = useCallback(
+        (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+            if (!id) return;
             dispatch(
-                charts4summaryActions.initStore({
-                    charts: Object.values(charts),
+                charts4summaryActions.summarise({
+                    id: id,
+                    text: e.target.value,
                 })
             );
-        }
-    });
-
-    const navigate = useNavigate();
-    const summarise = useCallback(
-        (id: string) => {
-            const chart = chart4summary.find((c) => c.case_id === id);
-            if (!chart) {
-                return;
-            }
-            navigate(`/summarise/${chart.specialty}/${chart.case_id}`);
         },
-        [chart4summary, navigate]
+        [dispatch, id]
     );
+    const navigate = useNavigate();
+    if (!chart4summary) {
+        navigate('/summarise');
+        return null;
+    }
+
+    const {
+        Medications: medications,
+        Lab: labValues = [],
+        Chart: chart,
+    } = chart4summary.chart.chart;
 
     return (
         <>
-            <Chart4SummaryList charts={chart4summary} summarise={summarise} />
-            <br />
-            <SummaryWriterHelp show={!chart4summary.length} />
+            <ChartTabs
+                notes={chart.map(convertValueToNote)}
+                medications={medications}
+                labValues={labValues}
+            />
+            <TextareaAutosize onChange={summarise} />
         </>
     );
 }
+
+const convertValueToNote = (value: ChartValue): Note => ({
+    header: {
+        text: value.header,
+        type: value.type,
+        timestamp: value.timestamp,
+    },
+    text: value.text,
+});

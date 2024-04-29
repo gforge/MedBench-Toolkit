@@ -8,6 +8,7 @@ import { EditNote, Translate } from '@mui/icons-material';
 import { List, ListItem, ListItemIcon, Paper, Typography } from '@mui/material';
 import { Link, Route, Routes } from 'react-router-dom';
 
+import { SummaryWriterList } from './SummaryWriter';
 import { Translations } from './Translations';
 import { Translator } from './Translator';
 
@@ -24,6 +25,8 @@ function App() {
                         element={<Translator />}
                     />
                     <Route path="/translations" element={<Translations />} />
+                    <Route path="/summaries" element={<SummaryWriterList />} />
+                    <Route path="/summaries/:id" element={<SummaryWriter />} />
                 </Routes>
             </div>
         </>

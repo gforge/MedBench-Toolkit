@@ -4,10 +4,12 @@ import { FullChart2Summarise } from 'validators';
 
 interface ChartsState {
     charts: FullChart2Summarise[];
+    summary: Record<string, string>;
 }
 
 const initialState: ChartsState = {
     charts: [],
+    summary: {},
 };
 
 export const {
@@ -22,6 +24,12 @@ export const {
             action: PayloadAction<{ charts: FullChart2Summarise[] }>
         ) => {
             state.charts = action.payload.charts;
+        },
+        summarise: (
+            state,
+            action: PayloadAction<{ id: string; text: string }>
+        ) => {
+            state.summary[action.payload.id] = action.payload.text;
         },
     },
 });

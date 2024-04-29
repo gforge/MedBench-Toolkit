@@ -20,6 +20,7 @@ export const chartSchema = yup
         timestamp: yup.date().required(),
     })
     .required();
+export type ChartValue = yup.InferType<typeof chartSchema>;
 
 export const medicationSchema = yup
     .object()
