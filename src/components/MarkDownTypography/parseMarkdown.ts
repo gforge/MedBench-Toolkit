@@ -18,10 +18,16 @@ const countHashes = (header: string): number => {
  * @param content - The Markdown content to parse.
  * @returns An array of MarkdownSection objects representing the parsed sections.
  */
-export const parseMarkdown = (content: string): MarkdownSection[] => {
-    const lines = content.split('\n').map((line) => line.trim());
+export const parseMarkdown = (
+    content: string
+): { baseContent: string[]; sections: MarkdownSection[] } => {
+    const lines = content
+        .split('\n')
+        .map((line) => line.trim())
+        .filter((line) => line.length > 0);
     const rootSections: MarkdownSection[] = [];
     const stack: MarkdownSection[] = [];
+    const baseContent: string[] = [];
 
     lines.forEach((line) => {
         const level = countHashes(line);
@@ -49,8 +55,13 @@ export const parseMarkdown = (content: string): MarkdownSection[] => {
             stack.push(newSection); // Push the new section onto the stack
         } else if (stack.length > 0) {
             stack[stack.length - 1].content.push(line); // Add non-header lines to the content of the current section
+        } else {
+            baseContent.push(line);
         }
     });
 
-    return rootSections;
+    return {
+        baseContent,
+        sections: rootSections,
+    };
 };

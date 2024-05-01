@@ -52,10 +52,23 @@ const Section = ({ section }: { section: MarkdownSection }) => (
  * Simple converter from markdown to Typography components for headers.
  */
 export const MarkdownTypography = ({ content }: { content: string }) => {
-    const sections = parseMarkdown(content);
+    const { baseContent, sections } = parseMarkdown(content);
 
     return (
         <>
+            {baseContent.map((line, index) =>
+                line.trim() === '' ? (
+                    <br key={index} />
+                ) : (
+                    <Typography
+                        key={index}
+                        variant="body1"
+                        sx={{ textAlign: 'left' }}
+                    >
+                        {line}
+                    </Typography>
+                )
+            )}
             {sections.map((section, index) => (
                 <Section section={section} key={index} />
             ))}
