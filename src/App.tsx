@@ -8,7 +8,8 @@ import { EditNote, Translate } from '@mui/icons-material';
 import { List, ListItem, ListItemIcon, Paper, Typography } from '@mui/material';
 import { Link, Route, Routes } from 'react-router-dom';
 
-import { SummaryWriterList } from './SummaryWriter';
+import { SummaryWriter } from './SummaryWriter';
+import { SummaryWriterList } from './SummaryWriterList';
 import { Translations } from './Translations';
 import { Translator } from './Translator';
 
