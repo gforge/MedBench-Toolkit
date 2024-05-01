@@ -1,11 +1,14 @@
 import { TextareaAutosize } from '@mui/base';
+import { Typography } from '@mui/material';
 import { ChartTabs } from 'components';
 import { charts4summaryActions, selectSummaryChart } from 'features';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { getNoteId } from '../helpers';
 import { ChartValue } from '../validators';
+import { BottomBox, FlexBox, TopBox } from './styles';
 
 export function SummaryWriter() {
     const { id } = useParams<{ id: string }>();
@@ -36,22 +39,41 @@ export function SummaryWriter() {
     } = chart4summary.chart.chart;
 
     return (
-        <>
-            <ChartTabs
-                notes={chart.map(convertValueToNote)}
-                medications={medications}
-                labValues={labValues}
-            />
-            <TextareaAutosize onChange={summarise} />
-        </>
+        <FlexBox>
+            <TopBox>
+                <ChartTabs
+                    notes={chart.map(convertValueToNote)}
+                    medications={medications}
+                    labValues={labValues}
+                />
+            </TopBox>
+            <BottomBox>
+                <Typography variant="h6">Summary</Typography>
+                <TextareaAutosize onChange={summarise} minRows={10} />
+            </BottomBox>
+        </FlexBox>
     );
 }
 
-const convertValueToNote = (value: ChartValue): Note => ({
-    header: {
-        text: value.header,
-        type: value.type,
-        timestamp: value.timestamp,
-    },
-    text: value.text,
-});
+const convertValueToNote = ({
+    type,
+    author,
+    year,
+    hour,
+    content,
+}: ChartValue): Note => {
+    const baseHeader: Omit<Header, 'id'> = {
+        author: author,
+        type: type,
+        date: year,
+        time: hour,
+    };
+
+    return {
+        header: {
+            id: getNoteId({ header: baseHeader }),
+            ...baseHeader,
+        },
+        content,
+    };
+};
