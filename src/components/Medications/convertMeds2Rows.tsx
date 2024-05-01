@@ -28,7 +28,7 @@ export function convertMeds2Rows(medications: MedicationValue[]): {
                 'Way of adminstration': administration,
                 Strength: strength,
                 Unit: unit,
-                ...rest
+                Times_per_day: tpd,
             } = medication;
             const index = initialColumns.findIndex((i) => i.name === name);
             if (index < 0) {
@@ -47,7 +47,7 @@ export function convertMeds2Rows(medications: MedicationValue[]): {
             }
             acc[dateTimeKey].push({
                 name,
-                value: rest['Times per day'],
+                value: tpd,
             });
 
             return acc;

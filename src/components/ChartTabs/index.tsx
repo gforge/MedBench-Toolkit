@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs } from '@mui/material';
+import { Tab, Tabs } from '@mui/material';
 import { LabValueTable, MedicationsTable, OriginalNote } from 'components';
 import { useState } from 'react';
 import { LabValue, MedicationValue } from 'validators';
@@ -35,7 +35,7 @@ export const ChartTabs = ({
     const [activeTab, setActiveTab] = useState('Notes');
 
     return (
-        <Box sx={{ overflow: 'auto', padding: '2em' }}>
+        <>
             <Tabs
                 value={activeTab}
                 onChange={(_, newValue) => setActiveTab(newValue)}
@@ -61,6 +61,6 @@ export const ChartTabs = ({
             <TabPanel value={activeTab} id="Lab Values">
                 <LabValueTable labValues={labValues} />
             </TabPanel>
-        </Box>
+        </>
     );
 };
