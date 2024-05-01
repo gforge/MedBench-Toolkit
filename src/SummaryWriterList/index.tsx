@@ -1,13 +1,13 @@
 import { Chart4SummaryList } from 'components';
 import { charts4summaryActions, selectSummaryCharts } from 'features';
-import { loadCharts2Translate } from 'helpers';
+import { getChartId, loadCharts2Translate } from 'helpers';
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { SummaryWriterHelp } from './Help';
 
-export function SummaryWriter() {
+export function SummaryWriterList() {
     const chart4summary = useSelector(selectSummaryCharts);
     const dispatch = useDispatch();
     useEffect(() => {
@@ -28,11 +28,11 @@ export function SummaryWriter() {
     const navigate = useNavigate();
     const summarise = useCallback(
         (id: string) => {
-            const chart = chart4summary.find((c) => c.case_id === id);
+            const chart = chart4summary.find((c) => getChartId(c) === id);
             if (!chart) {
                 return;
             }
-            navigate(`/summarise/${chart.specialty}/${chart.case_id}`);
+            navigate(`/summarise/${getChartId(chart)}`);
         },
         [chart4summary, navigate]
     );
