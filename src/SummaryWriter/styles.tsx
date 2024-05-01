@@ -3,17 +3,19 @@ import { styled } from '@mui/material';
 export const TopBox = styled('div')`
     display: flex;
     flex-direction: column;
-    height: 80%;
-    width: 100%;
+    height: 70%;
     overflow-y: auto;
 `;
 
 export const BottomBox = styled('div')`
     display: flex;
     flex-direction: column;
-    height: 20%;
-    width: 100%;
+    height: 30%;
     overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
 `;
 
 export const FlexBox = styled('div')`

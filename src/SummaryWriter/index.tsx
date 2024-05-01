@@ -49,7 +49,12 @@ export function SummaryWriter() {
             </TopBox>
             <BottomBox>
                 <Typography variant="h6">Summary</Typography>
-                <TextareaAutosize onChange={summarise} minRows={10} />
+                <TextareaAutosize
+                    onChange={summarise}
+                    minRows={10}
+                    value={chart4summary.summary}
+                    placeholder="Write your summary here..."
+                />
             </BottomBox>
         </FlexBox>
     );
