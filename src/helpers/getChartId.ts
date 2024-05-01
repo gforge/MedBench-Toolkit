@@ -12,8 +12,8 @@ const isTranslationChart = (
 
 export const getChartId = (chart: Chart | FullChart2Summarise) => {
     if (isTranslationChart(chart)) {
-        return `${chart.specialty}_${chart.case_id}`;
+        return `${chart.specialty}_${chart.case_id}`.replaceAll(' ', '_');
     }
 
-    return `${chart.specialty}_${chart.name}`;
+    return `${chart.specialty}_${chart.name}`.replaceAll(' ', '_');
 };
