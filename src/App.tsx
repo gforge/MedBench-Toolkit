@@ -26,8 +26,8 @@ function App() {
                         element={<Translator />}
                     />
                     <Route path="/translations" element={<Translations />} />
+                    <Route path="/summarise/:id" element={<SummaryWriter />} />
                     <Route path="/summaries" element={<SummaryWriterList />} />
-                    <Route path="/summaries/:id" element={<SummaryWriter />} />
                 </Routes>
             </div>
         </>
