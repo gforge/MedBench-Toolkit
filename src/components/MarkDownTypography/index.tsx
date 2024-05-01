@@ -56,18 +56,32 @@ export const MarkdownTypography = ({ content }: { content: string }) => {
 
     return (
         <>
-            {baseContent.map((line, index) =>
-                line.trim() === '' ? (
-                    <br key={index} />
-                ) : (
-                    <Typography
-                        key={index}
-                        variant="body1"
-                        sx={{ textAlign: 'left' }}
-                    >
-                        {line}
-                    </Typography>
-                )
+            {baseContent.length > 0 && (
+                <Box
+                    sx={{
+                        marginTop: '10px',
+                        backgroundColor: '#fafafa',
+                        // Highlight when hovered, animate
+                        '&:hover': {
+                            backgroundColor: '#fff',
+                            transition: 'background-color 0.3s ease-in-out',
+                        },
+                    }}
+                >
+                    {baseContent.map((line, index) =>
+                        line.trim() === '' ? (
+                            <br key={index} />
+                        ) : (
+                            <Typography
+                                key={index}
+                                variant="body1"
+                                sx={{ textAlign: 'left', marginBottom: '10px' }}
+                            >
+                                {line}
+                            </Typography>
+                        )
+                    )}
+                </Box>
             )}
             {sections.map((section, index) => (
                 <Section section={section} key={index} />
