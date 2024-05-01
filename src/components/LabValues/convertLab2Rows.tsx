@@ -16,13 +16,15 @@ export function convertLab2Rows(
     header: string[];
     rows: (string | number)[][];
 } {
-    labValues.sort((a, b) => Number(a.timestamp) - Number(b.timestamp));
+    const sortedLabValues = [...labValues].sort(
+        (a, b) => Number(a.timestamp) - Number(b.timestamp)
+    );
     const initialColumns: {
         name: string;
         unit: string;
         reference: string;
     }[] = [];
-    const labValuesWide = labValues.reduce(
+    const labValuesWide = sortedLabValues.reduce(
         (
             acc: Record<string, { name: string; value: string | number }[]>,
             labValue

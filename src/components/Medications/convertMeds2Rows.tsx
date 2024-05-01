@@ -10,14 +10,16 @@ export function convertMeds2Rows(medications: MedicationValue[]): {
     header: string[];
     rows: (string | number)[][];
 } {
-    medications.sort((a, b) => Number(a.timestamp) - Number(b.timestamp));
+    const sortedMedications = [...medications].sort(
+        (a, b) => Number(a.timestamp) - Number(b.timestamp)
+    );
     const initialColumns: {
         name: string;
         strength: string;
         unit: string;
         administration: string;
     }[] = [];
-    const medicationsWide = medications.reduce(
+    const medicationsWide = sortedMedications.reduce(
         (
             acc: Record<string, { name: string; value: string | undefined }[]>,
             medication
