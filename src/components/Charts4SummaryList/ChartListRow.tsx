@@ -1,7 +1,6 @@
-import { Button, ButtonGroup } from '@mui/material';
+import { Button, ButtonGroup, TableCell, TableRow } from '@mui/material';
 import { getChartId } from 'helpers';
 
-import { StyledTd as Td } from './StyledTd';
 import { SummaryChartListRowProps } from './types';
 
 export const ChartListRow = ({
@@ -11,11 +10,11 @@ export const ChartListRow = ({
     const borderBottom = '1px solid #ccc';
     const { case_id: caseId, specialty } = chart;
     return (
-        <tr style={{ borderBottom }}>
-            <Td>{specialty}</Td>
-            <Td>{caseId}</Td>
-            <Td
-                style={{
+        <TableRow style={{ borderBottom }}>
+            <TableCell>{specialty}</TableCell>
+            <TableCell>{caseId}</TableCell>
+            <TableCell
+                sx={{
                     textAlign: 'left',
                 }}
             >
@@ -28,7 +27,7 @@ export const ChartListRow = ({
                         Summarise
                     </Button>
                 </ButtonGroup>
-            </Td>
-        </tr>
+            </TableCell>
+        </TableRow>
     );
 };
