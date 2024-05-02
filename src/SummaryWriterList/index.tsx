@@ -5,13 +5,15 @@ import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+import packageJson from '../../package.json'; // Adjust the path accordingly
 import { SummaryWriterHelp } from './Help';
 
 export function SummaryWriterList() {
-    const chart4summary = useSelector(selectSummaryCharts);
+    const { charts: chart4summary, version } = useSelector(selectSummaryCharts);
     const dispatch = useDispatch();
     useEffect(() => {
-        if (chart4summary.length > 0) {
+        console.log('SummaryWriterList useEffect', version, packageJson);
+        if (chart4summary.length > 0 && version === packageJson.version) {
             return;
         }
 
@@ -20,6 +22,7 @@ export function SummaryWriterList() {
             dispatch(
                 charts4summaryActions.initStore({
                     charts: Object.values(charts),
+                    version: packageJson.version,
                 })
             );
         }

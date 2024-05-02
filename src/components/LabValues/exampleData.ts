@@ -3,18 +3,18 @@ import { LabValue } from 'validators';
 
 const today = dayjs();
 const buildLabValue = ({
-    'Lab test': lt,
-    'Reference interval': ri,
-    Unit,
-    Value,
+    labTest: lt,
+    referenceInterval: ri,
+    unit,
+    value,
     date,
-}: Pick<LabValue, 'Lab test' | 'Reference interval' | 'Unit' | 'Value'> & {
+}: Pick<LabValue, 'labTest' | 'referenceInterval' | 'unit' | 'value'> & {
     date: dayjs.Dayjs;
 }): LabValue => ({
-    'Lab test': lt,
-    'Reference interval': ri,
-    Unit,
-    Value,
+    labTest: lt,
+    referenceInterval: ri,
+    unit,
+    value,
     timestamp: date.toDate(),
 });
 
@@ -22,7 +22,7 @@ const buildLabValues = ({
     dates,
     values,
     ...lv
-}: Pick<LabValue, 'Lab test' | 'Reference interval' | 'Unit'> & {
+}: Pick<LabValue, 'labTest' | 'referenceInterval' | 'unit'> & {
     dates: dayjs.Dayjs[];
     values: (number | string)[];
 }): LabValue[] => {
@@ -36,30 +36,30 @@ const buildLabValues = ({
         return buildLabValue({
             ...lv,
             date: d,
-            Value: valStr,
+            value: valStr,
         });
     });
 };
 
 export const exampleLabValues: LabValue[] = [
     ...buildLabValues({
-        'Lab test': 'Hb',
-        'Reference interval': '120-140',
-        Unit: 'mg/dL',
+        labTest: 'Hb',
+        referenceInterval: '120-140',
+        unit: 'mg/dL',
         dates: [today, today.add(2, 'day')],
         values: [130, 111],
     }),
     ...buildLabValues({
-        'Lab test': 'WBC',
-        'Reference interval': '4-7',
-        Unit: 'mmol/L',
+        labTest: 'WBC',
+        referenceInterval: '4-7',
+        unit: 'mmol/L',
         values: [5, 15, 4],
         dates: [today.add(1, 'day'), today.add(3, 'day'), today.add(4, 'day')],
     }),
     ...buildLabValues({
-        'Lab test': 'CRP',
-        'Reference interval': '<3',
-        Unit: 'mmol/L',
+        labTest: 'CRP',
+        referenceInterval: '<3',
+        unit: 'mmol/L',
         values: [1, 30],
         dates: [today.add(1, 'day'), today.add(3, 'day')],
     }),

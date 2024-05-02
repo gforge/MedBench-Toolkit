@@ -3,10 +3,10 @@ import * as yup from 'yup';
 export const labSchema = yup
     .object()
     .shape({
-        'Lab test': yup.string().required(),
-        'Reference interval': yup.string().required(),
-        Unit: yup.string().required(),
-        Value: yup
+        labTest: yup.string().required(),
+        referenceInterval: yup.string().required(),
+        unit: yup.string().required(),
+        value: yup
             .mixed<string>()
             .transform((_value, originalValue): string => {
                 if (typeof originalValue === 'number') {

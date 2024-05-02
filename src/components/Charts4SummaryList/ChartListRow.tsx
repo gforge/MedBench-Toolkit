@@ -8,11 +8,14 @@ export const ChartListRow = ({
     summarise,
 }: SummaryChartListRowProps) => {
     const borderBottom = '1px solid #ccc';
-    const { case_id: caseId, specialty } = chart;
+    const { case_id: caseId, specialty, language } = chart;
     return (
         <TableRow style={{ borderBottom }}>
             <TableCell>{specialty}</TableCell>
             <TableCell>{caseId}</TableCell>
+            <TableCell>
+                {language == 'original' ? 'Original' : language}
+            </TableCell>
             <TableCell
                 sx={{
                     textAlign: 'left',

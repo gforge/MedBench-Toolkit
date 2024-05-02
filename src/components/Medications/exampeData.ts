@@ -3,27 +3,22 @@ import { MedicationValue } from 'validators';
 
 const today = dayjs();
 const buildMedication = ({
-    Medication,
-    'Way of adminstration': woa,
-    Unit,
-    Strength,
-    Times_per_day: tpd,
+    medication,
+    wayOfAdminstration: woa,
+    unit,
+    strength,
+    timesPerDay: tpd,
     timestamp,
 }: Pick<
     MedicationValue,
-    | 'Medication'
-    | 'Strength'
-    | 'Way of adminstration'
-    | 'Unit'
-    | 'Times_per_day'
+    'medication' | 'strength' | 'wayOfAdminstration' | 'unit' | 'timesPerDay'
 > & { timestamp: dayjs.Dayjs }): MedicationValue => ({
-    Medication,
-    'Way of adminstration': woa,
-    Unit,
-    Strength,
-    Times_per_day: tpd,
-    parsed_date: today.toDate().toISOString().substring(0, 10),
-    Date: timestamp.toDate().toISOString().substring(0, 10),
+    medication,
+    wayOfAdminstration: woa,
+    unit,
+    strength,
+    timesPerDay: tpd,
+    date: timestamp.toDate().toISOString().substring(0, 10),
     timestamp: timestamp.toDate(),
 });
 
@@ -33,11 +28,7 @@ const buildMedications = ({
     ...mv
 }: Pick<
     MedicationValue,
-    | 'Medication'
-    | 'Strength'
-    | 'Way of adminstration'
-    | 'Unit'
-    | 'Times_per_day'
+    'medication' | 'strength' | 'wayOfAdminstration' | 'unit' | 'timesPerDay'
 > & { start: dayjs.Dayjs; repeats: number }): MedicationValue[] =>
     Array.from({ length: repeats }, (_, i) =>
         buildMedication({ ...mv, timestamp: start.add(i, 'day') })
@@ -45,20 +36,20 @@ const buildMedications = ({
 
 export const exampleMedications: MedicationValue[] = [
     ...buildMedications({
-        Medication: 'Paracetamol',
-        'Way of adminstration': 'Oral',
-        Unit: 'g',
-        Strength: '1',
-        Times_per_day: '1+1+1',
+        medication: 'Paracetamol',
+        wayOfAdminstration: 'Oral',
+        unit: 'g',
+        strength: '1',
+        timesPerDay: '1+1+1',
         start: today,
         repeats: 4,
     }),
     ...buildMedications({
-        Medication: 'Heracillin',
-        'Way of adminstration': 'Oral',
-        Unit: 'mg',
-        Strength: '500',
-        Times_per_day: '2+2+2',
+        medication: 'Heracillin',
+        wayOfAdminstration: 'Oral',
+        unit: 'mg',
+        strength: '500',
+        timesPerDay: '2+2+2',
         start: today.add(2, 'day'),
         repeats: 2,
     }),

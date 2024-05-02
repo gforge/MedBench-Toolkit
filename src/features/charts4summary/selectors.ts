@@ -3,14 +3,20 @@ import { getChartId } from 'helpers';
 import type { RootState } from 'store';
 import { FullChart2Summarise } from 'validators';
 
-export const selectSummaryCharts = (state: RootState) =>
-    state.charts4summary.charts;
+export const selectSummaryCharts = (state: RootState) => ({
+    charts: state.charts4summary.charts,
+    version: state.charts4summary.version,
+});
 
 export const selectSummaryChart =
     (id: string | undefined) =>
     (
         state: RootState
-    ): { chart: FullChart2Summarise; summary: string } | null => {
+    ): {
+        chart: FullChart2Summarise;
+        summary: string;
+        version: string;
+    } | null => {
         if (!id) {
             return null;
         }
@@ -23,8 +29,10 @@ export const selectSummaryChart =
         }
 
         const summary = state.charts4summary.summary[id];
+        const version = state.charts4summary.version;
         return {
             chart,
             summary: summary ?? '',
+            version,
         };
     };

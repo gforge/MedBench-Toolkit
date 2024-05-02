@@ -6,10 +6,10 @@
  */
 export function convertLab2Rows(
     labValues: {
-        'Lab test': string;
-        'Reference interval': string;
-        Unit: string;
-        Value: string;
+        labTest: string;
+        referenceInterval: string;
+        unit: string;
+        value: string;
         timestamp: Date;
     }[]
 ): {
@@ -31,10 +31,10 @@ export function convertLab2Rows(
         ) => {
             const {
                 timestamp,
-                Unit: unit,
-                'Lab test': name,
-                'Reference interval': reference,
-                ...rest
+                unit,
+                labTest: name,
+                referenceInterval: reference,
+                value,
             } = labValue;
             const index = initialColumns.findIndex((i) => i.name === name);
             if (index < 0) {
@@ -53,10 +53,7 @@ export function convertLab2Rows(
             if (!acc[dateTimeKey]) {
                 acc[dateTimeKey] = [];
             }
-            acc[dateTimeKey].push({
-                name,
-                value: rest.Value,
-            });
+            acc[dateTimeKey].push({ name, value });
 
             return acc;
         },

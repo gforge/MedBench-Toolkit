@@ -26,11 +26,11 @@ export function convertMeds2Rows(medications: MedicationValue[]): {
         ) => {
             const {
                 timestamp,
-                Medication: name,
-                'Way of adminstration': administration,
-                Strength: strength,
-                Unit: unit,
-                Times_per_day: tpd,
+                medication: name,
+                wayOfAdminstration: administration,
+                strength,
+                unit,
+                timesPerDay: tpd,
             } = medication;
             const index = initialColumns.findIndex((i) => i.name === name);
             if (index < 0) {

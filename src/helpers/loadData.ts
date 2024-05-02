@@ -24,6 +24,7 @@ export const loadCharts2Translate = (): LoadedData => {
                     {
                         case_id: moduleName.replace(/.+(Case \d+).+/, '$1'),
                         specialty: moduleName.replace(/raw_([^_]+).+/, '$1'),
+                        language: moduleName.replace(/.+_([^.]+)/, '$1'),
                         chart,
                     },
                 ];

@@ -1,6 +1,6 @@
 import { FullChart2Summarise } from 'validators';
 
-const isTranslationChart = (
+const isSummaryChart = (
     chart: Chart | FullChart2Summarise
 ): chart is FullChart2Summarise => {
     return (
@@ -11,8 +11,11 @@ const isTranslationChart = (
 };
 
 export const getChartId = (chart: Chart | FullChart2Summarise) => {
-    if (isTranslationChart(chart)) {
-        return `${chart.specialty}_${chart.case_id}`.replaceAll(' ', '_');
+    if (isSummaryChart(chart)) {
+        return `${chart.specialty}_${chart.case_id}_${chart.language}`.replaceAll(
+            ' ',
+            '_'
+        );
     }
 
     return `${chart.specialty}_${chart.name}`.replaceAll(' ', '_');

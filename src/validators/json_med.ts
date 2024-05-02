@@ -3,16 +3,12 @@ import * as yup from 'yup';
 export const medicationSchema = yup
     .object()
     .shape({
-        Medication: yup.string().required(),
-        'Way of adminstration': yup.string().required(),
-        Strength: yup.string().required(), // Can be a mix, e.g. 12,5/50
-        Unit: yup.string().required(),
-        Date: yup.string().required(), // assuming a specific format or as integer representing Excel date
-        Times_per_day: yup.string(),
-        parsed_date: yup
-            .string()
-            .matches(/^\d{4}-\d{2}-\d{2}$/)
-            .required(),
+        medication: yup.string().required(),
+        wayOfAdminstration: yup.string().required(),
+        strength: yup.string().required(), // Can be a mix, e.g. 12,5/50
+        unit: yup.string().required(),
+        date: yup.string().required(), // assuming a specific format or as integer representing Excel date
+        timesPerDay: yup.string(),
         timestamp: yup.date().required(),
     })
     .required();

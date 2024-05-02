@@ -34,8 +34,9 @@ const buildFakeChart = (
 ): FullChart2Summarise => ({
     case_id: caseId,
     specialty,
+    language: 'original',
     chart: {
-        Chart: Array(5)
+        chart: Array(5)
             .fill({})
             .map(
                 (_, i) =>
@@ -46,8 +47,8 @@ const buildFakeChart = (
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     }) as any
             ),
-        Medications: exampleMedications,
-        Lab: exampleLabValues,
+        medications: exampleMedications,
+        lab: exampleLabValues,
     },
 });
 

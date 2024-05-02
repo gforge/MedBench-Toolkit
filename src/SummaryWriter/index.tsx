@@ -33,9 +33,9 @@ export function SummaryWriter() {
     }
 
     const {
-        Medications: medications,
-        Lab: labValues = [],
-        Chart: chart,
+        chart,
+        medications,
+        lab: labValues = [],
     } = chart4summary.chart.chart;
 
     return (
@@ -63,16 +63,11 @@ export function SummaryWriter() {
 const convertValueToNote = ({
     type,
     author,
-    year,
-    hour,
+    date,
+    time,
     content,
 }: ChartValue): Note => {
-    const baseHeader: Omit<Header, 'id'> = {
-        author: author,
-        type: type,
-        date: year,
-        time: hour,
-    };
+    const baseHeader: Omit<Header, 'id'> = { author, type, date, time };
 
     return {
         header: {

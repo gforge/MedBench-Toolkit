@@ -6,14 +6,12 @@ import { medicationSchema } from './json_med';
 export const chartSchema = yup
     .object()
     .shape({
-        text: yup.string().required(),
-        header: yup.string().required(),
         type: yup.string().required(),
-        year: yup
+        date: yup
             .string()
             .matches(/^\d{4}-\d{2}-\d{2}$/)
             .required(),
-        hour: yup
+        time: yup
             .string()
             .matches(/^\d{2}[:.]\d{2}$/)
             .required(),
@@ -25,13 +23,14 @@ export const chartSchema = yup
 export type ChartValue = yup.InferType<typeof chartSchema>;
 
 export const fullChartSchema = yup.object().shape({
-    Chart: yup.array().of(chartSchema).required(),
-    Medications: yup.array().of(medicationSchema).required(),
-    Lab: yup.array().of(labSchema),
+    chart: yup.array().of(chartSchema).required(),
+    medications: yup.array().of(medicationSchema).required(),
+    lab: yup.array().of(labSchema),
 });
 
 export type FullChart2Summarise = {
     case_id: string;
     specialty: string;
+    language: string;
     chart: yup.InferType<typeof fullChartSchema>;
 };
