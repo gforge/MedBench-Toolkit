@@ -30,9 +30,15 @@ const buildLabValues = ({
         throw new Error('Dates and values must have the same length');
     }
 
-    return dates.map((d, i) =>
-        buildLabValue({ ...lv, date: d, Value: values[i] })
-    );
+    return dates.map((d, i) => {
+        const val = values[i];
+        const valStr = typeof val === 'number' ? val.toString() : val;
+        return buildLabValue({
+            ...lv,
+            date: d,
+            Value: valStr,
+        });
+    });
 };
 
 export const exampleLabValues: LabValue[] = [

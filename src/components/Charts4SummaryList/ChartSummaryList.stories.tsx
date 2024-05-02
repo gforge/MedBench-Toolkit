@@ -4,7 +4,6 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { buildFakeNote } from 'components';
 import dayjs from 'dayjs';
-import { v4 as uuid } from 'uuid';
 import { FullChart2Summarise } from 'validators';
 
 import { exampleLabValues } from '../LabValues/exampleData';
@@ -36,7 +35,6 @@ const buildFakeChart = (
     case_id: caseId,
     specialty,
     chart: {
-        id: uuid(),
         Chart: Array(5)
             .fill({})
             .map(
