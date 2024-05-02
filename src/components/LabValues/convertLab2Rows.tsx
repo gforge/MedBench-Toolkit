@@ -9,12 +9,12 @@ export function convertLab2Rows(
         'Lab test': string;
         'Reference interval': string;
         Unit: string;
-        Value: number;
+        Value: string;
         timestamp: Date;
     }[]
 ): {
     header: string[];
-    rows: (string | number)[][];
+    rows: string[][];
 } {
     const sortedLabValues = [...labValues].sort(
         (a, b) => Number(a.timestamp) - Number(b.timestamp)
@@ -71,11 +71,15 @@ export function convertLab2Rows(
 
     const rows = initialColumns.map((column) => {
         const { name, unit, reference } = column;
-        const row: (string | number)[] = [name, unit, reference];
+        const row: string[] = [name, unit, reference];
         Object.values(labValuesWide).map((values) => {
             const value = values.find((v) => v.name === name);
             if (value) {
-                row.push(value.value);
+                if (typeof value.value === 'number') {
+                    row.push(value.value.toString());
+                } else {
+                    row.push(value.value);
+                }
             } else {
                 row.push('');
             }

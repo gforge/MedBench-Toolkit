@@ -72,21 +72,22 @@ const flagOutsideReference = ({
     refValues,
     index,
 }: {
-    cell: string | number;
+    cell: string;
     refValues: string | number;
     index: number;
 }) => {
     if (typeof refValues !== 'string' || index < 3) {
         return {};
     }
+    const value = Number(cell);
 
     // Check if reference is a range or a single value with <
     if (/<\s*\d+/.test(refValues)) {
         const max = Number(refValues.replace('<', '').trim());
-        if (typeof cell !== 'number') {
+        if (isNaN(value)) {
             return {};
         }
-        if (cell > max) {
+        if (value > max) {
             return {
                 color: 'darkred',
             };
@@ -95,12 +96,13 @@ const flagOutsideReference = ({
     }
 
     const [min, max] = refValues.split('-').map(Number);
-    if (typeof cell !== 'number') {
+    if (isNaN(value)) {
         return {};
     }
-    if (cell < min || cell > max) {
+    if (value < min || value > max) {
         return {
             color: 'darkred',
+            fontWeight: 'bold',
         };
     }
     return {};
