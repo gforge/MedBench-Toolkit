@@ -12,7 +12,6 @@ export function SummaryWriterList() {
     const { charts: chart4summary, version } = useSelector(selectSummaryCharts);
     const dispatch = useDispatch();
     useEffect(() => {
-        console.log('SummaryWriterList useEffect', version, packageJson);
         if (chart4summary.length > 0 && version === packageJson.version) {
             return;
         }

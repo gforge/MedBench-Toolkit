@@ -1,10 +1,9 @@
 import { Tab, Tabs } from '@mui/material';
-import { LabValueTable, MedicationsTable, OriginalNote } from 'components';
+import { LabValueTable, MedicationsTable } from 'components';
 import { useState } from 'react';
 import { LabValue, MedicationValue } from 'validators';
 
-import { getNoteId } from '../../helpers';
-
+import { Note } from './Note';
 type ChartTabsProps = {
     medications: MedicationValue[];
     labValues: LabValue[];
@@ -46,12 +45,11 @@ export const ChartTabs = ({
             </Tabs>
             <TabPanel value={activeTab} id="Notes">
                 {notes.map((note, i) => (
-                    <OriginalNote
+                    <Note
                         key={i}
-                        id={getNoteId(note)}
-                        {...note}
-                        hideActions
-                        activated
+                        note={note}
+                        medications={medications}
+                        labValues={labValues}
                     />
                 ))}
             </TabPanel>

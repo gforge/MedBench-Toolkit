@@ -1,32 +1,84 @@
-import { OriginalNote } from 'components';
+import { Medication, Science } from '@mui/icons-material';
+import { Button, ButtonGroup, Paper, Tooltip } from '@mui/material';
+import { MarkdownTypography, OriginalNoteHeader } from 'components';
 import dayjs from 'dayjs';
-import { ChartValue, LabValue, MedicationValue } from 'validators';
+import { useState } from 'react';
+import { LabValue, MedicationValue } from 'validators';
 
-import { getNoteId } from '../../helpers';
+import { ShowDetails } from './ShowDetails';
 
 type ChartNoteProps = {
     medications: MedicationValue[];
     labValues: LabValue[];
-    note: ChartValue;
+    note: Note;
 };
 
-export const Note = ({ medications, labValues, note }: ChartNoteProps) => {
-    const todaysLabValues = labValues.filter((lab) =>
-        dayjs(lab.timestamp).isSame(dayjs(note.date), 'day')
+const useHasMedication = (
+    medications: MedicationValue[],
+    currentDay: dayjs.Dayjs
+): boolean => {
+    return !!medications.some((med) =>
+        dayjs(med.timestamp).isSame(currentDay, 'day')
     );
-    const todaysMedications = medications.filter((med) =>
-        dayjs(med.date).isSame(dayjs(note.date), 'day')
+};
+
+const useHasLabValue = (
+    labValues: LabValue[],
+    currentDay: dayjs.Dayjs
+): boolean => {
+    return !!labValues.some((lab) =>
+        dayjs(lab.timestamp).isSame(currentDay, 'day')
     );
+};
+
+export const Note = ({
+    medications,
+    labValues,
+    note: { header, content },
+}: ChartNoteProps) => {
+    const currentDay = dayjs(header.date);
+    const hasMeds = useHasMedication(medications, currentDay);
+    const hasLab = useHasLabValue(labValues, currentDay);
+    const [showMedication, setShowMedication] = useState(false);
+    const [showLab, setShowLab] = useState(false);
+
     return (
-        <>
-            <OriginalNote
-                id={getNoteId(note)}
-                {...note}
-                hideActions
-                activated
+        <Paper sx={{ marginBottom: '10px', padding: '1rem' }}>
+            <OriginalNoteHeader {...header} />
+            <MarkdownTypography content={content} />
+            <ButtonGroup sx={{ marginTop: '10px' }}>
+                <Tooltip title="Show todays lab values">
+                    <span>
+                        <Button
+                            variant={showLab ? 'contained' : 'outlined'}
+                            startIcon={<Science />}
+                            disabled={hasLab}
+                            onClick={() => setShowLab(!showLab)}
+                        >
+                            Lab
+                        </Button>
+                    </span>
+                </Tooltip>
+                <Tooltip title="Show todays medications">
+                    <span>
+                        <Button
+                            variant={showMedication ? 'contained' : 'outlined'}
+                            startIcon={<Medication />}
+                            disabled={!hasMeds}
+                            onClick={() => setShowMedication(!showMedication)}
+                        >
+                            Medication
+                        </Button>
+                    </span>
+                </Tooltip>
+            </ButtonGroup>
+            <ShowDetails
+                showLab={showLab}
+                showMedication={showMedication}
+                medications={medications}
+                labValues={labValues}
+                currentDay={currentDay}
             />
-            <div>Lab {todaysLabValues.length}</div>
-            <div>Medications {todaysMedications.length}</div>
-        </>
+        </Paper>
     );
 };
