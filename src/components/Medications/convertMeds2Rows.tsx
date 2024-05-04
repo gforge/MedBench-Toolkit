@@ -1,4 +1,4 @@
-import type { MedicationValue } from 'validators';
+import { medicationTimeSort, MedicationValue } from 'validators';
 
 /**
  * Converts an array of medications values into rows for display.
@@ -10,9 +10,7 @@ export function convertMeds2Rows(medications: MedicationValue[]): {
     header: string[];
     rows: (string | number)[][];
 } {
-    const sortedMedications = [...medications].sort(
-        (a, b) => Number(a.timestamp) - Number(b.timestamp)
-    );
+    const sortedMedications = [...medications].sort(medicationTimeSort);
     const initialColumns: {
         name: string;
         strength: string;
@@ -25,9 +23,9 @@ export function convertMeds2Rows(medications: MedicationValue[]): {
             medication
         ) => {
             const {
-                timestamp,
+                date: dateTimeKey,
                 medication: name,
-                wayOfAdminstration: administration,
+                wayOfAdministration: administration,
                 strength,
                 unit,
                 timesPerDay: tpd,
@@ -41,8 +39,6 @@ export function convertMeds2Rows(medications: MedicationValue[]): {
                     unit,
                 });
             }
-            // Convert to YYYY-MM-dd
-            const dateTimeKey = new Date(timestamp).toISOString().slice(0, 10);
 
             if (!acc[dateTimeKey]) {
                 acc[dateTimeKey] = [];

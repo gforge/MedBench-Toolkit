@@ -22,6 +22,7 @@ export const MedicationTable = ({
     currentDay,
 }: MedicationTableProps) => {
     const todaysMedications = useTodaysMedications(medications, currentDay);
+
     return (
         <TableContainer
             component={Paper}
@@ -39,7 +40,7 @@ export const MedicationTable = ({
                             },
                             previous,
                         }) => (
-                            <TableRow key={medication}>
+                            <TableRow key={`${medication} ${strength} ${unit}`}>
                                 <TableCell>{medication}</TableCell>
                                 <TableCell
                                     align="right"

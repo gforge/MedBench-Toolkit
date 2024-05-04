@@ -12,7 +12,7 @@ import { BottomBox, FlexBox, TopBox } from './styles';
 
 export function SummaryWriter() {
     const { id } = useParams<{ id: string }>();
-    const chart4summary = useSelector(selectSummaryChart(id));
+    const chart4summary = useSelector((state) => selectSummaryChart(state, id));
     const dispatch = useDispatch();
     const summarise = useCallback(
         (e: React.ChangeEvent<HTMLTextAreaElement>) => {

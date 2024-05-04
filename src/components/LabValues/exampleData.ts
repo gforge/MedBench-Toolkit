@@ -15,7 +15,8 @@ const buildLabValue = ({
     referenceInterval: ri,
     unit,
     value,
-    timestamp: date.toDate(),
+    date: date.toDate().toISOString().substring(0, 10),
+    time: date.toDate().toISOString().substring(11, 16),
 });
 
 const buildLabValues = ({

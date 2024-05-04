@@ -4,22 +4,21 @@ import { MedicationValue } from 'validators';
 const today = dayjs();
 const buildMedication = ({
     medication,
-    wayOfAdminstration: woa,
+    wayOfAdministration: woa,
     unit,
     strength,
     timesPerDay: tpd,
     timestamp,
 }: Pick<
     MedicationValue,
-    'medication' | 'strength' | 'wayOfAdminstration' | 'unit' | 'timesPerDay'
+    'medication' | 'strength' | 'wayOfAdministration' | 'unit' | 'timesPerDay'
 > & { timestamp: dayjs.Dayjs }): MedicationValue => ({
     medication,
-    wayOfAdminstration: woa,
+    wayOfAdministration: woa,
     unit,
     strength,
     timesPerDay: tpd,
     date: timestamp.toDate().toISOString().substring(0, 10),
-    timestamp: timestamp.toDate(),
 });
 
 const buildMedications = ({
@@ -28,7 +27,7 @@ const buildMedications = ({
     ...mv
 }: Pick<
     MedicationValue,
-    'medication' | 'strength' | 'wayOfAdminstration' | 'unit' | 'timesPerDay'
+    'medication' | 'strength' | 'wayOfAdministration' | 'unit' | 'timesPerDay'
 > & { start: dayjs.Dayjs; repeats: number }): MedicationValue[] =>
     Array.from({ length: repeats }, (_, i) =>
         buildMedication({ ...mv, timestamp: start.add(i, 'day') })
@@ -37,7 +36,7 @@ const buildMedications = ({
 export const exampleMedications: MedicationValue[] = [
     ...buildMedications({
         medication: 'Paracetamol',
-        wayOfAdminstration: 'Oral',
+        wayOfAdministration: 'Oral',
         unit: 'g',
         strength: '1',
         timesPerDay: '1+1+1',
@@ -46,7 +45,7 @@ export const exampleMedications: MedicationValue[] = [
     }),
     ...buildMedications({
         medication: 'Heracillin',
-        wayOfAdminstration: 'Oral',
+        wayOfAdministration: 'Oral',
         unit: 'mg',
         strength: '500',
         timesPerDay: '2+2+2',

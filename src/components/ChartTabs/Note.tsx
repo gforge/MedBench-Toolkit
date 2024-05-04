@@ -17,8 +17,8 @@ const useHasMedication = (
     medications: MedicationValue[],
     currentDay: dayjs.Dayjs
 ): boolean => {
-    return !!medications.some((med) =>
-        dayjs(med.timestamp).isSame(currentDay, 'day')
+    return !!medications.some(({ date }) =>
+        dayjs.utc(date).isSame(currentDay, 'day')
     );
 };
 
@@ -26,8 +26,8 @@ const useHasLabValue = (
     labValues: LabValue[],
     currentDay: dayjs.Dayjs
 ): boolean => {
-    return !!labValues.some((lab) =>
-        dayjs(lab.timestamp).isSame(currentDay, 'day')
+    return !!labValues.some(({ date, time }) =>
+        dayjs.utc(`${date} ${time}`).isSame(currentDay, 'day')
     );
 };
 
@@ -36,7 +36,7 @@ export const Note = ({
     labValues,
     note: { header, content },
 }: ChartNoteProps) => {
-    const currentDay = dayjs(header.date);
+    const currentDay = dayjs.utc(header.date);
     const hasMeds = useHasMedication(medications, currentDay);
     const hasLab = useHasLabValue(labValues, currentDay);
     const [showMedication, setShowMedication] = useState(false);
@@ -52,7 +52,7 @@ export const Note = ({
                         <Button
                             variant={showLab ? 'contained' : 'outlined'}
                             startIcon={<Science />}
-                            disabled={hasLab}
+                            disabled={!hasLab}
                             onClick={() => setShowLab(!showLab)}
                         >
                             Lab

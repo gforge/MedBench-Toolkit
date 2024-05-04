@@ -1,3 +1,5 @@
+import { LabValue, labValueTimeSort } from 'validators';
+
 /**
  * Converts an array of lab values into rows for display.
  *
@@ -5,20 +7,15 @@
  * @returns An object containing the header and rows for display.
  */
 export function convertLab2Rows(
-    labValues: {
-        labTest: string;
-        referenceInterval: string;
-        unit: string;
-        value: string;
-        timestamp: Date;
-    }[]
+    labValues: Pick<
+        LabValue,
+        'labTest' | 'unit' | 'referenceInterval' | 'date' | 'time' | 'value'
+    >[]
 ): {
     header: string[];
     rows: string[][];
 } {
-    const sortedLabValues = [...labValues].sort(
-        (a, b) => Number(a.timestamp) - Number(b.timestamp)
-    );
+    const sortedLabValues = [...labValues].sort(labValueTimeSort);
     const initialColumns: {
         name: string;
         unit: string;
@@ -30,7 +27,8 @@ export function convertLab2Rows(
             labValue
         ) => {
             const {
-                timestamp,
+                date,
+                time,
                 unit,
                 labTest: name,
                 referenceInterval: reference,
@@ -45,10 +43,7 @@ export function convertLab2Rows(
                 });
             }
             // Convert to YYYY-MM-dd HH:mm
-            const dateTimeKey = new Date(timestamp)
-                .toISOString()
-                .slice(0, 16)
-                .replace('T', ' ');
+            const dateTimeKey = `${date} ${time}`;
 
             if (!acc[dateTimeKey]) {
                 acc[dateTimeKey] = [];

@@ -17,7 +17,6 @@ export const chartSchema = yup
             .required(),
         author: yup.string().required(),
         content: yup.string().required(),
-        timestamp: yup.date().required(),
     })
     .required();
 export type ChartValue = yup.InferType<typeof chartSchema>;
