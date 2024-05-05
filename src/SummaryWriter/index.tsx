@@ -1,5 +1,4 @@
-import { TextareaAutosize } from '@mui/base';
-import { Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { ChartTabs } from 'components';
 import { charts4summaryActions, selectSummaryChart } from 'features';
 import { useCallback } from 'react';
@@ -8,6 +7,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { getNoteId } from '../helpers';
 import { ChartValue } from '../validators';
+import { ExportSummary } from './Export';
+import { ResponsiveTextField } from './ResponsiveTextField';
 import { BottomBox, FlexBox, TopBox } from './styles';
 
 export function SummaryWriter() {
@@ -48,10 +49,17 @@ export function SummaryWriter() {
                 />
             </TopBox>
             <BottomBox>
-                <Typography variant="h6">Summary</Typography>
-                <TextareaAutosize
+                <Stack
+                    direction="row"
+                    spacing={2}
+                    justifyContent="space-between"
+                    sx={{ marginBottom: '10px' }}
+                >
+                    <Typography variant="h6">Summary</Typography>
+                    <ExportSummary />
+                </Stack>
+                <ResponsiveTextField
                     onChange={summarise}
-                    minRows={10}
                     value={chart4summary.summary}
                     placeholder="Write your summary here..."
                 />
