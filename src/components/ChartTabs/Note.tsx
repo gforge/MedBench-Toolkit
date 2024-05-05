@@ -11,23 +11,35 @@ type ChartNoteProps = {
     medications: MedicationValue[];
     labValues: LabValue[];
     note: Note;
+    first: boolean;
 };
 
-const useHasMedication = (
-    medications: MedicationValue[],
-    currentDay: dayjs.Dayjs
-): boolean => {
+const useHasMedication = ({
+    medications,
+    currentDay,
+}: {
+    medications: MedicationValue[];
+    currentDay: dayjs.Dayjs;
+}): boolean => {
     return !!medications.some(({ date }) =>
         dayjs.utc(date).isSame(currentDay, 'day')
     );
 };
 
-const useHasLabValue = (
-    labValues: LabValue[],
-    currentDay: dayjs.Dayjs
-): boolean => {
+const useHasLabValue = ({
+    labValues,
+    currentDay,
+    first,
+}: {
+    labValues: LabValue[];
+    currentDay: dayjs.Dayjs;
+    first: boolean;
+}): boolean => {
     return !!labValues.some(({ date, time }) =>
-        dayjs.utc(`${date} ${time}`).isSame(currentDay, 'day')
+        first
+            ? dayjs.utc(`${date} ${time}`).isBefore(currentDay, 'day') ||
+              dayjs.utc(`${date} ${time}`).isSame(currentDay, 'day')
+            : dayjs.utc(`${date} ${time}`).isSame(currentDay, 'day')
     );
 };
 
@@ -35,10 +47,11 @@ export const Note = ({
     medications,
     labValues,
     note: { header, content },
+    first,
 }: ChartNoteProps) => {
     const currentDay = dayjs.utc(header.date);
-    const hasMeds = useHasMedication(medications, currentDay);
-    const hasLab = useHasLabValue(labValues, currentDay);
+    const hasMeds = useHasMedication({ medications, currentDay });
+    const hasLab = useHasLabValue({ labValues, currentDay, first });
     const [showMedication, setShowMedication] = useState(false);
     const [showLab, setShowLab] = useState(false);
 
@@ -54,6 +67,7 @@ export const Note = ({
                             startIcon={<Science />}
                             disabled={!hasLab}
                             onClick={() => setShowLab(!showLab)}
+                            size="small"
                         >
                             Lab
                         </Button>
@@ -66,6 +80,7 @@ export const Note = ({
                             startIcon={<Medication />}
                             disabled={!hasMeds}
                             onClick={() => setShowMedication(!showMedication)}
+                            size="small"
                         >
                             Medication
                         </Button>
@@ -78,6 +93,7 @@ export const Note = ({
                 medications={medications}
                 labValues={labValues}
                 currentDay={currentDay}
+                first={first}
             />
         </Paper>
     );

@@ -47,6 +47,7 @@ export const ChartTabs = ({
                 {notes.map((note, i) => (
                     <Note
                         key={i}
+                        first={i === 0}
                         note={note}
                         medications={medications}
                         labValues={labValues}

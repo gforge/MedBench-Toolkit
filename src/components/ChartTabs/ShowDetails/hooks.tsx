@@ -2,16 +2,24 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { LabValue, MedicationValue } from 'validators';
 
-export const useTodaysLabValues = (
-    labValues: LabValue[],
-    currentDay: dayjs.Dayjs
-): {
+export const useTodaysLabValues = ({
+    labValues,
+    currentDay,
+    first,
+}: {
+    labValues: LabValue[];
+    currentDay: dayjs.Dayjs;
+    first: boolean;
+}): {
     current: LabValue;
     previous: LabValue | undefined;
 }[] =>
     useMemo(() => {
         const todays = labValues.filter(({ date }) =>
-            dayjs.utc(date).isSame(currentDay, 'day')
+            first
+                ? dayjs.utc(date).isSame(currentDay, 'day') ||
+                  dayjs.utc(date).isBefore(currentDay, 'day')
+                : dayjs.utc(date).isSame(currentDay, 'day')
         );
 
         // Return the current lab value and the previous lab value for the same lab test
@@ -35,7 +43,7 @@ export const useTodaysLabValues = (
                     )[0],
             };
         });
-    }, [labValues, currentDay]);
+    }, [labValues, first, currentDay]);
 
 export const useTodaysMedications = (
     medications: MedicationValue[],
