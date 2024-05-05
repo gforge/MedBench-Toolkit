@@ -1,5 +1,5 @@
 import { Medication, Science } from '@mui/icons-material';
-import { Button, ButtonGroup, Paper, Tooltip } from '@mui/material';
+import { Box, Button, ButtonGroup, Paper, Tooltip } from '@mui/material';
 import { MarkdownTypography, OriginalNoteHeader } from 'components';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -57,8 +57,10 @@ export const Note = ({
 
     return (
         <Paper sx={{ marginBottom: '10px', padding: '1rem' }}>
-            <OriginalNoteHeader {...header} />
-            <MarkdownTypography content={content} />
+            <Box sx={{ maxWidth: '600px', margin: 'auto' }}>
+                <OriginalNoteHeader {...header} />
+                <MarkdownTypography content={content} />
+            </Box>
             <ButtonGroup sx={{ marginTop: '10px' }}>
                 <Tooltip title="Show todays lab values">
                     <span>
