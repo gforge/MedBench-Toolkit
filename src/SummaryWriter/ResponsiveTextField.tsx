@@ -29,13 +29,15 @@ export const ResponsiveTextField = ({
 
         // Set up a ResizeObserver to adjust rows on resize
         const resizeObserver = new ResizeObserver(calculateRows);
-        if (containerRef.current) {
-            resizeObserver.observe(containerRef.current);
+        const currentContainerRef = containerRef.current; // Copy the value of containerRef.current to a variable
+        if (currentContainerRef) {
+            resizeObserver.observe(currentContainerRef);
         }
 
         return () => {
-            if (containerRef.current) {
-                resizeObserver.unobserve(containerRef.current);
+            if (currentContainerRef) {
+                // Use the variable in the cleanup function
+                resizeObserver.unobserve(currentContainerRef);
             }
         };
     }, []);
