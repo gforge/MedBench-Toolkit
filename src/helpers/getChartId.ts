@@ -1,7 +1,9 @@
 import { FullChart2Summarise } from 'validators';
 
+import { NewChart2Translate } from '../features/charts2translate/reducers';
+
 const isSummaryChart = (
-    chart: Chart | FullChart2Summarise
+    chart: Chart | FullChart2Summarise | NewChart2Translate
 ): chart is FullChart2Summarise => {
     return (
         Object.hasOwn(chart, 'case_id') &&
@@ -10,7 +12,9 @@ const isSummaryChart = (
     );
 };
 
-export const getChartId = (chart: Chart | FullChart2Summarise) => {
+export const getChartId = (
+    chart: Chart | NewChart2Translate | FullChart2Summarise
+) => {
     if (isSummaryChart(chart)) {
         return `${chart.specialty}_${chart.case_id}_${chart.language}`.replaceAll(
             ' ',
