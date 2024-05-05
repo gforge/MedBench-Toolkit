@@ -11,7 +11,7 @@ import { TranslationsOverviewHelp } from './Help';
 
 export function Translations() {
     const dispatch = useDispatch();
-    const createNewCase = useCallback(
+    const addChart = useCallback(
         ({
             name,
             specialty,
@@ -22,7 +22,7 @@ export function Translations() {
             notes: Note[];
         }) => {
             dispatch(
-                charts2translateActions.createNewCase({
+                charts2translateActions.addChart({
                     name,
                     specialty,
                     notes,
@@ -77,7 +77,7 @@ export function Translations() {
             />
             <br />
             <Stack spacing={2}>
-                <TextCapture createNewCase={createNewCase} charts={charts} />
+                <TextCapture addChart={addChart} charts={charts} />
                 <DumpTranslationCharts />
                 <InitStore />
             </Stack>

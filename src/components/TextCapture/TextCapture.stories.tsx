@@ -24,7 +24,7 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
     args: {
         charts: [],
-        createNewCase: (args: {
+        addChart: (args: {
             name: string;
             specialty: string;
             notes: Note[];

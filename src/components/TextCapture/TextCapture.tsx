@@ -15,7 +15,7 @@ import { usePasteHandler } from './usePasteHandler';
 
 export interface TextCaptureProps {
     charts: Chart[];
-    createNewCase: (args: {
+    addChart: (args: {
         name: string;
         specialty: string;
         notes: Note[];
@@ -24,7 +24,7 @@ export interface TextCaptureProps {
 
 export const TextCapture: React.FC<TextCaptureProps> = ({
     charts,
-    createNewCase,
+    addChart,
 }) => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [name, setName] = useState('');
@@ -55,7 +55,7 @@ export const TextCapture: React.FC<TextCaptureProps> = ({
     // Assuming usePasteHandler is adjusted to work with raw text input instead of an event
     const handlePaste = usePasteHandler({
         setBadHeaders,
-        onDrop: createNewCase,
+        onDrop: addChart,
         name,
         specialty,
     });

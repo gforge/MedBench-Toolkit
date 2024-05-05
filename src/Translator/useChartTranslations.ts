@@ -81,7 +81,7 @@ export function useChartTranslations({
         (noteId: string) => {
             if (!chartId || !chart || !language) return;
             dispatch(
-                charts2translateActions.deleteNote({
+                charts2translateActions.deleteChartNote({
                     chartId,
                     noteId,
                     language,
