@@ -6,6 +6,7 @@ import './App.css';
 
 import { Route, Routes } from 'react-router-dom';
 
+import { version } from '../package.json';
 import { Greet } from './Greet';
 import { useUpdateStoreWithPreloadedData } from './helpers';
 import { SummaryWriter } from './SummaryWriter';
@@ -18,7 +19,10 @@ export function App() {
 
     return (
         <>
-            <header>MedBench toolkit</header>
+            <header className="app-header">
+                <h1 className="header-title">MedBench Toolkit</h1>
+                <div className="version-info">v. {version}</div>
+            </header>
             <div className="content">
                 <Routes>
                     <Route path="/" element={<Greet />} />

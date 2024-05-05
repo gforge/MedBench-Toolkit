@@ -16,6 +16,10 @@ export const BottomBox = styled('div')`
     border-radius: 10px;
     padding: 10px;
     margin-top: 10px;
+    max-width: 800px;
+    min-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 `;
 
 export const FlexBox = styled('div')`
