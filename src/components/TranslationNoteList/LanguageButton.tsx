@@ -64,6 +64,7 @@ export const LanguageButton = ({
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}
+                size="small"
             >
                 <Stack direction="row" alignItems="center" gap={1}>
                     <span>{language}</span>

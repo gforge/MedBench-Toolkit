@@ -51,6 +51,7 @@ export const NoteListRow = ({
                         variant="contained"
                         color="primary"
                         onClick={() => setActive(chart)}
+                        size="small"
                     >
                         Translate
                     </Button>
@@ -71,6 +72,7 @@ export const NoteListRow = ({
                         variant="contained"
                         color="error"
                         onClick={() => deleteChart({ id: getChartId(chart) })}
+                        size="small"
                     >
                         <Stack direction="row" alignItems="center" gap={1}>
                             <Delete />

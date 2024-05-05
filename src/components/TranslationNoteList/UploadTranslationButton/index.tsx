@@ -39,6 +39,7 @@ export const UploadTranslationButton = ({
                 aria-haspopup="true"
                 onClick={open}
                 disabled={isFileDialogActive}
+                size="small"
             >
                 <Stack direction="row" alignItems="center" gap={1}>
                     <FileUpload />
