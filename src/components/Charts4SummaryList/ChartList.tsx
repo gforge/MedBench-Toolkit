@@ -21,12 +21,15 @@ const TableContainer = styled('div')({
         minWidth: 650,
     },
     // Highlight when mouse is over
-    backgroundColor: '#ecebeb',
+    backgroundColor: '#f9f9f9',
+    borderLeft: '2px solid #00000000',
     '&:hover': {
         backgroundColor: '#fff',
+        borderLeft: '2px solid #00000011',
     },
     // transition effect
-    transition: 'background-color 0.5s ease-in-out',
+    transition:
+        'background-color 0.5s ease-in-out, border-left 0.5s ease-in-out',
     padding: '10px',
     borderRadius: '5px',
 });

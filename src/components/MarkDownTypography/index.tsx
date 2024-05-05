@@ -1,28 +1,34 @@
-import { Box, Typography, TypographyProps } from '@mui/material';
+import {
+    Box,
+    SxProps,
+    Theme,
+    Typography,
+    TypographyProps,
+} from '@mui/material';
 
 import { MarkdownSection, parseMarkdown } from './parseMarkdown';
+
+const boxStyles: SxProps<Theme> = {
+    marginTop: '10px',
+    marginLeft: '10px',
+    borderLeft: '2px solid',
+    borderColor: '#00000005', // Default border color
+    borderRadius: '5px',
+    paddingLeft: '5px',
+    backgroundColor: '#fafafa',
+    '&:hover': {
+        backgroundColor: '#fff',
+        borderColor: '#00000088', // Hover border color
+    },
+    transition:
+        'background-color 0.5s ease-in-out, border-left 0.5s ease-in-out',
+};
 
 /**
  * Recursive function to render markdown sections.
  */
 const Section = ({ section }: { section: MarkdownSection }) => (
-    <Box
-        sx={{
-            marginTop: '10px',
-            marginLeft: '10px',
-            borderLeft: '1px solid #ccc',
-            borderRadius: '5px',
-            paddingLeft: '5px',
-            backgroundColor: '#fafafa',
-            // Highlight when hovered, animate
-            '&:hover': {
-                backgroundColor: '#fff',
-                borderLeft: '1px solid #5f5e5e',
-                transition:
-                    'background-color 0.3s ease-in-out, border-left 1s ease-in-out',
-            },
-        }}
-    >
+    <Box sx={{ ...boxStyles }}>
         <Typography
             variant={getTypographyVariant(section.level)}
             sx={{ textAlign: 'left' }}
@@ -57,17 +63,7 @@ export const MarkdownTypography = ({ content }: { content: string }) => {
     return (
         <>
             {baseContent.length > 0 && (
-                <Box
-                    sx={{
-                        marginTop: '10px',
-                        backgroundColor: '#fafafa',
-                        // Highlight when hovered, animate
-                        '&:hover': {
-                            backgroundColor: '#fff',
-                            transition: 'background-color 0.3s ease-in-out',
-                        },
-                    }}
-                >
+                <Box sx={{ ...boxStyles }}>
                     {baseContent.map((line, index) =>
                         line.trim() === '' ? (
                             <br key={index} />
@@ -95,10 +91,10 @@ function getTypographyVariant(level: number) {
 
     switch (level) {
         case 2:
-            variant = 'h5';
+            variant = 'h6';
             break;
         case 3:
-            variant = 'h6';
+            variant = 'subtitle2';
             break;
         case 4:
             variant = 'subtitle1';
