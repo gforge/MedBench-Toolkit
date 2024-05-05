@@ -1,6 +1,7 @@
+import { Assignment, Medication, Science } from '@mui/icons-material';
 import { Tab, Tabs } from '@mui/material';
 import { LabValueTable, MedicationsTable } from 'components';
-import { useState } from 'react';
+import { DetailedHTMLProps, HTMLAttributes, useState } from 'react';
 import { LabValue, MedicationValue } from 'validators';
 
 import { Note } from './Note';
@@ -14,13 +15,22 @@ const TabPanel = ({
     children,
     value,
     id,
+    style,
 }: {
     value: string;
     id: string;
     children: React.ReactNode;
-}) => {
+} & Pick<
+    DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
+    'style'
+>) => {
     return (
-        <div role="tabpanel" id={`tabpanel-${id}`} hidden={value !== id}>
+        <div
+            role="tabpanel"
+            id={`tabpanel-${id}`}
+            hidden={value !== id}
+            style={style}
+        >
             {children}
         </div>
     );
@@ -38,12 +48,36 @@ export const ChartTabs = ({
             <Tabs
                 value={activeTab}
                 onChange={(_, newValue) => setActiveTab(newValue)}
+                indicatorColor="secondary"
+                variant="fullWidth"
             >
-                <Tab label="Notes" value="Notes" />
-                <Tab label="Medications" value="Medications" />
-                <Tab label="Lab Values" value="Lab Values" />
+                <Tab
+                    icon={<Assignment />}
+                    iconPosition="start"
+                    label="Notes"
+                    value="Notes"
+                />
+                <Tab
+                    icon={<Medication />}
+                    iconPosition="start"
+                    label="Medications"
+                    value="Medications"
+                />
+                <Tab
+                    icon={<Science />}
+                    iconPosition="start"
+                    label="Lab Values"
+                    value="Lab Values"
+                />
             </Tabs>
-            <TabPanel value={activeTab} id="Notes">
+            <TabPanel
+                value={activeTab}
+                id="Notes"
+                style={{
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                }}
+            >
                 {notes.map((note, i) => (
                     <Note
                         key={i}
