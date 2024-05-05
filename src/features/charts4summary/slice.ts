@@ -1,5 +1,6 @@
 // features/charts/chartsSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getChartId } from 'helpers';
 import { FullChart2Summarise } from 'validators';
 
 interface ChartsState {
@@ -30,6 +31,19 @@ export const {
         ) => {
             state.charts = action.payload.charts;
             state.version = action.payload.version;
+        },
+        addCharts: (state, action: PayloadAction<FullChart2Summarise[]>) => {
+            const newCharts = action.payload.filter(
+                (chart) =>
+                    !state.charts.some(
+                        (chart4summary) =>
+                            getChartId(chart4summary) === getChartId(chart)
+                    )
+            );
+            state.charts.push(...newCharts);
+            if (newCharts.length !== action.payload.length) {
+                console.warn('Some summary charts were not added');
+            }
         },
         summarise: (
             state,

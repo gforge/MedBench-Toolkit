@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import {
     addChart,
+    addCharts,
     deleteChart,
     deleteChartNote,
     initStore,
@@ -10,6 +11,7 @@ import {
     renameChart,
     updateChart,
     uploadTranslation,
+    uploadTranslations,
 } from './reducers';
 import { ChartsState } from './types';
 
@@ -22,6 +24,7 @@ export const chartsSlice = createSlice({
     initialState,
     reducers: {
         addChart,
+        addCharts,
         deleteChart,
         deleteChartNote,
         initStore,
@@ -30,6 +33,7 @@ export const chartsSlice = createSlice({
         renameChart,
         updateChart,
         uploadTranslation,
+        uploadTranslations,
     },
 });
 
