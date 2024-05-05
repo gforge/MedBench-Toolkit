@@ -4,6 +4,7 @@ import {
     TableBody,
     TableCell,
     TableContainer,
+    TableContainerProps,
     TableRow,
     Tooltip,
 } from '@mui/material';
@@ -15,11 +16,12 @@ import { useTodaysMedications } from './hooks';
 type MedicationTableProps = {
     medications: MedicationValue[];
     currentDay: dayjs.Dayjs;
-};
+} & Pick<TableContainerProps, 'ref'>;
 
 export const MedicationTable = ({
     medications,
     currentDay,
+    ref,
 }: MedicationTableProps) => {
     const todaysMedications = useTodaysMedications(medications, currentDay);
 
@@ -27,6 +29,7 @@ export const MedicationTable = ({
         <TableContainer
             component={Paper}
             sx={{ width: 'auto', minWidth: '400px' }}
+            ref={ref}
         >
             <Table size="small">
                 <TableBody>

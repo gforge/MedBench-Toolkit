@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Collapse, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { LabValue, MedicationValue } from 'validators';
 
@@ -11,6 +11,7 @@ type ShowDetailsProp = {
     medications: MedicationValue[];
     labValues: LabValue[];
     currentDay: dayjs.Dayjs;
+    first: boolean;
 };
 
 export const ShowDetails = ({
@@ -19,28 +20,36 @@ export const ShowDetails = ({
     medications,
     labValues,
     currentDay,
-}: ShowDetailsProp) => {
-    if (!showLab && !showMedication) {
-        return null;
-    }
-
-    return (
-        <Stack
-            direction="row"
-            gap={2}
-            alignItems="start"
-            useFlexGap
-            flexWrap="wrap"
+    first,
+}: ShowDetailsProp) => (
+    <Stack
+        direction="row"
+        gap={2}
+        alignItems="start"
+        useFlexGap
+        flexWrap="wrap"
+    >
+        <Collapse
+            in={showLab}
+            unmountOnExit
+            orientation={showMedication ? 'horizontal' : 'vertical'}
         >
-            {showLab && (
-                <LabTable labValues={labValues} currentDay={currentDay} />
-            )}
-            {showMedication && (
-                <MedicationTable
-                    medications={medications}
-                    currentDay={currentDay}
-                />
-            )}
-        </Stack>
-    );
-};
+            <LabTable
+                labValues={labValues}
+                currentDay={currentDay}
+                first={first}
+            />
+        </Collapse>
+
+        <Collapse
+            in={showMedication}
+            unmountOnExit
+            orientation={showLab ? 'horizontal' : 'vertical'}
+        >
+            <MedicationTable
+                medications={medications}
+                currentDay={currentDay}
+            />
+        </Collapse>
+    </Stack>
+);
