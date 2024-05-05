@@ -3,7 +3,7 @@ import { FullChart2Summarise, fullChartSchema } from 'validators';
 // Update the resolver type to reflect that it resolves to a module with a `default` property
 type LoadedData = Record<string, FullChart2Summarise>;
 
-export const loadCharts2Translate = (): LoadedData => {
+export const loadData = (): LoadedData => {
     const modulePaths = import.meta.glob<{ default: unknown }>(
         '../data/*.json',
         { eager: true }

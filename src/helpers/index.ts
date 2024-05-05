@@ -8,3 +8,4 @@ export * from './isRawHeaderValid';
 export * from './loadData';
 export * from './timeCompareNotes';
 export * from './useDownloadTranslation';
+export * from './useUpdateStoreWithPreloadedData';

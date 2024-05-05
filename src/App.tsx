@@ -4,16 +4,18 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import './App.css';
 
-import { EditNote, Translate } from '@mui/icons-material';
-import { List, ListItem, ListItemIcon, Paper, Typography } from '@mui/material';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
+import { Greet } from './Greet';
+import { useUpdateStoreWithPreloadedData } from './helpers';
 import { SummaryWriter } from './SummaryWriter';
 import { SummaryWriterList } from './SummaryWriterList';
 import { Translations } from './Translations';
 import { Translator } from './Translator';
 
-function App() {
+export function App() {
+    useUpdateStoreWithPreloadedData();
+
     return (
         <>
             <header>MedBench toolkit</header>
@@ -33,29 +35,3 @@ function App() {
         </>
     );
 }
-
-const Greet = () => (
-    <Paper sx={{ maxWidth: '800px', padding: '1em' }} elevation={3}>
-        <Typography variant="h6">The MedBench Toolkit</Typography>
-        <Typography variant="body1">
-            This is a collection of tools to help you manage translations for
-            your medical charts.
-        </Typography>
-        <List>
-            <ListItem>
-                <ListItemIcon>
-                    <Translate />
-                </ListItemIcon>
-                <Link to="/translations">View translations</Link>
-            </ListItem>
-            <ListItem>
-                <ListItemIcon>
-                    <EditNote />
-                </ListItemIcon>
-                <Link to="/summaries">Write case summary</Link>
-            </ListItem>
-        </List>
-    </Paper>
-);
-
-export default App;
