@@ -18,7 +18,7 @@ export const LabValueTable = ({ labValues }: LabValueTableProps) => {
     const { header, rows } = convertLab2Rows(labValues);
 
     return (
-        <Table>
+        <Table size="small">
             <TableHead>
                 <TableRow>
                     {header.map((h, index) => (

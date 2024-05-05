@@ -19,7 +19,7 @@ export const MedicationsTable = ({
     const { header, rows } = convertMeds2Rows(labValues);
 
     return (
-        <Table>
+        <Table size="small">
             <TableHead>
                 <TableRow>
                     {header.map((h, index) => (

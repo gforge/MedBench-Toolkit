@@ -61,7 +61,7 @@ export const Note = ({
                 <OriginalNoteHeader {...header} />
                 <MarkdownTypography content={content} />
             </Box>
-            <ButtonGroup sx={{ marginTop: '10px' }}>
+            <ButtonGroup sx={{ margin: 'auto', marginTop: '10px' }}>
                 <Tooltip title="Show todays lab values">
                     <span>
                         <Button
