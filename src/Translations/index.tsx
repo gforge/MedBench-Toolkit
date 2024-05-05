@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -67,6 +67,17 @@ export function Translations() {
 
     return (
         <>
+            <Box
+                sx={{ maxWidth: '600px', margin: 'auto', marginBottom: '20px' }}
+            >
+                <Typography variant="h4">Translations</Typography>
+                <Typography variant="body1">
+                    Choose case and specialty that you want to translate. Note
+                    that all data is saved locally in your browser, i.e. you
+                    will either need to export &amp; upload the case or finish
+                    the entire case on your computer.
+                </Typography>
+            </Box>
             <TranslationNoteList
                 charts={charts}
                 translate={translate}

@@ -1,5 +1,5 @@
 import { Delete } from '@mui/icons-material';
-import { Button, ButtonGroup, Stack } from '@mui/material';
+import { Button, ButtonGroup, Stack, TableRow } from '@mui/material';
 import { getChartId } from 'helpers';
 import { useCallback } from 'react';
 
@@ -34,7 +34,11 @@ export const NoteListRow = ({
     const borderBottom = '1px solid #ccc';
     const { name, specialty } = chart;
     return (
-        <tr style={{ borderBottom }}>
+        <TableRow
+            style={{
+                borderBottom,
+            }}
+        >
             <EditableTd text={name} setText={setName} />
             <EditableTd text={specialty} setText={setSpecialty} />
             <Td
@@ -75,6 +79,6 @@ export const NoteListRow = ({
                     </Button>
                 </ButtonGroup>
             </Td>
-        </tr>
+        </TableRow>
     );
 };

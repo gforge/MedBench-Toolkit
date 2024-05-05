@@ -1,17 +1,18 @@
-import { Paper, styled } from '@mui/material';
+import {
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Typography,
+} from '@mui/material';
 import { getChartId } from 'helpers';
 import { useState } from 'react';
 
 import { ChooseLanguage } from './ChooseLanguage';
 import { NoteListRow } from './NoteListRow';
 import { NoteListProps } from './types';
-
-const Th = styled('th')({
-    fontWeight: 'bold',
-    paddingLeft: '10px',
-    paddingRight: '10px',
-    borderBottom: '1px solid #979797',
-});
 
 export const TranslationNoteList = ({
     charts,
@@ -25,35 +26,56 @@ export const TranslationNoteList = ({
 
     if (!charts.length) return null;
 
+    const chartBySpecialty = charts.reduce(
+        (acc, chart) => {
+            if (!acc[chart.specialty]) {
+                acc[chart.specialty] = [];
+            }
+            acc[chart.specialty].push(chart);
+            return acc;
+        },
+        {} as Record<string, Chart[]>
+    );
+
     return (
         <Paper sx={{ padding: '10px' }}>
-            <table
-                style={{
-                    borderCollapse: 'collapse',
-                }}
-            >
-                <thead>
-                    <tr>
-                        <Th>Name</Th>
-                        <Th>Specialty</Th>
-                        <Th>Actions</Th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {charts.map((chart) => (
-                        <NoteListRow
-                            key={getChartId(chart)}
-                            chart={chart}
-                            translate={translate}
-                            uploadTranslation={uploadTranslation}
-                            deleteChart={deleteChart}
-                            setActive={setActive}
-                            setChartName={setChartName}
-                            setChartSpecialty={setChartSpecialty}
-                        />
-                    ))}
-                </tbody>
-            </table>
+            {Object.entries(chartBySpecialty).map(([specialty, charts]) => (
+                <Paper
+                    key={specialty}
+                    sx={{ marginBottom: '20px', padding: '1rem' }}
+                >
+                    <Typography variant="h4">{specialty}</Typography>
+                    <Table
+                        style={{
+                            borderCollapse: 'collapse',
+                        }}
+                        size="small"
+                        sx={{ width: 'auto' }}
+                    >
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Id</TableCell>
+                                <TableCell>Specialty</TableCell>
+                                <TableCell>Actions</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {charts.map((chart) => (
+                                <NoteListRow
+                                    key={getChartId(chart)}
+                                    chart={chart}
+                                    translate={translate}
+                                    uploadTranslation={uploadTranslation}
+                                    deleteChart={deleteChart}
+                                    setActive={setActive}
+                                    setChartName={setChartName}
+                                    setChartSpecialty={setChartSpecialty}
+                                />
+                            ))}
+                        </TableBody>
+                    </Table>
+                </Paper>
+            ))}
             <ChooseLanguage
                 chart={active}
                 cancel={() => setActive(undefined)}
