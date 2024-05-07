@@ -8,51 +8,6 @@ body {
   background-color: #fff;
 }
 
-.app-header {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background-color: #fff;
-  padding: 1rem 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.header-title {
-  font-size: 1.2rem;
-  /* larger font size for main title */
-  color: #333;
-  /* darker color for better readability */
-}
-
-.version-info {
-  margin-left: auto;
-  /* positions it to the right */
-  margin-right: 1em;
-  color: #aaa;
-  font-size: 0.8em;
-  position: absolute;
-  right: 0;
-  /* ensures it stays at the right */
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 768px) {
-  .header-title {
-    font-size: 1.0rem;
-    /* slightly smaller font on smaller screens */
-  }
-
-  .version-info {
-    font-size: 0.7em;
-    /* smaller font for version info on smaller screens */
-  }
-}
-
 .content {
   top: calc(1.5rem + 2rem + 2px + 4px + 20px);
   left: 40px;
