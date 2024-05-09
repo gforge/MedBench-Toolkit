@@ -1,7 +1,7 @@
 {
   "name": "medbench-toolkit",
   "private": false,
-  "version": "0.4.1",
+  "version": "0.4.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -23,6 +23,7 @@
     "@mui/material": "^5.15.15",
     "@reduxjs/toolkit": "^2.2.3",
     "@types/react-dropzone": "^5.1.0",
+    "@uiw/react-md-editor": "^4.0.4",
     "dayjs": "^1.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

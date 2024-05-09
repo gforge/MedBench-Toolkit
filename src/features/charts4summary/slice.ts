@@ -1,4 +1,3 @@
-// features/charts/chartsSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getChartId } from 'helpers';
 import { FullChart2Summarise } from 'validators';

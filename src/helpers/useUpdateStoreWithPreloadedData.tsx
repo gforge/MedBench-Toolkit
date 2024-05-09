@@ -154,13 +154,14 @@ const updateTranslationCharts = ({
 };
 
 const convertFullChartToNoteArray = (notes: ChartValue[]): Note[] =>
-    notes.map(({ content, type, date, time, author }) => ({
-        header: {
-            id: getNoteId({ header: { author, type, date, time } }),
-            type,
-            date,
-            time,
-            author,
-        },
-        content,
-    }));
+    notes.map(({ content: rawContent, type, date, time, author }) => {
+        const baseHeader = { author, type, date, time };
+        const content = rawContent.replace(/(\r\n|\n|\r)/gm, '\n\n');
+        return {
+            header: {
+                id: getNoteId({ header: baseHeader }),
+                ...baseHeader,
+            },
+            content,
+        };
+    });

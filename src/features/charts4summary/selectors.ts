@@ -1,4 +1,3 @@
-// features/charts/chartsSlice.ts
 import { getChartId } from 'helpers';
 import { createSelector } from 'reselect';
 import type { RootState } from 'store';

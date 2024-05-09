@@ -4,10 +4,9 @@ import {
     Card,
     CardActions,
     CardContent,
-    TextareaAutosize,
 } from '@mui/material';
-import { MarkdownTypography } from 'components';
 
+import { NoteEditor } from './Editor';
 import { TranslationNoteHeader } from './Header';
 
 export interface TranslationNoteProps extends Note {
@@ -51,25 +50,11 @@ export const TranslationNote = ({
                 }
                 existingTypes={existingTypes}
             />
-            {activated ? (
-                <TextareaAutosize
-                    aria-label="minimum height"
-                    minRows={3}
-                    placeholder="The content of the note"
-                    value={content}
-                    onChange={(e) =>
-                        onUpdate({ content: e.target.value, type: undefined })
-                    }
-                    style={{
-                        width: '100%',
-                        border: '1px solid #ccc',
-                        borderRadius: '4px',
-                        padding: '4px',
-                    }}
-                />
-            ) : (
-                <MarkdownTypography content={content} />
-            )}
+            <NoteEditor
+                content={content}
+                activated={activated}
+                onUpdate={onUpdate}
+            />
         </CardContent>
         <CardActions sx={{ justifyContent: 'flex-end' }}>
             <ButtonGroup>
