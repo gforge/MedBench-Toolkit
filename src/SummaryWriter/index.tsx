@@ -12,6 +12,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getNoteId } from '../helpers';
 import { ChartValue } from '../validators';
 import { ExportSummary } from './Export';
+import { SummaryInstructions } from './Instructions';
 import { BottomBox, FlexBox, TopBox } from './styles';
 
 export function SummaryWriter() {
@@ -56,7 +57,10 @@ export function SummaryWriter() {
                     sx={{ marginBottom: '10px' }}
                 >
                     <Typography variant="h6">Summary</Typography>
-                    <ExportSummary />
+                    <Stack direction="row" gap={2}>
+                        <SummaryInstructions />
+                        <ExportSummary />
+                    </Stack>
                 </Stack>
                 <ResponsiveSummaryTextField
                     onChange={summarise}
