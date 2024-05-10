@@ -2,6 +2,7 @@
 export * from './BaseGrid';
 export * from './Charts4SummaryList';
 export * from './ChartTabs';
+export * from './CustomMDEditor';
 export * from './helpers';
 export * from './LabValues';
 export * from './MarkDownTypography';

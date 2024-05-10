@@ -3,7 +3,10 @@ import { List, ListItem, ListItemIcon, Paper, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 export const Greet = () => (
-    <Paper sx={{ maxWidth: '800px', padding: '1em' }} elevation={3}>
+    <Paper
+        sx={{ maxWidth: '800px', padding: '1em', margin: 'auto' }}
+        elevation={3}
+    >
         <Typography variant="h6">The MedBench Toolkit</Typography>
         <Typography variant="body1">
             This is a collection of tools to help you manage translations for
