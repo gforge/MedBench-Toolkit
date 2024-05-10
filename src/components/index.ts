@@ -7,6 +7,7 @@ export * from './LabValues';
 export * from './MarkDownTypography';
 export * from './Medications';
 export * from './Original';
+export * from './ResponesiveSummaryTextField';
 export * from './TextCapture';
 export * from './Translation';
 export * from './TranslationNoteList';
