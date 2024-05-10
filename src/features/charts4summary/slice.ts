@@ -46,8 +46,12 @@ export const {
         },
         summarise: (
             state,
-            action: PayloadAction<{ id: string; text: string }>
+            action: PayloadAction<{ id: string; text?: string }>
         ) => {
+            if (!action.payload.text) {
+                delete state.summary[action.payload.id];
+                return;
+            }
             state.summary[action.payload.id] = action.payload.text;
         },
     },

@@ -17,7 +17,7 @@ export const BottomBox = styled('div')`
     border-radius: 10px;
     padding: 10px;
     margin-top: 20px;
-    max-width: 800px;
+    max-width: 1000px;
     min-width: 600px;
     margin-left: auto;
     margin-right: auto;

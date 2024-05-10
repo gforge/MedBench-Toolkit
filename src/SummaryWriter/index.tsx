@@ -1,6 +1,10 @@
 import { Stack, Typography } from '@mui/material';
-import { ChartTabs } from 'components';
-import { charts4summaryActions, selectSummaryChart } from 'features';
+import { ChartTabs, ResponsiveSummaryTextField } from 'components';
+import {
+    charts4summaryActions,
+    selectSettings,
+    selectSummaryChart,
+} from 'features';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -8,22 +12,18 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getNoteId } from '../helpers';
 import { ChartValue } from '../validators';
 import { ExportSummary } from './Export';
-import { ResponsiveTextField } from './ResponsiveTextField';
 import { BottomBox, FlexBox, TopBox } from './styles';
 
 export function SummaryWriter() {
     const { id } = useParams<{ id: string }>();
+    const { texteditor: typeOfEditor } = useSelector(selectSettings);
+
     const chart4summary = useSelector((state) => selectSummaryChart(state, id));
     const dispatch = useDispatch();
     const summarise = useCallback(
-        (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        (text?: string) => {
             if (!id) return;
-            dispatch(
-                charts4summaryActions.summarise({
-                    id: id,
-                    text: e.target.value,
-                })
-            );
+            dispatch(charts4summaryActions.summarise({ id, text }));
         },
         [dispatch, id]
     );
@@ -58,10 +58,11 @@ export function SummaryWriter() {
                     <Typography variant="h6">Summary</Typography>
                     <ExportSummary />
                 </Stack>
-                <ResponsiveTextField
+                <ResponsiveSummaryTextField
                     onChange={summarise}
                     value={chart4summary.summary}
                     placeholder="Write your summary here..."
+                    typeOfEditor={typeOfEditor}
                 />
             </BottomBox>
         </FlexBox>

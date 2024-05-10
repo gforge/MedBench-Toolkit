@@ -32,15 +32,17 @@ export function ExportSummary() {
 
     return (
         <Tooltip title="Export to markdown text file">
-            <Button
-                startIcon={<FileDownload />}
-                disabled={!summary?.length}
-                onClick={export2file}
-                variant="contained"
-                size="small"
-            >
-                Export
-            </Button>
+            <span>
+                <Button
+                    startIcon={<FileDownload />}
+                    disabled={!summary?.length}
+                    onClick={export2file}
+                    variant="contained"
+                    size="small"
+                >
+                    Export
+                </Button>
+            </span>
         </Tooltip>
     );
 }
