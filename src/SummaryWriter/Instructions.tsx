@@ -140,18 +140,21 @@ const MarkdownTemplate = ({ variant }: Pick<TypographyProps, 'variant'>) => (
                 whiteSpace: 'pre-wrap',
             }}
         >
-            {`# Diagnosis codes
+            {`# Diagnosis
+            ## Main diagnosis (name and ICD code)
 
-                        # Surgery or procedures
+            ## Differential diagnosis (name and ICD code)
 
-                        # History of presenting illness
+            # Surgery or procedures  (name and precedural code)
 
-                        # Past medical history
+            # History of presenting illness
 
-                        # Treatment course
+            # Past medical history
 
-                        # Plan after discharge
-                        `
+            # Treatment course
+
+            # Plan after discharge
+            `
                 .replace(/^\s+/gm, '')
                 // Add new line to remove leading whitespace
                 .replace(/\n/g, '\n\n')}
