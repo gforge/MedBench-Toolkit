@@ -9,6 +9,8 @@ import { Route, Routes } from 'react-router-dom';
 import { AppBar } from './AppBar';
 import { Greet } from './Greet';
 import { useUpdateStoreWithPreloadedData } from './helpers';
+import { Review } from './Review';
+import { ReviewSpecialty } from './ReviewSpecialty';
 import { SummaryWriter } from './SummaryWriter';
 import { SummaryWriterList } from './SummaryWriterList';
 import { Translations } from './Translations';
@@ -31,6 +33,11 @@ export function App() {
                     <Route path="/translations" element={<Translations />} />
                     <Route path="/summarise/:id" element={<SummaryWriter />} />
                     <Route path="/summaries" element={<SummaryWriterList />} />
+                    <Route
+                        path="/review/:specialty/:language"
+                        element={<ReviewSpecialty />}
+                    />
+                    <Route path="/review" element={<Review />} />
                 </Routes>
             </div>
         </>
