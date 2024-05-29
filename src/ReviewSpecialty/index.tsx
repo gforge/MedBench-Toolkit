@@ -1,13 +1,33 @@
 import { Paper, Stack, Typography } from '@mui/material';
-import { ChartTabs } from 'components';
+import { buildFakeNote, ChartTabs, MarkdownTypography } from 'components';
 import { selectSummaryCharts } from 'features';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { getNoteId } from '../helpers';
 import { ChartValue } from '../validators';
 import { ReviewInstructions } from './Instructions';
-import { BottomBox, FlexBox, TopBox } from './styles';
+import { ReviewNavigator } from './Navigator';
+import { ChartBox, FlexBox, ReviewBox } from './styles';
+
+const useCharts2Review = () => {
+    const { specialty, language } = useParams<{
+        specialty: string;
+        language: string;
+    }>();
+    const { charts: allCharts } = useSelector(selectSummaryCharts);
+    return allCharts
+        .filter(
+            (chart) =>
+                chart.specialty === specialty && chart.language === language
+        )
+        .map(({ chart }) => ({
+            id: 'fakeId', // Add this line to make the id unique
+            chart,
+            summary: buildFakeNote().content,
+        }));
+};
 
 export function ReviewSpecialty() {
     const { specialty, language } = useParams<{
@@ -15,10 +35,8 @@ export function ReviewSpecialty() {
         language: string;
     }>();
 
-    const { charts: allCharts } = useSelector(selectSummaryCharts);
-    const charts = allCharts.filter(
-        (chart) => chart.specialty === specialty && chart.language === language
-    );
+    const charts = useCharts2Review();
+    const [no, setNo] = useState(0);
 
     if (!specialty || !language) {
         return (
@@ -36,32 +54,45 @@ export function ReviewSpecialty() {
         );
     }
 
-    const { chart, medications, lab: labValues = [] } = charts[0].chart;
+    const {
+        chart: { chart, medications, lab: labValues = [] },
+        summary,
+    } = charts[no];
 
     return (
-        <FlexBox>
-            <TopBox>
-                <ChartTabs
-                    notes={chart.map(convertValueToNote)}
-                    medications={medications}
-                    labValues={labValues}
-                />
-            </TopBox>
-            <BottomBox>
-                <Stack
-                    direction="row"
-                    spacing={2}
-                    justifyContent="space-between"
-                    sx={{ marginBottom: '10px' }}
-                >
-                    <Typography variant="h6">Review summaries</Typography>
-                    <Stack direction="row" gap={2}>
-                        <ReviewInstructions />
+        <>
+            <ReviewNavigator
+                no={no}
+                setNo={setNo}
+                total={charts.length}
+                specialty={specialty}
+                language={language}
+            />
+            <FlexBox>
+                <ChartBox>
+                    <ChartTabs
+                        notes={chart.map(convertValueToNote)}
+                        medications={medications}
+                        labValues={labValues}
+                    />
+                </ChartBox>
+                <ReviewBox>
+                    <Stack
+                        direction="row"
+                        spacing={2}
+                        justifyContent="space-between"
+                        sx={{ marginBottom: '10px' }}
+                    >
+                        <Typography variant="h6">Review summaries</Typography>
+                        <Stack direction="row" gap={2}>
+                            <ReviewInstructions />
+                        </Stack>
                     </Stack>
-                </Stack>
-                <div>Review</div>
-            </BottomBox>
-        </FlexBox>
+                    <MarkdownTypography content={summary} />
+                    <div>Form</div>
+                </ReviewBox>
+            </FlexBox>
+        </>
     );
 }
 
