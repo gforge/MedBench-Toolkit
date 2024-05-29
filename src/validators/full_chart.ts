@@ -28,8 +28,22 @@ export const fullChartSchema = yup.object().shape({
 });
 
 export type FullChart2Summarise = {
-    case_id: string;
     specialty: string;
     language: string;
+    case_id: string;
+    chart: yup.InferType<typeof fullChartSchema>;
+};
+
+/**
+ * Represents a chart used for the review module.
+ *
+ * The chart will be reviewd by a specialist in a specific language.
+ */
+export type FullChart2Review = {
+    specialty: string;
+    language: string;
+    case_id: string; // The id of the case
+    summary_id: string; // The id of the summary, e.g. 'GPT-zero-shot', 'human-1', ...
+    summary: string; // A markdown string summarising the chart
     chart: yup.InferType<typeof fullChartSchema>;
 };
