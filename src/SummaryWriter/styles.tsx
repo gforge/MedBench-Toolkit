@@ -24,7 +24,7 @@ export const BottomBox = styled('div')`
 `;
 
 export const FlexBox = styled('div')`
-    paddingtop: 20px;
+    padding-top: 0px;
     display: flex;
     flex-direction: column;
     height: 100%;

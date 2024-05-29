@@ -1,29 +1,31 @@
 import { Assignment, Medication, Science } from '@mui/icons-material';
 import { Stack, styled, Tab, Tabs } from '@mui/material';
 import { LabValueTable, MedicationsTable } from 'components';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { LabValue, MedicationValue } from 'validators';
 
 import { Note } from './Note';
 import { ChartNoteTab } from './NotesTab';
+import { useResize } from './useResize'; // Custom hook for managing resize
+
 type ChartTabsProps = {
     medications: MedicationValue[];
     labValues: LabValue[];
     notes: Note[];
 };
 
-// Style for the container of the tabs and tab panels
 const TabContainer = styled(Stack)({
-    height: '100%', // adjust height as needed
+    height: '100%',
     flexDirection: 'column',
     width: 'auto',
+    alignItems: 'center',
 });
 
-// Style for the scrollable content within tabs
 const ScrollableTabPanel = styled('div')({
     overflowY: 'auto',
-    maxHeight: 'calc(100% - 48px)', // adjust this depending on the height of your tab headers
+    maxHeight: 'calc(100% - 48px)',
     padding: '1rem',
+    width: 'fit-content',
 });
 
 const TabPanel = ({
@@ -34,13 +36,11 @@ const TabPanel = ({
     value: string;
     id: string;
     children: React.ReactNode;
-}) => {
-    return (
-        <div role="tabpanel" id={`tabpanel-${id}`} hidden={value !== id}>
-            {children}
-        </div>
-    );
-};
+}) => (
+    <div role="tabpanel" id={`tabpanel-${id}`} hidden={value !== id}>
+        {children}
+    </div>
+);
 
 export const ChartTabs = ({
     medications,
@@ -48,14 +48,28 @@ export const ChartTabs = ({
     notes,
 }: ChartTabsProps) => {
     const [activeTab, setActiveTab] = useState('Notes');
+    const panelId = 'scrollable-tab-panel';
+    const tabWidth = useResize({ id: panelId, activeTab }); // Custom hook to manage resize
+
+    const handleTabChange = (
+        _: React.ChangeEvent<unknown>,
+        newValue: string
+    ) => {
+        setActiveTab(newValue);
+    };
 
     return (
         <TabContainer>
             <Tabs
                 value={activeTab}
-                onChange={(_, newValue) => setActiveTab(newValue)}
+                onChange={handleTabChange}
                 indicatorColor="secondary"
                 variant="fullWidth"
+                sx={{
+                    minHeight: '74px',
+                    width: `${tabWidth}px`, // Applied dynamic width with transition
+                    transition: 'width 0.5s',
+                }}
             >
                 <Tab
                     icon={<Assignment />}
@@ -76,7 +90,7 @@ export const ChartTabs = ({
                     value="Lab Values"
                 />
             </Tabs>
-            <ScrollableTabPanel>
+            <ScrollableTabPanel id={panelId}>
                 <ChartNoteTab activeTab={activeTab}>
                     {notes.map((note, i) => (
                         <Note
