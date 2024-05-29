@@ -29,8 +29,8 @@ export const FlexBox = styled('div')`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center; // Add this line to center the items horizontally
-    align-items: center; // Add this line to center the items vertically
+    justify-content: center;
+    align-items: top;
     height: calc(100% - 30px - 20px); // Remove the height from the navigator
     width: 100%;
     overflow-y: auto;

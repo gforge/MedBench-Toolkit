@@ -1,4 +1,4 @@
-import { selectUser } from 'features';
+import { selectUser } from 'features/user';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -14,9 +14,9 @@ type Chart2Review = {
 };
 
 type Params = {
-    caseId: string;
-    specialty: string;
-    language: string;
+    caseId: string | undefined;
+    specialty: string | undefined;
+    language: string | undefined;
 };
 
 const selectReviewChart = createSelector(

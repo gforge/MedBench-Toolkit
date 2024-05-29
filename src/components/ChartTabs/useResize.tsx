@@ -14,13 +14,13 @@ function debounce(fn: DebounceFn, ms = 300) {
 }
 
 // Custom hook to listen to resize events and return the width of an element
-export function useResize({
+export const useResize = ({
     id,
     activeTab,
 }: {
     id: string;
     activeTab: string;
-}) {
+}) => {
     const [width, setWidth] = useState<number>(0);
 
     const handleResize = useCallback(() => {
@@ -56,4 +56,4 @@ export function useResize({
     }, [activeTab, handleResize]);
 
     return width;
-}
+};

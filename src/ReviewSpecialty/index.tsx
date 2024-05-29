@@ -1,32 +1,30 @@
+import { Button } from '@mui/base';
 import { Paper, Stack, Typography } from '@mui/material';
 import { buildFakeNote, ChartTabs, MarkdownTypography } from 'components';
-import { selectSummaryCharts } from 'features';
+import { selectUser, useCharts2Review } from 'features';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { getNoteId } from '../helpers';
 import { ChartValue } from '../validators';
+import { EvaluationForm } from './Form';
 import { ReviewInstructions } from './Instructions';
 import { ReviewNavigator } from './Navigator';
 import { ChartBox, FlexBox, ReviewBox } from './styles';
 
-const useCharts2Review = () => {
+const useFakeCharts = () => {
     const { specialty, language } = useParams<{
         specialty: string;
         language: string;
     }>();
-    const { charts: allCharts } = useSelector(selectSummaryCharts);
-    return allCharts
-        .filter(
-            (chart) =>
-                chart.specialty === specialty && chart.language === language
-        )
-        .map(({ chart }) => ({
-            id: 'fakeId', // Add this line to make the id unique
-            chart,
-            summary: buildFakeNote().content,
-        }));
+    const allCharts = useCharts2Review({ specialty, language });
+
+    return allCharts.map(({ chart: { chart } }) => ({
+        id: 'fakeId', // Add this line to make the id unique
+        chart,
+        summary: buildFakeNote().content,
+    }));
 };
 
 export function ReviewSpecialty() {
@@ -34,9 +32,25 @@ export function ReviewSpecialty() {
         specialty: string;
         language: string;
     }>();
+    const user = useSelector(selectUser);
 
-    const charts = useCharts2Review();
+    const charts = useFakeCharts();
     const [no, setNo] = useState(0);
+
+    if (!user) {
+        return (
+            <Paper sx={{ padding: '10px' }}>
+                <Typography variant="h6">
+                    You need to be logged in to access this page.
+                </Typography>
+                <Link
+                    to={`/login?redirect=${encodeURIComponent(window.location.pathname)}`}
+                >
+                    <Button>Login</Button>
+                </Link>
+            </Paper>
+        );
+    }
 
     if (!specialty || !language) {
         return (
@@ -89,7 +103,7 @@ export function ReviewSpecialty() {
                         </Stack>
                     </Stack>
                     <MarkdownTypography content={summary} />
-                    <div>Form</div>
+                    <EvaluationForm />
                 </ReviewBox>
             </FlexBox>
         </>

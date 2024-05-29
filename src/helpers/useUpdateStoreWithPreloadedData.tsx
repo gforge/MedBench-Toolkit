@@ -3,9 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ChartValue, FullChart2Summarise } from 'validators';
 
 import packageJson from '../../package.json'; // Adjust the path accordingly
+import { buildFakeNoteContent } from '../components';
 import {
+    charts2reviewActions as rvwActions,
     charts2translateActions as trnsltActions,
     charts4summaryActions as smryActions,
+    ReviewChart,
+    selectReviewCharts,
     selectSummaryCharts,
     selectTranslationCharts,
 } from '../features';
@@ -18,6 +22,7 @@ import { getNoteId } from './getNoteId';
 import { loadData } from './loadData';
 
 export const useUpdateStoreWithPreloadedData = () => {
+    const charts2review = useSelector(selectReviewCharts);
     const { charts: charts4summary, version } =
         useSelector(selectSummaryCharts);
     const charts2translate = useSelector(selectTranslationCharts);
@@ -30,6 +35,7 @@ export const useUpdateStoreWithPreloadedData = () => {
             return;
         }
 
+        updateReviewCharts({ dispatch, charts, charts2review });
         updateSummaryCharts({ dispatch, charts, version, charts4summary });
         updateTranslationCharts({
             dispatch,
@@ -39,6 +45,39 @@ export const useUpdateStoreWithPreloadedData = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+};
+
+const updateReviewCharts = ({
+    dispatch,
+    charts,
+    charts2review,
+}: {
+    dispatch: ReturnType<typeof useDispatch>;
+    charts: Record<string, FullChart2Summarise>;
+    charts2review: ReviewChart[];
+}) => {
+    //  TODO - add real summaries
+    // Update the store with new charts if any have been added without changing the version
+    const newCharts = Object.values(charts).filter(
+        (chart) =>
+            !charts2review.some(
+                (chart2review) => getChartId(chart2review) === getChartId(chart)
+            )
+    );
+
+    if (newCharts.length === 0) {
+        return;
+    }
+
+    dispatch(
+        rvwActions.addCharts(
+            newCharts.map((base) => ({
+                ...base,
+                summary_id: 'human-1',
+                summary: buildFakeNoteContent(),
+            }))
+        )
+    );
 };
 
 const updateSummaryCharts = ({

@@ -8,6 +8,7 @@ export * from './LabValues';
 export * from './MarkDownTypography';
 export * from './Medications';
 export * from './Original';
+export * from './RatingSection';
 export * from './ResponesiveSummaryTextField';
 export * from './ReviewStart';
 export * from './TextCapture';
