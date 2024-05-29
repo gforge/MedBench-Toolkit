@@ -9,6 +9,7 @@ import { Route, Routes } from 'react-router-dom';
 import { AppBar } from './AppBar';
 import { Greet } from './Greet';
 import { useUpdateStoreWithPreloadedData } from './helpers';
+import { Login, Signup } from './Login';
 import { Review } from './Review';
 import { ReviewSpecialty } from './ReviewSpecialty';
 import { SummaryWriter } from './SummaryWriter';
@@ -38,6 +39,8 @@ export function App() {
                         element={<ReviewSpecialty />}
                     />
                     <Route path="/review" element={<Review />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<Signup />} />
                 </Routes>
             </div>
         </>
