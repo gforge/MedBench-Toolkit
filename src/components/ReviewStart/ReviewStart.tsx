@@ -1,4 +1,4 @@
-import { Box, Chip, Paper, Stack, Typography } from '@mui/material';
+import { Chip, Paper, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 
 import { ReviewStartProps } from './types';
@@ -19,7 +19,7 @@ export const ReviewStart = ({
 
     return (
         <Paper sx={{ padding: '10px' }}>
-            <Box sx={{ marginBottom: '10px' }}>
+            <Stack gap={2} direction="column" sx={{ marginBottom: '10px' }}>
                 <Typography variant="h6">
                     Specialties and languages to review
                 </Typography>
@@ -27,15 +27,26 @@ export const ReviewStart = ({
                     Select a specialty and a language that you would like to
                     review
                 </Typography>
-                {selectedSpecialty && (
-                    <Chip
-                        key={selectedSpecialty}
-                        label={selectedSpecialty}
-                        onClick={() => setSelectedSpecialty(undefined)}
-                        color={'primary'}
-                        sx={{ mb: '1em' }}
-                    />
-                )}
+                <Stack direction="row" gap={1}>
+                    {Object.keys(specialties).map((specialty) => (
+                        <Chip
+                            key={specialty}
+                            label={specialty}
+                            onClick={() =>
+                                setSelectedSpecialty(
+                                    selectedSpecialty === specialty
+                                        ? undefined
+                                        : specialty
+                                )
+                            }
+                            color={
+                                selectedSpecialty === specialty
+                                    ? 'primary'
+                                    : 'default'
+                            }
+                        />
+                    ))}
+                </Stack>
                 <Stack direction="row" gap={1}>
                     {selectedSpecialty &&
                         specialties[selectedSpecialty].map((language) => (
@@ -54,17 +65,8 @@ export const ReviewStart = ({
                                 }
                             />
                         ))}
-                    {!selectedSpecialty &&
-                        Object.keys(specialties).map((specialty) => (
-                            <Chip
-                                key={specialty}
-                                label={specialty}
-                                onClick={() => setSelectedSpecialty(specialty)}
-                                color={'default'}
-                            />
-                        ))}
                 </Stack>
-            </Box>
+            </Stack>
         </Paper>
     );
 };
