@@ -22,6 +22,7 @@ export const ReviewBox = styled('div')`
     margin-left: auto;
     margin-right: auto;
     height: fit-content;
+    max-height: calc(100% - 48px);
 `;
 
 export const FlexBox = styled('div')`

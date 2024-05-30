@@ -9,9 +9,15 @@ import {
     Select,
     SelectChangeEvent,
 } from '@mui/material';
-import { selectSettings, settingsActions } from 'features';
-import { useState } from 'react';
+import {
+    selectSettings,
+    selectUser,
+    settingsActions,
+    userActions,
+} from 'features';
+import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const refineValue = (value: string) => {
     if (value === 'basic') {
@@ -41,6 +47,12 @@ export function AppBarMenu() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const user = useSelector(selectUser);
+    const navigator = useNavigate();
+    const logout = useCallback(() => {
+        dispatch(userActions.logout());
+        navigator('/');
+    }, [dispatch, navigator]);
 
     return (
         <>
@@ -94,6 +106,12 @@ export function AppBarMenu() {
                         </Select>
                     </FormControl>
                 </MenuItem>
+                {user && <MenuItem onClick={logout}>Logout</MenuItem>}
+                {!user && (
+                    <MenuItem onClick={() => navigator('/login')}>
+                        Login
+                    </MenuItem>
+                )}
             </Menu>
         </>
     );

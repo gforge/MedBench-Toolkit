@@ -10,7 +10,7 @@ import {
 import { useState } from 'react';
 
 export const Hallucinations = () => {
-    const [hallucinationCount, setHallucinationCount] = useState('');
+    const [hallucinationCount, setHallucinationCount] = useState(-1);
     const [details, setDetails] = useState('');
 
     return (
@@ -27,7 +27,12 @@ export const Hallucinations = () => {
                     id="hallucination-count"
                     value={hallucinationCount}
                     label="Number of hallucinations"
-                    onChange={(e) => setHallucinationCount(e.target.value)}
+                    onChange={({ target: { value } }) => {
+                        if (typeof value !== 'number')
+                            return setHallucinationCount(-1);
+
+                        setHallucinationCount(value);
+                    }}
                 >
                     <MenuItem value={0}>None</MenuItem>
                     <MenuItem value={1}>1-2 minor inaccuracies</MenuItem>
@@ -37,18 +42,20 @@ export const Hallucinations = () => {
                     </MenuItem>
                 </Select>
             </FormControl>
-            <Box sx={{ marginY: 2 }}>
-                <TextField
-                    fullWidth
-                    label="Exemplify which hallucinations you found"
-                    variant="outlined"
-                    value={details}
-                    onChange={(e) => setDetails(e.target.value)}
-                    multiline
-                    rows={4}
-                    margin="normal"
-                />
-            </Box>
+            {hallucinationCount !== 0 && (
+                <Box sx={{ marginY: 2 }}>
+                    <TextField
+                        fullWidth
+                        label="Exemplify which hallucinations you found"
+                        variant="outlined"
+                        value={details}
+                        onChange={(e) => setDetails(e.target.value)}
+                        multiline
+                        rows={4}
+                        margin="normal"
+                    />
+                </Box>
+            )}
         </>
     );
 };

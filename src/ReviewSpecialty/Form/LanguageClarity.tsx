@@ -1,5 +1,4 @@
-import { Typography } from '@mui/material';
-import { RatingSection, RatingSectionProps } from 'components';
+import { RatingSectionGroup, RatingSectionProps } from 'components';
 
 const languageClarityRatings: Omit<RatingSectionProps, 'value'>[] = [
     {
@@ -28,13 +27,9 @@ const languageClarityRatings: Omit<RatingSectionProps, 'value'>[] = [
 
 export const LanguageClarity = () => {
     return (
-        <>
-            <Typography variant="h6" gutterBottom>
-                Language and Clarity
-            </Typography>
-            {languageClarityRatings.map((rating) => (
-                <RatingSection key={rating.name} {...rating} value={null} />
-            ))}
-        </>
+        <RatingSectionGroup
+            title="Language and Clarity"
+            ratings={languageClarityRatings.map((r) => ({ ...r, value: null }))}
+        />
     );
 };

@@ -9,6 +9,7 @@ export * from './MarkDownTypography';
 export * from './Medications';
 export * from './Original';
 export * from './RatingSection';
+export * from './RatingSectionGroup';
 export * from './ResponesiveSummaryTextField';
 export * from './ReviewStart';
 export * from './TextCapture';

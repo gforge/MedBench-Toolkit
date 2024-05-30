@@ -26,6 +26,7 @@ const ScrollableTabPanel = styled('div')({
     maxHeight: 'calc(100% - 48px)',
     padding: '1rem',
     width: 'fit-content',
+    maxWidth: '100%',
 });
 
 const TabPanel = ({

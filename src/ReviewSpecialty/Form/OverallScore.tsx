@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Box, TextField, Typography } from '@mui/material';
 import { RatingSection, RatingSectionProps } from 'components/RatingSection';
 
 const overallScoreProps: Omit<RatingSectionProps, 'value'> = {
@@ -21,6 +21,17 @@ export const OverallScore = () => {
                 Overall Evaluation
             </Typography>
             <RatingSection {...overallScoreProps} value={null} />
+            <Box sx={{ marginY: 2 }}>
+                <TextField
+                    fullWidth
+                    label="Comments and reflections on the overall evaluation"
+                    variant="outlined"
+                    value={null}
+                    multiline
+                    rows={4}
+                    margin="normal"
+                />
+            </Box>
         </>
     );
 };
