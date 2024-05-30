@@ -1,10 +1,9 @@
-import { Button } from '@mui/base';
-import { Paper, Stack, Typography } from '@mui/material';
+import { Button, Paper, Stack, Typography } from '@mui/material';
 import { buildFakeNote, ChartTabs, MarkdownTypography } from 'components';
 import { selectUser, useCharts2Review } from 'features';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 import { getNoteId } from '../helpers';
 import { ChartValue } from '../validators';
@@ -33,20 +32,23 @@ export function ReviewSpecialty() {
         language: string;
     }>();
     const user = useSelector(selectUser);
+    const location = useLocation();
 
     const charts = useFakeCharts();
     const [no, setNo] = useState(0);
 
     if (!user) {
+        // Get URI component - note that start path is #/review
+        const redirect = encodeURIComponent(location.pathname);
         return (
             <Paper sx={{ padding: '10px' }}>
                 <Typography variant="h6">
                     You need to be logged in to access this page.
                 </Typography>
-                <Link
-                    to={`/login?redirect=${encodeURIComponent(window.location.pathname)}`}
-                >
-                    <Button>Login</Button>
+                <Link to={`/login?redirect=${redirect}`}>
+                    <Button variant="contained" color="primary">
+                        Login
+                    </Button>
                 </Link>
             </Paper>
         );
