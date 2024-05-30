@@ -11,13 +11,24 @@ export interface User {
     password: string;
 }
 
+const fakeUser: User = {
+    userMainEmail: 'test@tester.com',
+    firstName: 'Test',
+    middleName: 'Middle',
+    lastName: 'Tester',
+    orcid: '0000-0000-0000-0000',
+    otherEmails: ['test2@tester.com'],
+    experienceLevel: 'senior',
+    password: 'password',
+};
+
 const initialState: {
     user: User | null;
 } = {
-    user: null,
+    user: fakeUser,
 };
 
-const availableUsers: User[] = [];
+const availableUsers: User[] = [fakeUser];
 
 export const { reducer: userReducer, actions: userActions } = createSlice({
     name: 'user',
@@ -32,7 +43,7 @@ export const { reducer: userReducer, actions: userActions } = createSlice({
         ) => {
             const { email, password } = action.payload;
             if (!email || !password) {
-                throw new Error('Invalid email or password');
+                throw new Error('No empty email or password');
             }
 
             const existingUser = availableUsers.find(
