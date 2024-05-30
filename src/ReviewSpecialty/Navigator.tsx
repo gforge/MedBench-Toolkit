@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Tooltip, Typography } from '@mui/material';
 
 interface ReviewNavigatorProps {
     no: number;
@@ -36,9 +36,16 @@ export const ReviewNavigator = ({
             >
                 &larr;
             </Button>
-            <Typography variant="h6" sx={{ flexGrow: 1, textAlign: 'center' }}>
-                Case no {no} - {specialty} in {language}
-            </Typography>
+            <Tooltip
+                title={`Specialty: ${specialty} Language: ${language === 'original' ? 'Original' : language}`}
+            >
+                <Typography
+                    variant="h6"
+                    sx={{ flexGrow: 1, textAlign: 'center' }}
+                >
+                    Case no {no + 1}
+                </Typography>
+            </Tooltip>
             <Button
                 variant="outlined"
                 onClick={() => setNo((no) => Math.min(no + 1, total - 1))}
