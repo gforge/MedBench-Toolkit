@@ -1,5 +1,6 @@
 import {
     Box,
+    Collapse,
     FormControl,
     InputLabel,
     MenuItem,
@@ -42,7 +43,7 @@ export const Hallucinations = () => {
                     </MenuItem>
                 </Select>
             </FormControl>
-            {hallucinationCount !== 0 && (
+            <Collapse in={hallucinationCount > 0}>
                 <Box sx={{ marginY: 2 }}>
                     <TextField
                         fullWidth
@@ -55,7 +56,7 @@ export const Hallucinations = () => {
                         margin="normal"
                     />
                 </Box>
-            )}
+            </Collapse>
         </>
     );
 };
