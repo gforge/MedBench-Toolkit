@@ -1,35 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getChartId } from 'helpers';
 import { FullChart2Review } from 'validators';
-export interface Review {
-    userMainEmail: string;
-    comment: string; // Assumed to be a textual comment about the chart
-    ratings: {
-        diagnosis: number;
-        medicalHistory: number;
-        hospitalCourse: number;
-        followUp: number;
-        conciseness: number;
-        completeness: number;
-        language: number;
-        clarity: number;
-        hallucinations: number;
-        overall: number;
-    };
-    version: '1';
-}
 
-const isVersion1 = (
-    review: Omit<Review, 'version'> & { version: string }
-): review is Review => {
-    return review.version === '1';
-};
-
-export interface ReviewChart {
-    chart: FullChart2Review;
-    reviews: Review[];
-    version: string;
-}
+import {
+    convertRaw2Rating,
+    isReviewVersion1,
+    PartialRating,
+    Rating,
+    Review,
+    ReviewChart,
+} from './types';
 
 interface ChartsState {
     charts: ReviewChart[];
@@ -67,8 +47,9 @@ export const { reducer: charts2reviewReducer, actions: charts2reviewActions } =
                             )
                     )
                     .map((chart) => ({
+                        type: 'review' as const,
                         chart,
-                        reviews: [],
+                        review: null,
                         version: state.version,
                     }));
                 state.charts.push(...newCharts);
@@ -81,40 +62,48 @@ export const { reducer: charts2reviewReducer, actions: charts2reviewActions } =
                 action: PayloadAction<{
                     chartId: Pick<
                         FullChart2Review,
-                        'case_id' | 'specialty' | 'language'
+                        'case_id' | 'specialty' | 'language' | 'summary_id'
                     >;
-                    review: Omit<Review, 'version'>;
+                    userMainEmail: string;
+                    rating: Omit<Rating | PartialRating, 'completed'>;
                 }>
             ) => {
+                const {
+                    chartId: {
+                        case_id: cid,
+                        specialty,
+                        language,
+                        summary_id: sid,
+                    },
+                    userMainEmail,
+                    rating,
+                } = action.payload;
+
                 const chart = state.charts.find(
                     (c) =>
-                        c.chart.case_id === action.payload.chartId.case_id &&
-                        c.chart.specialty ===
-                            action.payload.chartId.specialty &&
-                        c.chart.language === action.payload.chartId.language
+                        c.chart.case_id === cid &&
+                        c.chart.specialty === specialty &&
+                        c.chart.language === language &&
+                        c.chart.summary_id === sid
                 );
+
                 if (!chart) {
                     console.error('Chart not found');
                     return;
                 }
-                const newReview = {
-                    ...action.payload.review,
+
+                const newReview: Review = {
+                    userMainEmail,
+                    rating: convertRaw2Rating(rating),
                     version: chart.version,
                 };
-                if (!isVersion1(newReview)) {
+
+                if (!isReviewVersion1(newReview)) {
                     console.error('Review version not supported');
                     return;
                 }
 
-                const existingReview = chart.reviews.findIndex(
-                    (r) =>
-                        r.userMainEmail === action.payload.review.userMainEmail
-                );
-                if (existingReview !== -1) {
-                    chart.reviews[existingReview] = newReview;
-                } else {
-                    chart.reviews.push(newReview);
-                }
+                chart.review = newReview;
             },
         },
     });

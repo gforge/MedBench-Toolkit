@@ -1,7 +1,5 @@
+import { NewChart2Translate, ReviewChart } from 'features';
 import { FullChart2Review, FullChart2Summarise } from 'validators';
-
-import { ReviewChart } from '../features';
-import { NewChart2Translate } from '../features/charts2translate/reducers';
 
 type AnyChart =
     | Chart
@@ -26,7 +24,11 @@ const isLanguageChart = (
 };
 
 const isReviewChart = (chart: AnyChart): chart is ReviewChart => {
-    return Object.hasOwn(chart, 'chart') && Object.hasOwn(chart, 'reviews');
+    return (
+        Object.hasOwn(chart, 'type') &&
+        Object.hasOwn(chart, 'chart') &&
+        Object.hasOwn(chart, 'review')
+    );
 };
 
 export const getChartId = (
