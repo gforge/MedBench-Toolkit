@@ -21,7 +21,9 @@ export const NoteListRow = ({
 }: NoteListRowProps) => {
     const charts = useFilteredCharts(chart);
     const translations = useMemo(() => {
-        const languages = charts.map((c) => c.language);
+        const languages = charts
+            .filter((c) => c.language !== 'original')
+            .map((c) => c.language);
         return Array.from(new Set(languages)).sort((a, b) =>
             a.localeCompare(b)
         );

@@ -1,4 +1,5 @@
 import {
+    Box,
     Paper,
     Table,
     TableBody,
@@ -25,27 +26,28 @@ export const TranslationNoteList = ({
 }: NoteListProps) => {
     const [active, setActive] = useState<Chart>();
 
-    if (!charts.length) return null;
-
-    const chartBySpecialty = charts.reduce(
-        (acc, chart) => {
-            if (!acc[chart.specialty]) {
-                acc[chart.specialty] = [];
-            }
-            acc[chart.specialty].push(chart);
-            return acc;
-        },
-        {} as Record<string, Chart[]>
-    );
+    const chartBySpecialty = charts
+        .filter((c) => c.language === 'original')
+        .reduce(
+            (acc, chart) => {
+                if (!acc[chart.specialty]) {
+                    acc[chart.specialty] = [];
+                }
+                acc[chart.specialty].push(chart);
+                return acc;
+            },
+            {} as Record<string, Chart[]>
+        );
     const existingLanguages = useMemo(() => {
         const languages = charts.map((c) => c.language);
         return Array.from(new Set(languages)).sort((a, b) =>
             a.localeCompare(b)
         );
     }, [charts]);
+    if (!charts.length) return null;
 
     return (
-        <Paper sx={{ padding: '10px' }}>
+        <Box sx={{ padding: '10px' }}>
             {Object.entries(chartBySpecialty).map(([specialty, charts]) => (
                 <Paper
                     key={specialty}
@@ -89,6 +91,6 @@ export const TranslationNoteList = ({
                 translate={translate}
                 existingLanguages={existingLanguages}
             />
-        </Paper>
+        </Box>
     );
 };
