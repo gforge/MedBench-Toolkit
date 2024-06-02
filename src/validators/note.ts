@@ -25,17 +25,16 @@ export const noteValidator = yup
                 value.replace(/(\r\n|\n|\r)/gm, '\n\n')
             ),
         // The id is derived from key values
-        id: yup.string().default(function (this: {
-            parent: {
-                type: string;
-                date: string;
-                time: string;
-                author: string;
-            };
-        }): string {
-            return getNoteId(this.parent);
-        }),
+        id: yup.string().required(),
     })
-    .required();
+    .transform((value) => {
+        // Ensure value is an object and transform it to include the id if not present
+        if (typeof value === 'object' && value !== null) {
+            if (!value.id) {
+                value.id = getNoteId(value);
+            }
+        }
+        return value;
+    });
 
 export type Note = yup.InferType<typeof noteValidator>;
