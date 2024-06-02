@@ -2,6 +2,11 @@ import type { Summary } from 'features';
 import { Chart, chartValidator } from 'validators';
 
 import type { RootState } from '.';
+import {
+    getLocalItemFromRemember,
+    removeItemFromRemember,
+    setLocalItemToRemember,
+} from './getLocalItemFromRemember';
 
 type OldChart2Summarise = {
     case_id: string;
@@ -90,33 +95,35 @@ const convertOldTranslate = (oldChart: OldCharts2Translate): Chart[] => {
 export function migrateCharts(
     storedData: RootState['charts']
 ): RootState['charts'] {
-    const oldChart2Summarize = JSON.parse(
-        window.localStorage.getItem('charts4summary') ?? ''
-    ) as {
+    const oldChart2Summarize = getLocalItemFromRemember<{
         charts: OldChart2Summarise[];
         summary: Record<string, string>;
         version: string;
-    } | null;
-    const oldCharts2Translate = JSON.parse(
-        window.localStorage.getItem('charts2translate') ?? ''
-    ) as {
+    }>('charts4summary');
+    const oldCharts2Translate = getLocalItemFromRemember<{
         charts: OldCharts2Translate[];
         version: string;
-    } | null;
+    }>('charts2translate');
 
     if (!oldChart2Summarize && !oldCharts2Translate) {
+        console.warn('No original chart data found');
         return storedData;
     }
 
+    console.log('Migrating charts...');
     const oldCharts: Chart[] = (oldChart2Summarize?.charts ?? []).map(
         convertOldSummary
     );
+    console.log('...');
     const oldTranslateCharts: Chart[] = (
         oldCharts2Translate?.charts ?? []
     ).flatMap(convertOldTranslate);
+    console.log('...2', storedData);
     const nonExistantCharts = [...oldCharts, ...oldTranslateCharts].filter(
         (chart) => !storedData.charts.some((c) => c.id === chart.id)
     );
+    console.log('charts:', nonExistantCharts.length);
+
     storedData.charts = [...storedData.charts, ...nonExistantCharts].map(
         (c) => ({ ...c, createdBy: '@@@migrated@@@' })
     );
@@ -130,10 +137,11 @@ export function migrateCharts(
             final: false,
         })
     );
-    window.localStorage.setItem('summaries2migrate', JSON.stringify(summaries));
+    setLocalItemToRemember('summaries2migrate', summaries);
 
-    window.localStorage.removeItem('charts4summary');
-    window.localStorage.removeItem('charts2translate');
+    removeItemFromRemember('charts4summary');
+    removeItemFromRemember('charts2translate');
+    console.log('Migrated charts:', storedData.charts.length);
 
     return storedData;
 }

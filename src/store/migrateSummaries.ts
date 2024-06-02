@@ -1,5 +1,9 @@
 import type { Summary } from '../features';
 import type { RootState } from '.';
+import {
+    getLocalItemFromRemember,
+    removeItemFromRemember,
+} from './getLocalItemFromRemember';
 
 /**
  * Migrates stored data to the RootState['charts'] format.
@@ -10,9 +14,8 @@ import type { RootState } from '.';
 export function migrateSummaries(
     storedData: RootState['summaries']
 ): RootState['summaries'] {
-    const oldSummaries = JSON.parse(
-        window.localStorage.getItem('summaries2migrate') ?? ''
-    ) as Summary[] | null;
+    const oldSummaries =
+        getLocalItemFromRemember<Summary[]>('summaries2migrate');
 
     if (!oldSummaries) {
         return storedData;
@@ -25,9 +28,9 @@ export function migrateSummaries(
                     c.chartId === old.summaryId && c.summaryId === old.summaryId
             )
     );
+
     storedData.summaries = [...storedData.summaries, ...nonExistantSummaries];
 
-    window.localStorage.removeItem('summaries2migrate');
-
+    removeItemFromRemember('summaries2migrate');
     return storedData;
 }

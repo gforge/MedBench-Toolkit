@@ -46,7 +46,6 @@ export const Signup = () => {
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        console.log(user);
         dispatch(userActions.signup(user));
 
         // Add actual submission logic here
