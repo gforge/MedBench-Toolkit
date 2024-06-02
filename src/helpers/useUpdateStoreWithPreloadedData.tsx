@@ -15,24 +15,28 @@ export const useUpdateStoreWithPreloadedData = () => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        const newCharts = loadData();
-        if (!newCharts) {
-            console.warn('No original chart data found');
-            return;
-        }
+        try {
+            const newCharts = loadData();
+            if (!newCharts) {
+                console.warn('No original chart data found');
+                return;
+            }
 
-        if (!user) {
-            console.warn('No user found');
-            return;
-        }
+            if (!user) {
+                console.warn('No user found');
+                return;
+            }
 
-        updateCharts({
-            dispatch,
-            newCharts: Object.values(newCharts),
-            existingCharts,
-            version,
-            user,
-        });
+            updateCharts({
+                dispatch,
+                newCharts: Object.values(newCharts),
+                existingCharts,
+                version,
+                user,
+            });
+        } catch (error) {
+            console.error('Error updating store with preloaded data:', error);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 };
