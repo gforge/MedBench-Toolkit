@@ -4,6 +4,7 @@ import {
     isRawHeaderValid,
 } from 'helpers';
 import { useDropzone } from 'react-dropzone';
+import type { Note } from 'validators';
 
 export const useTranslationDropzone = ({
     setError,

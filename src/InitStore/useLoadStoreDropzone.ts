@@ -1,6 +1,6 @@
 import { useDropzone } from 'react-dropzone';
-
-import { chartsSchema } from '../components';
+import type { Chart } from 'validators';
+import { chartValidator } from 'validators';
 
 export const useLoadStoreDropzone = ({
     setError,
@@ -22,7 +22,12 @@ export const useLoadStoreDropzone = ({
             reader.onload = async () => {
                 try {
                     const raw = JSON.parse(reader.result as string);
-                    const charts = await chartsSchema.validate(raw);
+                    if (!Array.isArray(raw)) {
+                        throw new Error('Invalid file format');
+                    }
+                    const charts = raw.map((c) =>
+                        chartValidator.validateSync(c)
+                    );
 
                     initStore({ charts });
                     setError(null);

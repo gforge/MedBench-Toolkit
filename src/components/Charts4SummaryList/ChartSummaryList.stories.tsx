@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { buildFakeNote } from 'components';
 import dayjs from 'dayjs';
-import { FullChart2Summarise } from 'validators';
+import { type Chart, chartValidator } from 'validators';
 
 import { exampleLabValues } from '../LabValues/exampleData';
 import { exampleMedications } from '../Medications/exampeData';
@@ -28,15 +28,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const today = dayjs();
-const buildFakeChart = (
-    caseId: string,
-    specialty: string
-): FullChart2Summarise => ({
-    case_id: caseId,
-    specialty,
-    language: 'original',
-    chart: {
-        chart: Array(5)
+const buildFakeChart = (name: string, specialty: string): Chart =>
+    chartValidator.validateSync({
+        name,
+        specialty,
+        language: 'original',
+        notes: Array(5)
             .fill({})
             .map(
                 (_, i) =>
@@ -49,8 +46,7 @@ const buildFakeChart = (
             ),
         medications: exampleMedications,
         lab: exampleLabValues,
-    },
-});
+    });
 
 const specialties = ['Cardiology', 'Orthopaedics', 'Gastroenterology'];
 

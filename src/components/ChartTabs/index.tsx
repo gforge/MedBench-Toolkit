@@ -2,7 +2,7 @@ import { Assignment, Medication, Science } from '@mui/icons-material';
 import { Stack, styled, Tab, Tabs } from '@mui/material';
 import { LabValueTable, MedicationsTable } from 'components';
 import React, { useState } from 'react';
-import { LabValue, MedicationValue } from 'validators';
+import { LabValue, MedicationValue, Note as NoteType } from 'validators';
 
 import { Note } from './Note';
 import { ChartNoteTab } from './NotesTab';
@@ -11,7 +11,7 @@ import { useResize } from './useResize'; // Custom hook for managing resize
 type ChartTabsProps = {
     medications: MedicationValue[];
     labValues: LabValue[];
-    notes: Note[];
+    notes: NoteType[];
 };
 
 const TabContainer = styled(Stack)({

@@ -3,8 +3,9 @@ import { Delete, Edit, FileDownload } from '@mui/icons-material';
 import { Button, IconButtonProps, Menu, MenuItem, Stack } from '@mui/material';
 import { getChartId, useDownloadTranslation } from 'helpers';
 import { useCallback, useState } from 'react';
+import type { Chart } from 'validators';
 
-import { DeleteFn, TranslateFn } from './types';
+import type { DeleteFn, TranslateFn } from './types';
 
 export const LanguageButton = ({
     chart,
@@ -40,7 +41,7 @@ export const LanguageButton = ({
     const { downloadTranslatedChart } = useDownloadTranslation({
         chartId: getChartId(chart),
         language,
-        translatedRawNotes: chart.translations[language],
+        translatedRawNotes: chart.notes,
     });
     const onExport = useCallback(() => {
         downloadTranslatedChart();

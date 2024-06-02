@@ -1,5 +1,6 @@
 import { Button, Card, CardActions, CardContent } from '@mui/material';
 import { MarkdownTypography } from 'components';
+import type { Note } from 'validators';
 
 import { OriginalNoteHeader } from './Header';
 
@@ -12,7 +13,10 @@ export interface OriginalNoteProps extends Note {
 
 export const OriginalNote = ({
     id,
-    header,
+    type,
+    date,
+    time,
+    author,
     content,
     activated,
     activateNote,
@@ -29,7 +33,12 @@ export const OriginalNote = ({
         onDoubleClick={activateNote}
     >
         <CardContent>
-            <OriginalNoteHeader {...header} />
+            <OriginalNoteHeader
+                type={type}
+                date={date}
+                time={time}
+                author={author}
+            />
             <MarkdownTypography content={content} />
         </CardContent>
         {!hideActions && (

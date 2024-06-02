@@ -5,6 +5,7 @@ import {
     RawConvertedNote,
 } from 'helpers';
 import React, { useCallback } from 'react';
+import { Note } from 'validators';
 
 export const usePasteHandler = ({
     setBadHeaders,
@@ -35,7 +36,7 @@ export const usePasteHandler = ({
                 setBadHeaders([]);
             }
 
-            const notes: Note[] = convertRawNotes(rawNotes);
+            const notes = convertRawNotes(rawNotes);
 
             // Call the provided onDrop function with the extracted text
             onDrop({

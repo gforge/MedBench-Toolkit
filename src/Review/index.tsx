@@ -1,5 +1,5 @@
 import { ReviewStart } from 'components';
-import { selectReviewCharts } from 'features';
+import { selectCharts } from 'features';
 import { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -7,11 +7,12 @@ import { useNavigate } from 'react-router-dom';
 import { ReviewHelp } from './Help';
 
 export function Review() {
-    const charts2review = useSelector(selectReviewCharts);
+    const charts2review = useSelector(selectCharts);
+
     const specialties2choosefrom = useMemo(() => {
         return charts2review.reduce(
             (acc, chart) => {
-                const { specialty, language } = chart.chart;
+                const { specialty, language } = chart;
                 if (!acc[specialty]) {
                     acc[specialty] = [];
                 }

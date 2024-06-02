@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
+import type { Note } from 'validators';
 
 import { HeaderDate } from './HeaderDate';
 import { TypeEditor, TypeEditorProps } from './TypeEditor';
@@ -11,7 +12,7 @@ export const TranslationNoteHeader = ({
     author,
     onTypeChange,
     existingTypes,
-}: Header & {
+}: Pick<Note, 'type' | 'date' | 'time' | 'author'> & {
     onTypeChange: TypeEditorProps['onTextChange'];
     existingTypes: string[];
 }) => {

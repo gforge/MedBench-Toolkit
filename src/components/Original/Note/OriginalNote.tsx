@@ -6,7 +6,10 @@ import { OriginalNoteProps } from './Note';
 
 export const OriginalNote = ({
     id,
-    header,
+    type,
+    date,
+    time,
+    author,
     content,
     activated,
     activateNote,
@@ -21,7 +24,12 @@ export const OriginalNote = ({
         onDoubleClick={activateNote}
     >
         <CardContent>
-            <OriginalNoteHeader {...header} />
+            <OriginalNoteHeader
+                type={type}
+                date={date}
+                time={time}
+                author={author}
+            />
             <MarkdownTypography content={content} />
         </CardContent>
         <CardActions sx={{ justifyContent: 'flex-end' }}>

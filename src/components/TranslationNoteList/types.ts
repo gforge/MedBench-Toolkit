@@ -1,3 +1,5 @@
+import type { Chart, Note } from 'validators';
+
 export type TranslateFn = (args: { id: string; language: string }) => unknown;
 export type UploadTranslationFn = (args: {
     id: string;

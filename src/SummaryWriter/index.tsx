@@ -1,50 +1,60 @@
 import { Stack, Typography } from '@mui/material';
 import { ChartTabs, ResponsiveSummaryTextField } from 'components';
 import {
-    charts4summaryActions,
+    selectChart,
     selectSettings,
-    selectSummaryChart,
+    selectUser,
+    summariesActions,
+    useSummary,
 } from 'features';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import type { RootState } from 'store';
 
-import { getNoteId } from '../helpers';
-import { ChartValue } from '../validators';
 import { ExportSummary } from './Export';
 import { SummaryInstructions } from './Instructions';
 import { BottomBox, FlexBox, TopBox } from './styles';
 
+const summaryId = 'Human';
 export function SummaryWriter() {
-    const { id } = useParams<{ id: string }>();
+    const { id: chartId } = useParams<{ id: string }>();
     const { texteditor: typeOfEditor } = useSelector(selectSettings);
+    const user = useSelector(selectUser);
 
-    const chart4summary = useSelector((state) => selectSummaryChart(state, id));
+    const chart4summary = useSelector((state: RootState) =>
+        selectChart(state, chartId)
+    );
+    const summary = useSummary({ chartId, summaryId });
     const dispatch = useDispatch();
     const summarise = useCallback(
         (text?: string) => {
-            if (!id) return;
-            dispatch(charts4summaryActions.summarise({ id, text }));
+            if (!chartId || !user) return;
+            dispatch(
+                summariesActions.summarise({
+                    chartId,
+                    summaryId,
+                    text,
+                    user,
+                })
+            );
         },
-        [dispatch, id]
+        [chartId, dispatch, user]
     );
+
     const navigate = useNavigate();
     if (!chart4summary) {
         navigate('/summarise');
         return null;
     }
 
-    const {
-        chart,
-        medications,
-        lab: labValues = [],
-    } = chart4summary.chart.chart;
+    const { notes, medications, lab: labValues = [] } = chart4summary;
 
     return (
         <FlexBox>
             <TopBox>
                 <ChartTabs
-                    notes={chart.map(convertValueToNote)}
+                    notes={notes}
                     medications={medications}
                     labValues={labValues}
                 />
@@ -59,12 +69,12 @@ export function SummaryWriter() {
                     <Typography variant="h6">Summary</Typography>
                     <Stack direction="row" gap={2}>
                         <SummaryInstructions />
-                        <ExportSummary />
+                        <ExportSummary summaryId={summaryId} />
                     </Stack>
                 </Stack>
                 <ResponsiveSummaryTextField
                     onChange={summarise}
-                    value={chart4summary.summary}
+                    value={summary?.text ?? ''}
                     placeholder="Write your summary here..."
                     typeOfEditor={typeOfEditor}
                 />
@@ -72,21 +82,3 @@ export function SummaryWriter() {
         </FlexBox>
     );
 }
-
-const convertValueToNote = ({
-    type,
-    author,
-    date,
-    time,
-    content,
-}: ChartValue): Note => {
-    const baseHeader: Omit<Header, 'id'> = { author, type, date, time };
-
-    return {
-        header: {
-            id: getNoteId({ header: baseHeader }),
-            ...baseHeader,
-        },
-        content,
-    };
-};

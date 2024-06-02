@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
+import type { Note } from 'validators';
 
-export type HeaderDateProps = Pick<Header, 'date' | 'time'>;
+export type HeaderDateProps = Pick<Note, 'date' | 'time'>;
 
 export const HeaderDate = ({ date, time }: HeaderDateProps) => {
     return (

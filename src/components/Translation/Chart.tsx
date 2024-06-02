@@ -19,7 +19,7 @@ export const TranslationChart = ({
     const prefix = 'translation_';
     useScrollToActiveNote({ activatedNoteId, prefix });
     const existingTypes = useMemo(() => {
-        const types = notes.map(({ header }) => header.type);
+        const types = notes.map(({ type }) => type);
         const uniqueTypes = new Set(types);
         return Array.from(uniqueTypes);
     }, [notes]);

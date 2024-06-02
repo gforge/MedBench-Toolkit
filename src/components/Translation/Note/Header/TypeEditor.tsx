@@ -1,7 +1,8 @@
 import { Autocomplete, Box, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
+import type { Note } from 'validators';
 
-export type TypeEditorProps = Pick<Header, 'type'> & {
+export type TypeEditorProps = Pick<Note, 'type'> & {
     isEditing: boolean;
     setIsEditing: (isEditing: boolean) => void;
     onTextChange: (newText: string) => void;

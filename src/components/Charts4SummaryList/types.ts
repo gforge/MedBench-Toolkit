@@ -1,12 +1,13 @@
-import { FullChart2Summarise } from 'validators';
+import type { Chart } from 'validators';
 
-export type SummariseFn = (args: string) => unknown;
+export type SummariseFn = (args: { chartId: string }) => unknown;
+
 export interface SummaryChartListRowProps {
-    chart: FullChart2Summarise;
+    chart: Chart;
     summarise: SummariseFn;
 }
 
 export interface SummaryChartListProps
     extends Omit<SummaryChartListRowProps, 'chart'> {
-    charts: FullChart2Summarise[];
+    charts: Chart[];
 }

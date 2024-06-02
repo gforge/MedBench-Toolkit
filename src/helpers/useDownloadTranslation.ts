@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { Note } from 'validators';
 
 /**
  * Custom hook that provides a function to download a translated chart as a Markdown file.
@@ -20,7 +21,7 @@ export const useDownloadTranslation = ({
     const downloadTranslatedChart = useCallback(() => {
         // Create a new chart object with the translated notes
         const translatedChart = translatedRawNotes
-            .map(({ header: { type, date, time, author }, content }) => {
+            .map(({ type, date, time, author, content }) => {
                 const headerStr = `# ${type}, ${date}, ${time}, ${author}`;
                 return `${headerStr}\n${content}`;
             })

@@ -3,14 +3,14 @@ import { Box, Button, ButtonGroup, Paper, Tooltip } from '@mui/material';
 import { MarkdownTypography, OriginalNoteHeader } from 'components';
 import dayjs from 'dayjs';
 import { useState } from 'react';
-import { LabValue, MedicationValue } from 'validators';
+import { LabValue, MedicationValue, Note as NoteType } from 'validators';
 
 import { ShowDetails } from './ShowDetails';
 
 type ChartNoteProps = {
     medications: MedicationValue[];
     labValues: LabValue[];
-    note: Note;
+    note: NoteType;
     first: boolean;
 };
 
@@ -46,10 +46,10 @@ const useHasLabValue = ({
 export const Note = ({
     medications,
     labValues,
-    note: { header, content },
+    note: { date, time, type, author, content },
     first,
 }: ChartNoteProps) => {
-    const currentDay = dayjs.utc(header.date);
+    const currentDay = dayjs.utc(date);
     const hasMeds = useHasMedication({ medications, currentDay });
     const hasLab = useHasLabValue({ labValues, currentDay, first });
     const [showMedication, setShowMedication] = useState(false);
@@ -58,7 +58,12 @@ export const Note = ({
     return (
         <Paper sx={{ marginBottom: '10px', padding: '1rem' }}>
             <Box sx={{ maxWidth: '600px', margin: 'auto' }}>
-                <OriginalNoteHeader {...header} />
+                <OriginalNoteHeader
+                    date={date}
+                    time={time}
+                    type={type}
+                    author={author}
+                />
                 <MarkdownTypography content={content} />
             </Box>
             <ButtonGroup sx={{ margin: 'auto', marginTop: '10px' }}>

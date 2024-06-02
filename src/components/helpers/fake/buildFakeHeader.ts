@@ -1,16 +1,21 @@
 import { faker } from '@faker-js/faker';
 import { getNoteId } from 'helpers';
+import { Note } from 'validators';
 
-export type FakeHeaderArgs = Partial<Omit<Header, 'time' | 'date'>> & {
+export type FakeHeaderArgs = Partial<
+    Omit<Note, 'time' | 'date' | 'content'>
+> & {
     date?: Date | string;
 };
 
-export const buildFakeNoteHeader = (args: FakeHeaderArgs = {}): Header => {
+export const buildFakeNoteHeader = (
+    args: FakeHeaderArgs = {}
+): Omit<Note, 'content'> => {
     const d =
         args.date instanceof Date
             ? args.date.toISOString()
             : args.date ?? faker.date.recent({ days: 10 }).toISOString();
-    const headerBase: Omit<Header, 'id'> = {
+    const headerBase = {
         type: args.type ?? faker.lorem.sentence(2).slice(0, -1),
         date: d.slice(0, 10),
         time: d.slice(11, 16),
@@ -18,7 +23,7 @@ export const buildFakeNoteHeader = (args: FakeHeaderArgs = {}): Header => {
     };
 
     return {
-        id: args.id ?? getNoteId({ header: headerBase }),
+        id: args.id ?? getNoteId(headerBase),
         ...headerBase,
     };
 };

@@ -5,8 +5,6 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
-import { getNoteId } from '../helpers';
-import { ChartValue } from '../validators';
 import { EvaluationForm } from './Form';
 import { ReviewInstructions } from './Instructions';
 import { ReviewNavigator } from './Navigator';
@@ -19,7 +17,7 @@ const useFakeCharts = () => {
     }>();
     const allCharts = useCharts2Review({ specialty, language });
 
-    return allCharts.map(({ chart: { chart } }) => ({
+    return allCharts.map(({ chart }) => ({
         id: 'fakeId', // Add this line to make the id unique
         chart,
         summary: buildFakeNote().content,
@@ -71,7 +69,7 @@ export function ReviewSpecialty() {
     }
 
     const {
-        chart: { chart, medications, lab: labValues = [] },
+        chart: { notes, medications, lab: labValues },
         summary,
     } = charts[no];
 
@@ -87,7 +85,7 @@ export function ReviewSpecialty() {
             <FlexBox>
                 <ChartBox>
                     <ChartTabs
-                        notes={chart.map(convertValueToNote)}
+                        notes={notes}
                         medications={medications}
                         labValues={labValues}
                     />
@@ -111,21 +109,3 @@ export function ReviewSpecialty() {
         </>
     );
 }
-
-const convertValueToNote = ({
-    type,
-    author,
-    date,
-    time,
-    content,
-}: ChartValue): Note => {
-    const baseHeader: Omit<Header, 'id'> = { author, type, date, time };
-
-    return {
-        header: {
-            id: getNoteId({ header: baseHeader }),
-            ...baseHeader,
-        },
-        content,
-    };
-};

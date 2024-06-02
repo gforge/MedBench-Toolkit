@@ -1,5 +1,5 @@
 import { Chart4SummaryList } from 'components';
-import { selectSummaryCharts } from 'features';
+import { selectCharts } from 'features';
 import { getChartId } from 'helpers';
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
@@ -8,24 +8,25 @@ import { useNavigate } from 'react-router-dom';
 import { SummaryWriterHelp } from './Help';
 
 export function SummaryWriterList() {
-    const { charts: chart4summary } = useSelector(selectSummaryCharts);
+    const charts = useSelector(selectCharts);
     const navigate = useNavigate();
     const summarise = useCallback(
-        (id: string) => {
-            const chart = chart4summary.find((c) => getChartId(c) === id);
+        ({ chartId }: { chartId: string }) => {
+            const chart = charts.find((c) => getChartId(c) === chartId);
             if (!chart) {
                 return;
             }
+
             navigate(`/summarise/${getChartId(chart)}`);
         },
-        [chart4summary, navigate]
+        [charts, navigate]
     );
 
     return (
         <>
-            <Chart4SummaryList charts={chart4summary} summarise={summarise} />
+            <Chart4SummaryList charts={charts} summarise={summarise} />
             <br />
-            <SummaryWriterHelp show={!chart4summary.length} />
+            <SummaryWriterHelp show={!charts.length} />
         </>
     );
 }

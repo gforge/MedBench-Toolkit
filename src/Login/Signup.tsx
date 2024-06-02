@@ -16,7 +16,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 export const Signup = () => {
-    const [user, setUser] = useState<User>({
+    const [user, setUser] = useState<Omit<User, 'type'>>({
         userMainEmail: '',
         firstName: '',
         middleName: '',

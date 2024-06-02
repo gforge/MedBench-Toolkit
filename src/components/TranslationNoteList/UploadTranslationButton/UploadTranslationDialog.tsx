@@ -8,7 +8,8 @@ import {
     TextField,
 } from '@mui/material';
 import { OriginalNote } from 'components';
-import { getChartId, getNoteId } from 'helpers';
+import { getChartId } from 'helpers';
+import type { Chart, Note } from 'validators';
 
 import { UploadTranslationFn } from '../types';
 
@@ -62,13 +63,7 @@ export const UploadTranslationDialog = ({
                     }}
                 >
                     {translation.map((n) => (
-                        <OriginalNote
-                            key={getNoteId(n)}
-                            id={getNoteId(n)}
-                            content={n.content}
-                            header={n.header}
-                            hideActions
-                        />
+                        <OriginalNote key={n.id} hideActions {...n} />
                     ))}
                 </Box>
             </DialogContent>

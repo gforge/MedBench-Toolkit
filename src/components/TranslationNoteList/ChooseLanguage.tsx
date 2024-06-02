@@ -9,26 +9,29 @@ import {
 } from '@mui/material';
 import { getChartId } from 'helpers';
 import { useMemo, useState } from 'react';
+import type { Chart } from 'validators';
 
-import { TranslateFn } from './types';
+import type { TranslateFn } from './types';
 
 interface ChooseLanguageProps {
     chart?: Chart;
     cancel: () => void;
     translate: TranslateFn;
+    existingLanguages: string[];
 }
 
 export const ChooseLanguage = ({
     chart,
     translate,
     cancel,
+    existingLanguages,
 }: ChooseLanguageProps) => {
     const [language, setLanguage] = useState<string | null>(null);
-    const existingLanguages = useMemo(() => {
-        const existing = Object.keys(chart?.translations || {});
+
+    const allLanguages = useMemo(() => {
         // Merge with the existing languages
         const merged = [
-            ...existing,
+            ...existingLanguages,
             'Swedish',
             'Finnish',
             'Danish',
@@ -36,8 +39,8 @@ export const ChooseLanguage = ({
             'German',
         ];
         // Filtered out duplicates
-        return Array.from(new Set(merged));
-    }, [chart]);
+        return Array.from(new Set(merged)).sort((a, b) => a.localeCompare(b));
+    }, [existingLanguages]);
 
     return (
         <Dialog open={!!chart}>
@@ -47,7 +50,7 @@ export const ChooseLanguage = ({
                     value={language}
                     id="language-select"
                     freeSolo
-                    options={existingLanguages}
+                    options={allLanguages}
                     renderInput={(params) => (
                         <TextField
                             {...params}

@@ -6,6 +6,7 @@ import { CustomMDEditor, MarkdownTypography } from 'components';
 import { selectSettings } from 'features';
 import { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
+import type { Note } from 'validators';
 
 interface NoteEditorProps extends Pick<Note, 'content'> {
     activated: boolean;

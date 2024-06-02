@@ -1,11 +1,12 @@
-import { selectTranslationChart } from 'features';
-import { useDownloadTranslation } from 'helpers';
+import { BaseGrid } from 'components';
+import { selectChart, selectUser } from 'features';
+import { getChartId, useDownloadTranslation } from 'helpers';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import type { RootState } from 'store';
+import { Chart } from 'validators';
 
-import { BaseGrid } from '../components';
-import type { RootState } from '../store';
 import { useChartTranslations } from './useChartTranslations';
 
 export function Translator() {
@@ -13,27 +14,40 @@ export function Translator() {
         chartId: string;
         language: string;
     }>();
+    const user = useSelector(selectUser);
 
     const chart = useSelector<RootState, Chart | null>((state) =>
-        selectTranslationChart(state, chartId)
+        selectChart(state, chartId)
+    );
+    const translatedChartId = useMemo(() => {
+        if (!chart || !language) return undefined;
+        return getChartId({
+            specialty: chart.specialty,
+            name: chart.name,
+            language,
+        });
+    }, [chart, language]);
+
+    const translatedChart = useSelector<RootState, Chart | null>((state) =>
+        selectChart(state, translatedChartId)
     );
 
     const navigate = useNavigate();
     const translatedRawNotes = useMemo(() => {
         if (!chart || !language) return [];
-        const translations = chart.translations[language];
-        if (translations) return translations;
-        return chart?.originalNotes.map(({ header }) => ({
-            header,
+        if (translatedChart) return translatedChart.notes;
+        return chart.notes.map((n) => ({
+            ...n,
             content: '',
         }));
-    }, [chart, language]);
+    }, [chart, language, translatedChart]);
+
     const { updateNote, insertNote, deleteNote, reInsertDeletedNote } =
         useChartTranslations({
             chartId,
-            chart,
-            language,
+            originalChartId: chart?.id,
             translatedRawNotes,
+            user,
         });
 
     const { downloadTranslatedChart } = useDownloadTranslation({
@@ -50,7 +64,7 @@ export function Translator() {
         <BaseGrid
             originalNotes={{
                 language: 'Original',
-                notes: chart.originalNotes,
+                notes: chart.notes,
             }}
             translatedNotes={{
                 language: language,

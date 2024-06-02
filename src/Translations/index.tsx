@@ -2,15 +2,17 @@ import { Box, Stack, Typography } from '@mui/material';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import type { Note } from 'validators';
 
 import { TextCapture, TranslationNoteList } from '../components';
-import { charts2translateActions, selectTranslationCharts } from '../features';
+import { chartsActions, selectCharts, selectUser } from '../features';
 import { InitStore } from '../InitStore';
 import { DumpTranslationCharts } from './DumpTranslationCharts';
 import { TranslationsOverviewHelp } from './Help';
 
 export function Translations() {
     const dispatch = useDispatch();
+    const user = useSelector(selectUser);
     const addChart = useCallback(
         ({
             name,
@@ -21,15 +23,22 @@ export function Translations() {
             specialty: string;
             notes: Note[];
         }) => {
+            if (!user) {
+                return;
+            }
+
             dispatch(
-                charts2translateActions.addChart({
-                    name,
-                    specialty,
-                    notes,
+                chartsActions.addChart({
+                    createdBy: user.userMainEmail,
+                    chart2translate: {
+                        name,
+                        specialty,
+                        notes,
+                    },
                 })
             );
         },
-        [dispatch]
+        [dispatch, user]
     );
     const navigate = useNavigate();
     const translate = useCallback(
@@ -40,30 +49,51 @@ export function Translations() {
     );
     const uploadTranslation = useCallback(
         (args: { id: string; language: string; translation: Note[] }) => {
-            dispatch(charts2translateActions.uploadTranslation(args));
+            if (!user) {
+                console.error('Must be logged in to upload translation');
+                return;
+            }
+
+            dispatch(
+                chartsActions.uploadTranslation({
+                    ...args,
+                    createdBy: user.userMainEmail,
+                })
+            );
+        },
+        [dispatch, user]
+    );
+
+    const deleteChart = useCallback(
+        (args: { id: string; language?: string }) => {
+            if (!user) {
+                console.error('Must be logged in to delete chart');
+                return;
+            }
+            dispatch(
+                chartsActions.deleteChart({
+                    ...args,
+                    user,
+                })
+            );
+        },
+        [dispatch, user]
+    );
+
+    const setChartName = useCallback(
+        ({ id, name }: { id: string; name: string }) => {
+            dispatch(chartsActions.renameChart({ id, name }));
         },
         [dispatch]
     );
 
-    const deleteChart = useCallback(
-        (args: { id: string; Language?: string }) => {
-            dispatch(charts2translateActions.deleteChart(args));
-        },
-        [dispatch]
-    );
-    const setChartName = useCallback(
-        ({ id, name }: { id: string; name: string }) => {
-            dispatch(charts2translateActions.renameChart({ id, name }));
-        },
-        [dispatch]
-    );
     const setChartSpecialty = useCallback(
         ({ id, specialty }: { id: string; specialty: string }) => {
-            dispatch(charts2translateActions.renameChart({ id, specialty }));
+            dispatch(chartsActions.renameChart({ id, specialty }));
         },
         [dispatch]
     );
-    const charts = useSelector(selectTranslationCharts);
+    const charts = useSelector(selectCharts);
 
     return (
         <>

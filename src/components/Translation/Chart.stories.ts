@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { buildFakeNoteHeader } from 'components';
+import { buildFakeNote } from 'components';
 import { getNoteId } from 'helpers';
 
 import { TranslationChart } from './Chart';
@@ -22,10 +22,7 @@ type Story = StoryObj<typeof meta>;
 export const Basic = ((): Story => {
     const notes = Array(3)
         .fill(null)
-        .map(() => ({
-            header: buildFakeNoteHeader(),
-            content: faker.lorem.paragraph(),
-        }));
+        .map(() => buildFakeNote());
 
     const activatedNoteId = getNoteId(
         notes[faker.number.int(notes.length - 1)]
@@ -45,10 +42,7 @@ export const Basic = ((): Story => {
 export const Long = ((): Story => {
     const notes = Array(30)
         .fill(null)
-        .map(() => ({
-            header: buildFakeNoteHeader(),
-            content: faker.lorem.paragraph(),
-        }));
+        .map(() => buildFakeNote());
 
     const activatedNoteId = getNoteId(notes[faker.number.int(5)]);
 

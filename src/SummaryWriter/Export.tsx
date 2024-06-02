@@ -1,41 +1,38 @@
 import { FileDownload } from '@mui/icons-material';
 import { Button, Tooltip } from '@mui/material';
-import { selectSummaryChart } from 'features';
+import { useSummary } from 'features';
 import { useCallback } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-export function ExportSummary() {
-    const { id } = useParams<{ id: string }>();
-    const chart4summary = useSelector((state) => selectSummaryChart(state, id));
+export function ExportSummary({ summaryId }: { readonly summaryId: string }) {
+    const { id: chartId } = useParams<{ id: string }>();
+    const summary = useSummary({ chartId, summaryId });
+
     const export2file = useCallback(() => {
-        if (!chart4summary) {
+        if (!summary) {
             return;
         }
-        const { summary } = chart4summary;
-        const blob = new Blob([summary], { type: 'text/plain' });
+        const blob = new Blob([summary.text], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `Summary_4_${id}.md`;
+        a.download = `Summary_4_${summaryId}@${chartId}.md`;
         a.click();
         URL.revokeObjectURL(url);
-    }, [chart4summary, id]);
+    }, [summary, summaryId, chartId]);
 
     const navigate = useNavigate();
-    if (!chart4summary) {
+    if (!summary) {
         navigate('/summarise');
         return null;
     }
-
-    const { summary } = chart4summary;
 
     return (
         <Tooltip title="Export to markdown text file">
             <span>
                 <Button
                     startIcon={<FileDownload />}
-                    disabled={!summary?.length}
+                    disabled={!summary.text?.length}
                     onClick={export2file}
                     variant="contained"
                     size="small"

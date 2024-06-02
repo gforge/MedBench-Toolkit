@@ -1,22 +1,32 @@
 import { Button } from '@mui/base';
 import { FileUpload } from '@mui/icons-material';
 import { Stack } from '@mui/material';
-import { charts2translateActions, selectTranslationCharts } from 'features';
+import { chartsActions, selectCharts, selectUser } from 'features';
 import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import type { Chart } from 'validators';
 
+import packageJson from '../../package.json'; // Adjust the path accordingly
 import { InitAlert } from './InitAlert';
 import { useLoadStoreDropzone } from './useLoadStoreDropzone';
 
 export const InitStore = () => {
-    const charts = useSelector(selectTranslationCharts);
+    const charts = useSelector(selectCharts);
+    const user = useSelector(selectUser);
     const [error, setError] = useState<string | null>(null);
     const dispatch = useDispatch();
     const initStore = useCallback(
-        (args: { charts: Chart[] }) => {
-            dispatch(charts2translateActions.initStore(args));
+        ({ charts }: { charts: Chart[] }) => {
+            if (!user) return;
+            dispatch(
+                chartsActions.initStore({
+                    createdBy: user.userMainEmail,
+                    charts,
+                    version: packageJson.version,
+                })
+            );
         },
-        [dispatch]
+        [dispatch, user]
     );
 
     const { getRootProps, getInputProps, open, isFileDialogActive } =

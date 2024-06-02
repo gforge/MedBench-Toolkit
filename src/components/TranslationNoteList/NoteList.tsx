@@ -8,11 +8,12 @@ import {
     Typography,
 } from '@mui/material';
 import { getChartId } from 'helpers';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import type { Chart } from 'validators';
 
 import { ChooseLanguage } from './ChooseLanguage';
 import { NoteListRow } from './NoteListRow';
-import { NoteListProps } from './types';
+import type { NoteListProps } from './types';
 
 export const TranslationNoteList = ({
     charts,
@@ -36,6 +37,12 @@ export const TranslationNoteList = ({
         },
         {} as Record<string, Chart[]>
     );
+    const existingLanguages = useMemo(() => {
+        const languages = charts.map((c) => c.language);
+        return Array.from(new Set(languages)).sort((a, b) =>
+            a.localeCompare(b)
+        );
+    }, [charts]);
 
     return (
         <Paper sx={{ padding: '10px' }}>
@@ -80,6 +87,7 @@ export const TranslationNoteList = ({
                 chart={active}
                 cancel={() => setActive(undefined)}
                 translate={translate}
+                existingLanguages={existingLanguages}
             />
         </Paper>
     );

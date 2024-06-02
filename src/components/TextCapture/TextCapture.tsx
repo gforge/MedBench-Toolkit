@@ -10,6 +10,7 @@ import {
     Typography,
 } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
+import { Chart, Note } from 'validators';
 
 import { usePasteHandler } from './usePasteHandler';
 

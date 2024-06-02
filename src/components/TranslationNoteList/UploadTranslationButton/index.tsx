@@ -1,6 +1,7 @@
 import { FileUpload } from '@mui/icons-material';
 import { Button, Stack } from '@mui/material';
 import { useState } from 'react';
+import type { Chart, Note } from 'validators';
 
 import { UploadTranslationFn } from '../types';
 import { UploadAlert } from './UploadAlert';

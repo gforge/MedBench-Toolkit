@@ -1,3 +1,5 @@
+import { Note } from 'validators';
+
 import { getNoteDate } from './getNoteDate';
 
 export function timeCompareNotes(): ((a: Note, b: Note) => number) | undefined {

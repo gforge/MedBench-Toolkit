@@ -1,14 +1,15 @@
 // useChartTranslations.ts
-import { charts2translateActions } from 'features';
+import { chartsActions, User } from 'features';
 import { getNoteId } from 'helpers';
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import { Note } from 'validators';
 
 interface UseChartTranslationsParams {
+    originalChartId: string | undefined;
     chartId: string | undefined;
-    chart: Chart | null;
-    language: string | undefined;
     translatedRawNotes: Note[];
+    user: User | null;
 }
 
 interface InsertNoteArgs {
@@ -19,10 +20,10 @@ interface InsertNoteArgs {
 }
 
 export function useChartTranslations({
+    originalChartId,
     chartId,
-    chart,
-    language,
     translatedRawNotes,
+    user,
 }: UseChartTranslationsParams) {
     const dispatch = useDispatch();
 
@@ -36,73 +37,68 @@ export function useChartTranslations({
             content: string | undefined;
             type: string | undefined;
         }) => {
-            if (!chartId || !chart || !language) return;
+            if (!chartId) return;
             const note = translatedRawNotes.find(
                 (n) => getNoteId(n) === noteId
             );
             if (!note || (!type && !content)) return;
 
             dispatch(
-                charts2translateActions.updateChart({
+                chartsActions.updateChart({
                     note: {
                         ...note,
-                        header: {
-                            ...note.header,
-                            type: type ?? note.header.type,
-                        },
+                        type: type ?? note.type,
                         content: content ?? note.content,
                     },
                     id: chartId,
-                    language,
                 })
             );
         },
-        [chart, chartId, dispatch, language, translatedRawNotes]
+        [chartId, dispatch, translatedRawNotes]
     );
 
     const insertNote = useCallback(
         ({ noteId, position, type, author }: InsertNoteArgs) => {
-            if (!chartId || !chart || !language) return;
+            if (!chartId) return;
             dispatch(
-                charts2translateActions.insertNote({
+                chartsActions.insertNote({
                     chartId,
                     noteId,
-                    language,
                     position,
                     type,
                     author,
                 })
             );
         },
-        [chart, chartId, dispatch, language]
+        [chartId, dispatch]
     );
 
     const deleteNote = useCallback(
         (noteId: string) => {
-            if (!chartId || !chart || !language) return;
+            if (!chartId || !user) return;
             dispatch(
-                charts2translateActions.deleteChartNote({
+                chartsActions.deleteChartNote({
                     chartId,
                     noteId,
-                    language,
+                    user,
                 })
             );
         },
-        [chart, chartId, dispatch, language]
+        [chartId, dispatch, user]
     );
 
     const reInsertDeletedNote = useCallback(
         (noteId: string) => {
-            if (!chartId || !chart || !language) return;
+            if (!chartId || !originalChartId) return;
             dispatch(
-                charts2translateActions.reInsertDeletedNote({
-                    chartId,
+                chartsActions.reInsertDeletedNote({
+                    sourceChartId: originalChartId,
+                    targetChartId: chartId,
                     noteId,
-                    language,
                 })
             );
         },
-        [chart, chartId, dispatch, language]
+        [chartId, dispatch, originalChartId]
     );
 
     return { updateNote, insertNote, deleteNote, reInsertDeletedNote };

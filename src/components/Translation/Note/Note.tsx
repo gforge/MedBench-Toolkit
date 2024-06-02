@@ -5,6 +5,7 @@ import {
     CardActions,
     CardContent,
 } from '@mui/material';
+import type { Note } from 'validators';
 
 import { NoteEditor } from './Editor';
 import { TranslationNoteHeader } from './Header';
@@ -24,7 +25,10 @@ export interface TranslationNoteProps extends Note {
 
 export const TranslationNote = ({
     id,
-    header,
+    type,
+    date,
+    time,
+    author,
     content,
     existingTypes,
     activated,
@@ -44,7 +48,10 @@ export const TranslationNote = ({
     >
         <CardContent>
             <TranslationNoteHeader
-                {...header}
+                type={type}
+                date={date}
+                time={time}
+                author={author}
                 onTypeChange={(type: string) =>
                     onUpdate({ content: undefined, type })
                 }

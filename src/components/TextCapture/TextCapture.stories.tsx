@@ -1,6 +1,7 @@
 import { Paper } from '@mui/material';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
+import type { Note } from 'validators';
 
 import { TextCapture } from './TextCapture';
 

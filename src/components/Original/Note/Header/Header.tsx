@@ -1,6 +1,12 @@
 import { Box, Typography } from '@mui/material';
+import type { Note } from 'validators';
 
-export const OriginalNoteHeader = ({ type, date, time, author }: Header) => {
+export const OriginalNoteHeader = ({
+    type,
+    date,
+    time,
+    author,
+}: Pick<Note, 'type' | 'date' | 'time' | 'author'>) => {
     return (
         <Box
             sx={{

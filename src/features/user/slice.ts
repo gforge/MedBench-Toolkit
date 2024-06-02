@@ -9,6 +9,7 @@ export interface User {
     otherEmails: string[];
     experienceLevel: 'resident' | 'junior' | 'senior' | undefined;
     password: string;
+    type: 'user' | 'admin';
 }
 
 const fakeUser: User = {
@@ -20,6 +21,7 @@ const fakeUser: User = {
     otherEmails: ['test2@tester.com'],
     experienceLevel: 'senior',
     password: 'password',
+    type: 'user',
 };
 
 const initialState: {
@@ -63,7 +65,7 @@ export const { reducer: userReducer, actions: userActions } = createSlice({
         logout: (state) => {
             state.user = null;
         },
-        signup: (state, action: PayloadAction<User>) => {
+        signup: (state, action: PayloadAction<Omit<User, 'type'>>) => {
             const existingUser = availableUsers.find(
                 (user) =>
                     user.userMainEmail === action.payload.userMainEmail ||
@@ -74,8 +76,9 @@ export const { reducer: userReducer, actions: userActions } = createSlice({
             if (existingUser) {
                 throw new Error('User already exists');
             }
-            availableUsers.push(action.payload);
-            state.user = action.payload;
+            const newUser: User = { ...action.payload, type: 'user' };
+            availableUsers.push(newUser);
+            state.user = newUser;
         },
     },
 });

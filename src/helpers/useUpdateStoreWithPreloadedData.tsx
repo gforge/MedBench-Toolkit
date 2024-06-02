@@ -1,101 +1,61 @@
+import { chartsActions, selectCharts, User } from 'features';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ChartValue, FullChart2Summarise } from 'validators';
+import type { RootState } from 'store';
+import { Chart } from 'validators';
 
 import packageJson from '../../package.json'; // Adjust the path accordingly
-import { buildFakeNoteContent } from '../components';
-import {
-    charts2reviewActions as rvwActions,
-    charts2translateActions as trnsltActions,
-    charts4summaryActions as smryActions,
-    ReviewChart,
-    selectReviewCharts,
-    selectSummaryCharts,
-    selectTranslationCharts,
-} from '../features';
-import {
-    NewChart2Translate,
-    NewTranslation,
-} from '../features/charts2translate/reducers';
 import { getChartId } from './getChartId';
-import { getNoteId } from './getNoteId';
 import { loadData } from './loadData';
 
 export const useUpdateStoreWithPreloadedData = () => {
-    const charts2review = useSelector(selectReviewCharts);
-    const { charts: charts4summary, version } =
-        useSelector(selectSummaryCharts);
-    const charts2translate = useSelector(selectTranslationCharts);
+    const existingCharts = useSelector(selectCharts);
+    const version = useSelector((state: RootState) => state.charts.version);
+    const user = useSelector((state: RootState) => state.user.user);
 
     const dispatch = useDispatch();
     useEffect(() => {
-        const charts = loadData();
-        if (!charts) {
+        const newCharts = loadData();
+        if (!newCharts) {
             console.warn('No original chart data found');
             return;
         }
 
-        updateReviewCharts({ dispatch, charts, charts2review });
-        updateSummaryCharts({ dispatch, charts, version, charts4summary });
-        updateTranslationCharts({
-            dispatch,
-            charts,
-            charts2translate,
-        });
+        if (!user) {
+            console.warn('No user found');
+            return;
+        }
 
+        updateCharts({
+            dispatch,
+            newCharts: Object.values(newCharts),
+            existingCharts,
+            version,
+            user,
+        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 };
 
-const updateReviewCharts = ({
+const updateCharts = ({
     dispatch,
-    charts,
-    charts2review,
-}: {
-    dispatch: ReturnType<typeof useDispatch>;
-    charts: Record<string, FullChart2Summarise>;
-    charts2review: ReviewChart[];
-}) => {
-    //  TODO - add real summaries
-    // Update the store with new charts if any have been added without changing the version
-    const newCharts = Object.values(charts).filter(
-        (chart) =>
-            !charts2review.some(
-                (chart2review) => getChartId(chart2review) === getChartId(chart)
-            )
-    );
-
-    if (newCharts.length === 0) {
-        return;
-    }
-
-    dispatch(
-        rvwActions.addCharts(
-            newCharts.map((base) => ({
-                ...base,
-                summary_id: 'human-1',
-                summary: buildFakeNoteContent(),
-            }))
-        )
-    );
-};
-
-const updateSummaryCharts = ({
-    dispatch,
-    charts,
+    newCharts,
+    existingCharts,
+    user,
     version,
-    charts4summary,
 }: {
     dispatch: ReturnType<typeof useDispatch>;
-    charts: Record<string, FullChart2Summarise>;
+    newCharts: Chart[];
+    existingCharts: Chart[];
     version: string;
-    charts4summary: FullChart2Summarise[];
+    user: User;
 }) => {
     // Reset the store if the version has changed
     if (version !== packageJson.version) {
         dispatch(
-            smryActions.initStore({
-                charts: Object.values(charts),
+            chartsActions.initStore({
+                createdBy: user.userMainEmail,
+                charts: newCharts,
                 version: packageJson.version,
             })
         );
@@ -103,104 +63,21 @@ const updateSummaryCharts = ({
     }
 
     // Update the store with new charts if any have been added without changing the version
-    const newCharts = Object.values(charts).filter(
+    const noneExistingCharts = newCharts.filter(
         (chart) =>
-            !charts4summary.some(
-                (chart4summary) =>
-                    getChartId(chart4summary) === getChartId(chart)
-            )
-    );
-    if (newCharts.length === 0) {
-        return;
-    }
-    dispatch(smryActions.addCharts(newCharts));
-};
-
-const updateTranslationCharts = ({
-    dispatch,
-    charts,
-    charts2translate,
-}: {
-    dispatch: ReturnType<typeof useDispatch>;
-    charts: Record<string, FullChart2Summarise>;
-    charts2translate: Chart[];
-}) => {
-    // Update the store with new charts if any have been added without changing the version
-    const newCharts = Object.values(charts).filter(
-        (chart) =>
-            !charts2translate.some(
-                (charts2translate) =>
-                    charts2translate.name === chart.case_id &&
-                    charts2translate.specialty === chart.specialty &&
-                    chart.language === 'original'
+            !existingCharts.some(
+                (existing) => getChartId(existing) === getChartId(chart)
             )
     );
 
-    if (newCharts.length === 0) {
+    if (noneExistingCharts.length === 0) {
         return;
     }
 
-    const newOriginalCharts = newCharts
-        .filter((chart) => chart.language === 'original')
-        .map(
-            ({
-                case_id: name,
-                specialty,
-                chart: { chart },
-            }): NewChart2Translate => ({
-                name,
-                specialty,
-                notes: convertFullChartToNoteArray(chart),
-            })
-        );
-
-    const additionalTranslations: NewTranslation[] = [];
-    newCharts
-        .filter((chart) => chart.language !== 'original')
-        .forEach(({ case_id: name, specialty, language, chart: { chart } }) => {
-            const chartIndex = newOriginalCharts.findIndex(
-                (chart) => chart.name === name && chart.specialty === specialty
-            );
-            if (chartIndex === -1) {
-                const existingTranslation = charts2translate.find(
-                    (at) => at.name === name && at.specialty === specialty
-                );
-                if (!existingTranslation) {
-                    console.warn(
-                        `No original chart found for translation ${name} (${specialty})`
-                    );
-                    return;
-                }
-                // Only update if there is no translation for the language
-                if (existingTranslation.translations[language]) {
-                    return;
-                }
-                additionalTranslations.push({
-                    id: getChartId(existingTranslation),
-                    language,
-                    translation: convertFullChartToNoteArray(chart),
-                });
-            } else {
-                newOriginalCharts[chartIndex].translations = {
-                    ...newOriginalCharts[chartIndex].translations,
-                    [language]: convertFullChartToNoteArray(chart),
-                };
-            }
-        });
-
-    dispatch(trnsltActions.addCharts(newOriginalCharts));
-    dispatch(trnsltActions.uploadTranslations(additionalTranslations));
+    dispatch(
+        chartsActions.addCharts({
+            createdBy: user.userMainEmail,
+            charts: noneExistingCharts,
+        })
+    );
 };
-
-const convertFullChartToNoteArray = (notes: ChartValue[]): Note[] =>
-    notes.map(({ content: rawContent, type, date, time, author }) => {
-        const baseHeader = { author, type, date, time };
-        const content = rawContent.replace(/(\r\n|\n|\r)/gm, '\n\n');
-        return {
-            header: {
-                id: getNoteId({ header: baseHeader }),
-                ...baseHeader,
-            },
-            content,
-        };
-    });

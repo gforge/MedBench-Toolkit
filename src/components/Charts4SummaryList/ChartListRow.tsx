@@ -8,11 +8,11 @@ export const ChartListRow = ({
     summarise,
 }: SummaryChartListRowProps) => {
     const borderBottom = '1px solid #ccc';
-    const { case_id: caseId, specialty, language } = chart;
+    const { name, specialty, language } = chart;
     return (
         <TableRow style={{ borderBottom }}>
             <TableCell>{specialty}</TableCell>
-            <TableCell>{caseId}</TableCell>
+            <TableCell>{name}</TableCell>
             <TableCell>
                 {language == 'original' ? 'Original' : language}
             </TableCell>
@@ -25,7 +25,11 @@ export const ChartListRow = ({
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={() => summarise(getChartId(chart))}
+                        onClick={() =>
+                            summarise({
+                                chartId: getChartId(chart),
+                            })
+                        }
                     >
                         Summarise
                     </Button>

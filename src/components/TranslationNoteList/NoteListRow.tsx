@@ -1,7 +1,8 @@
 import { Delete } from '@mui/icons-material';
 import { Button, ButtonGroup, Stack, TableRow } from '@mui/material';
+import { useFilteredCharts } from 'features';
 import { getChartId } from 'helpers';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { EditableTd } from './EditableTd';
 import { LanguageButton } from './LanguageButton';
@@ -18,6 +19,13 @@ export const NoteListRow = ({
     setChartName,
     setChartSpecialty,
 }: NoteListRowProps) => {
+    const charts = useFilteredCharts(chart);
+    const translations = useMemo(() => {
+        const languages = charts.map((c) => c.language);
+        return Array.from(new Set(languages)).sort((a, b) =>
+            a.localeCompare(b)
+        );
+    }, [charts]);
     const setName = useCallback(
         (name: string) => {
             setChartName({ id: getChartId(chart), name });
@@ -55,7 +63,7 @@ export const NoteListRow = ({
                     >
                         Translate
                     </Button>
-                    {Object.keys(chart.translations).map((language) => (
+                    {translations.map((language) => (
                         <LanguageButton
                             key={language}
                             language={language}
