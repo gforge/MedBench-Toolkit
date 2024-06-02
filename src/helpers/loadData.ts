@@ -15,20 +15,25 @@ export const loadData = (): LoadedData => {
             if (!filename) return null;
 
             const moduleName = filename.replace('.json', '');
+            const name = moduleName.replace(/.+(Case \d+).+/, '$1');
+            const specialty = moduleName.replace(/raw_([^_]+).+/, '$1');
+            const language = moduleName.replace(/.+_([^.]+)/, '$1');
+
             try {
                 if (!data.default) {
                     throw new Error('No default export');
                 }
 
                 const { chart: notes, medications, lab } = data.default;
-                const chart = chartValidator.validateSync({
+                const rawChart = {
                     notes,
                     medications,
                     lab,
-                    name: moduleName.replace(/.+(Case \d+).+/, '$1'),
-                    specialty: moduleName.replace(/raw_([^_]+).+/, '$1'),
-                    language: moduleName.replace(/.+_([^.]+)/, '$1'),
-                });
+                    name,
+                    specialty,
+                    language,
+                };
+                const chart = chartValidator.validateSync(rawChart);
                 return [moduleName, chart];
             } catch (error) {
                 console.warn(`Error loading ${moduleName}: ${error}`);
