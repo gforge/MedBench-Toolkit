@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import type { User } from 'features';
+import { onlySelfOrAdmin, type User } from 'features/user';
 import { getChartId, getNoteId, timeCompareNotes } from 'helpers';
 
 import type { ChartsState } from '../types';
@@ -19,13 +19,13 @@ export const deleteChartNote = (
         return;
     }
 
-    const chart = state.charts[chartIndex];
-    if (chart.createdBy !== user.userMainEmail && user.type !== 'admin') {
+    const { notes, createdBy } = state.charts[chartIndex];
+    if (onlySelfOrAdmin({ user, createdBy })) {
         console.error('User not allowed to delete note');
         return;
     }
 
-    state.charts[chartIndex].notes = chart.notes
+    state.charts[chartIndex].notes = notes
         .filter((n) => getNoteId(n) !== noteId)
         .sort(timeCompareNotes());
 };

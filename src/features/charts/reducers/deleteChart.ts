@@ -1,5 +1,5 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { User } from 'features';
+import { onlySelfOrAdmin, type User } from 'features/user';
 import { getChartId } from 'helpers';
 
 import type { ChartsState } from '../types';
@@ -14,8 +14,8 @@ export const deleteChart = (
     if (chart2delete === -1) {
         return;
     }
-    const chart = state.charts[chart2delete];
-    if (chart.createdBy !== user.userMainEmail && user.type !== 'admin') {
+    const { createdBy } = state.charts[chart2delete];
+    if (onlySelfOrAdmin({ user, createdBy })) {
         return;
     }
     state.charts = state.charts.filter((c) => getChartId(c) !== id);

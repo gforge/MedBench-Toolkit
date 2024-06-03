@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-import { User } from '../user';
+import { onlySelfOrAdmin, type User } from 'features/user';
 
 export type Summary = {
     chartId: string;
@@ -57,9 +56,10 @@ export const { reducer: summariesReducer, actions: summariesActions } =
 
                 if (!text) {
                     if (
-                        state.summaries[summaryIndex].createdBy !==
-                            user.userMainEmail &&
-                        user.type !== 'admin'
+                        onlySelfOrAdmin({
+                            user,
+                            createdBy: state.summaries[summaryIndex].createdBy,
+                        })
                     ) {
                         console.warn('User not allowed to delete summary');
                         return;
