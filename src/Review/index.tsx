@@ -1,18 +1,17 @@
 import { ReviewStart } from 'components';
-import { selectCharts } from 'features';
 import { useCallback, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+import { useCharts2Review } from '../features';
 import { ReviewHelp } from './Help';
 
-export function Review() {
-    const charts2review = useSelector(selectCharts);
+const useSpeicalties2ChooseFrom = () => {
+    const charts2review = useCharts2Review();
 
     const specialties2choosefrom = useMemo(() => {
         return charts2review.reduce(
             (acc, chart) => {
-                const { specialty, language } = chart;
+                const { specialty, language } = chart.chart;
                 if (!acc[specialty]) {
                     acc[specialty] = [];
                 }
@@ -26,6 +25,11 @@ export function Review() {
             {} as Record<string, string[]>
         );
     }, [charts2review]);
+    return { specialties2choosefrom, noCharts: charts2review.length };
+};
+
+export function Review() {
+    const { specialties2choosefrom, noCharts } = useSpeicalties2ChooseFrom();
     const navigate = useNavigate();
     const activateReview = useCallback(
         ({ specialty, language }: { specialty: string; language: string }) => {
@@ -41,7 +45,7 @@ export function Review() {
                 activateReview={activateReview}
             />
             <br />
-            <ReviewHelp show={!charts2review.length} />
+            <ReviewHelp show={!noCharts} />
         </>
     );
 }

@@ -1,6 +1,6 @@
 import { Button, Paper, Stack, Typography } from '@mui/material';
 import { buildFakeNote, ChartTabs, MarkdownTypography } from 'components';
-import { selectUser, useCharts2Review } from 'features';
+import { selectUser, type Summary, useCharts2Review } from 'features';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useParams } from 'react-router-dom';
@@ -18,9 +18,17 @@ const useFakeCharts = () => {
     const allCharts = useCharts2Review({ specialty, language });
 
     return allCharts.map(({ chart }) => ({
-        id: 'fakeId', // Add this line to make the id unique
         chart,
-        summary: buildFakeNote().content,
+        summaries: ['AI', 'Human'].map((summaryId) => ({
+            summary: {
+                chartId: chart.id,
+                summaryId,
+                text: buildFakeNote().content,
+                createdBy: 'AI',
+                final: true,
+            } as Summary,
+            review: undefined,
+        })),
     }));
 };
 
@@ -69,8 +77,12 @@ export function ReviewSpecialty() {
     }
 
     const {
-        chart: { notes, medications, lab: labValues },
-        summary,
+        chart: { notes, medications, lab },
+        summaries: [
+            {
+                summary: { text: summary },
+            },
+        ],
     } = charts[no];
 
     return (
@@ -87,7 +99,7 @@ export function ReviewSpecialty() {
                     <ChartTabs
                         notes={notes}
                         medications={medications}
-                        labValues={labValues}
+                        labValues={lab}
                     />
                 </ChartBox>
                 <ReviewBox>
