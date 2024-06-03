@@ -1,5 +1,5 @@
 import { chartsActions, selectCharts, User } from 'features';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from 'store';
 import { Chart } from 'validators';
@@ -12,18 +12,24 @@ export const useUpdateStoreWithPreloadedData = () => {
     const existingCharts = useSelector(selectCharts);
     const version = useSelector((state: RootState) => state.charts.version);
     const user = useSelector((state: RootState) => state.user.user);
+    const [hasRun, setHasRun] = useState(false);
 
     const dispatch = useDispatch();
     useEffect(() => {
         try {
-            const newCharts = loadData();
-            if (!newCharts) {
-                console.warn('No original chart data found');
+            if (hasRun) {
                 return;
             }
 
             if (!user) {
-                console.warn('No user found');
+                console.warn('Cannot load data without a user');
+                return;
+            }
+
+            const newCharts = loadData();
+            setHasRun(true);
+            if (!newCharts) {
+                console.warn('No original chart data found');
                 return;
             }
 
@@ -37,8 +43,7 @@ export const useUpdateStoreWithPreloadedData = () => {
         } catch (error) {
             console.error('Error updating store with preloaded data:', error);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [dispatch, existingCharts, hasRun, user, version]);
 };
 
 const updateCharts = ({
