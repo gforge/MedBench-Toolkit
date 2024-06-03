@@ -34,8 +34,9 @@ const useUpdater = ({
     content,
     onUpdate,
 }: Pick<NoteEditorProps, 'onUpdate' | 'content'>) => {
+    // Clean the content from the first # and multiple new lines
     const [fixedContent, setFixedContent] = useState(
-        stripFirstHashtag(content)
+        stripFirstHashtag(content).replace(/\n{3,}/g, '\n\n')
     );
 
     const updateFixedContent = useCallback(
