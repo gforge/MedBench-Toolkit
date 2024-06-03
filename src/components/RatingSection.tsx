@@ -1,29 +1,22 @@
-import {
-    Box,
-    Rating,
-    RatingProps,
-    Stack,
-    Tooltip,
-    Typography,
-} from '@mui/material';
+import { Box, Rating, Stack, Tooltip, Typography } from '@mui/material';
 import { useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 export type RatingSectionProps = {
     label: string; // Label for the rating
     help: string; // Help text for the rating
     options: string[];
-    value: number | null;
-} & Pick<RatingProps, 'name' | 'onChange'>;
+    name: string;
+};
 
 export const RatingSection = ({
     label,
     help,
     options,
-    value,
-    ...props
+    name,
 }: RatingSectionProps) => {
     const [hover, setHover] = useState(-1);
-    const focus = hover !== -1 ? hover : value;
+    const { control } = useFormContext();
 
     return (
         <Box sx={{ marginY: 2 }}>
@@ -31,17 +24,23 @@ export const RatingSection = ({
                 <Typography component="legend">{label}</Typography>
             </Tooltip>
             <Stack direction="row">
-                <Rating
-                    {...props}
-                    max={options.length}
-                    onChangeActive={(_, newHover) => {
-                        setHover(newHover);
-                    }}
-                    getLabelText={(value) => `${value}: ${label}`}
+                <Controller
+                    name={name}
+                    control={control}
+                    defaultValue={null}
+                    render={({ field }) => (
+                        <Rating
+                            {...field}
+                            max={options.length}
+                            onChange={(_, newValue) => field.onChange(newValue)}
+                            onChangeActive={(_, newHover) => {
+                                setHover(newHover);
+                            }}
+                            getLabelText={(value) => `${value}: ${label}`}
+                        />
+                    )}
                 />
-                {focus !== null && (
-                    <Box sx={{ ml: 2 }}>{options[focus - 1]}</Box>
-                )}
+                {hover !== -1 && <Box sx={{ ml: 2 }}>{options[hover - 1]}</Box>}
             </Stack>
         </Box>
     );

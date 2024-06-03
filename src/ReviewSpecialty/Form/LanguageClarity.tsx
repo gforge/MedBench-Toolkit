@@ -1,10 +1,10 @@
-import { RatingSectionGroup, RatingSectionProps } from 'components';
+import { RatingSectionGroup } from 'components';
 
-const languageClarityRatings: Omit<RatingSectionProps, 'value'>[] = [
+const languageClarityRatings = [
     {
         label: 'Language',
         help: 'Ensure that the language used is clear and understandable to avoid miscommunication.',
-        name: 'language-rating',
+        name: 'language',
         options: [
             'Not understandable; several corrections needed',
             'Generally understandable; major corrections needed',
@@ -15,7 +15,7 @@ const languageClarityRatings: Omit<RatingSectionProps, 'value'>[] = [
     {
         label: 'Clarity',
         help: 'Assess whether the information is presented logically and coherently.',
-        name: 'clarity-rating',
+        name: 'clarity',
         options: [
             'Very unclear',
             'Somewhat unclear',
@@ -29,7 +29,7 @@ export const LanguageClarity = () => {
     return (
         <RatingSectionGroup
             title="Language and Clarity"
-            ratings={languageClarityRatings.map((r) => ({ ...r, value: null }))}
+            ratings={languageClarityRatings}
         />
     );
 };

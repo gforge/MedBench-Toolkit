@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { Rating } from 'validators';
 
-import { convertRaw2Rating, PartialRating, Rating, Review } from './types';
+import { convertRaw2Rating, type Review } from './types';
 
 interface ChartsState {
     reviews: Review[];
@@ -33,7 +34,7 @@ export const { reducer: reviewsReducer, actions: reviewsActions } = createSlice(
                     chartId: string;
                     summaryId: string;
                     userMainEmail: string;
-                    rating: Omit<Rating | PartialRating, 'completed'>;
+                    rating: Rating;
                 }>
             ) => {
                 const {

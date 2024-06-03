@@ -3,3 +3,4 @@ export * from './chart';
 export * from './lab';
 export * from './med';
 export * from './note';
+export * from './rating';

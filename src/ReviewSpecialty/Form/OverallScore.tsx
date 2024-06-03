@@ -1,10 +1,11 @@
 import { Box, TextField, Typography } from '@mui/material';
 import { RatingSection, RatingSectionProps } from 'components/RatingSection';
+import { Controller, useFormContext } from 'react-hook-form';
 
-const overallScoreProps: Omit<RatingSectionProps, 'value'> = {
+const overallScoreProps: Omit<RatingSectionProps, 'control'> = {
     label: 'Overall Score',
     help: 'Rate the overall performance compared to your expectations and experience.',
-    name: 'overall-score-rating',
+    name: 'overall',
     options: [
         'Unusable',
         'Subhuman',
@@ -15,21 +16,28 @@ const overallScoreProps: Omit<RatingSectionProps, 'value'> = {
 };
 
 export const OverallScore = () => {
+    const { control } = useFormContext();
     return (
         <>
             <Typography variant="h6" gutterBottom>
                 Overall Evaluation
             </Typography>
-            <RatingSection {...overallScoreProps} value={null} />
+            <RatingSection {...overallScoreProps} />
             <Box sx={{ marginY: 2 }}>
-                <TextField
-                    fullWidth
-                    label="Comments and reflections on the overall evaluation"
-                    variant="outlined"
-                    value={''}
-                    multiline
-                    rows={4}
-                    margin="normal"
+                <Controller
+                    name="overallComment"
+                    control={control}
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            fullWidth
+                            label="Comments and reflections on the overall evaluation"
+                            variant="outlined"
+                            multiline
+                            rows={4}
+                            margin="normal"
+                        />
+                    )}
                 />
             </Box>
         </>

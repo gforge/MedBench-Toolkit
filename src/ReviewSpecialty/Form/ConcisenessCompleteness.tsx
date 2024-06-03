@@ -5,7 +5,7 @@ const concisenessCompletenessRatings: Omit<RatingSectionProps, 'value'>[] = [
     {
         label: 'Conciseness',
         help: 'Evaluate if the summaries are free from unnecessary details, yet include all critical information.',
-        name: 'conciseness-rating',
+        name: 'conciseness',
         options: [
             'Very poorly summarised (the text is not understandable, several corrections are needed)',
             'Acceptably summarised (the text is generally understandable, major corrections are needed)',
@@ -16,7 +16,7 @@ const concisenessCompletenessRatings: Omit<RatingSectionProps, 'value'>[] = [
     {
         label: 'Completeness',
         help: 'Assess if the summaries include all necessary information relevant to patient care.',
-        name: 'completeness-rating',
+        name: 'completeness',
         options: [
             'The text is very poorly summarised',
             'The text is acceptably summarised',
@@ -33,7 +33,7 @@ export const ConcisenessCompleteness = () => {
                 Conciseness and Completeness
             </Typography>
             {concisenessCompletenessRatings.map((rating) => (
-                <RatingSection key={rating.name} {...rating} value={null} />
+                <RatingSection key={rating.name} {...rating} />
             ))}
         </>
     );

@@ -8,11 +8,11 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 export const Hallucinations = () => {
-    const [hallucinationCount, setHallucinationCount] = useState(-1);
-    const [details, setDetails] = useState('');
+    const { control, watch } = useFormContext();
+    const hallucinationCount = watch('hallucinations', -1); // Watching the value of hallucinations field
 
     return (
         <>
@@ -23,37 +23,52 @@ export const Hallucinations = () => {
                 <InputLabel id="hallucination-count-label">
                     Number of hallucinations
                 </InputLabel>
-                <Select
-                    labelId="hallucination-count-label"
-                    id="hallucination-count"
-                    value={hallucinationCount === -1 ? '' : hallucinationCount}
-                    label="Number of hallucinations"
-                    onChange={({ target: { value } }) => {
-                        if (typeof value !== 'number')
-                            return setHallucinationCount(-1);
-
-                        setHallucinationCount(value);
-                    }}
-                >
-                    <MenuItem value={0}>None</MenuItem>
-                    <MenuItem value={1}>1-2 minor inaccuracies</MenuItem>
-                    <MenuItem value={2}>3-4 moderate inaccuracies</MenuItem>
-                    <MenuItem value={3}>
-                        More than 4 significant inaccuracies
-                    </MenuItem>
-                </Select>
+                <Controller
+                    name="hallucinations"
+                    control={control}
+                    defaultValue={null}
+                    render={({ field }) => (
+                        <Select
+                            {...field}
+                            labelId="hallucination-count-label"
+                            id="hallucination-count"
+                            label="Number of hallucinations"
+                            value={field.value === null ? '' : field.value}
+                            onChange={(event) => {
+                                field.onChange(event.target.value);
+                            }}
+                        >
+                            <MenuItem value={0}>None</MenuItem>
+                            <MenuItem value={1}>
+                                1-2 minor inaccuracies
+                            </MenuItem>
+                            <MenuItem value={2}>
+                                3-4 moderate inaccuracies
+                            </MenuItem>
+                            <MenuItem value={3}>
+                                More than 4 significant inaccuracies
+                            </MenuItem>
+                        </Select>
+                    )}
+                />
             </FormControl>
             <Collapse in={hallucinationCount > 0}>
                 <Box sx={{ marginY: 2 }}>
-                    <TextField
-                        fullWidth
-                        label="Exemplify which hallucinations you found"
-                        variant="outlined"
-                        value={details}
-                        onChange={(e) => setDetails(e.target.value)}
-                        multiline
-                        rows={4}
-                        margin="normal"
+                    <Controller
+                        name="hallucinationsComment"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                fullWidth
+                                label="Exemplify which hallucinations you found"
+                                variant="outlined"
+                                multiline
+                                rows={4}
+                                margin="normal"
+                            />
+                        )}
                     />
                 </Box>
             </Collapse>

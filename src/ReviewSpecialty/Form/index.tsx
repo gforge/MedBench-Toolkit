@@ -1,15 +1,48 @@
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
+import { type Review, reviewsActions, type User } from 'features';
+import { FormProvider } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { type Rating } from 'validators';
 
 import { ConcisenessCompleteness } from './ConcisenessCompleteness';
 import { Hallucinations } from './Hallucinations';
 import { LanguageClarity } from './LanguageClarity';
 import { MedicalAccuracy } from './MedicalAccuracy';
 import { OverallScore } from './OverallScore';
+import { SubmitButton } from './SubmitButton';
+import { useEvaluationForm } from './useEvaluationForm';
 
-export const EvaluationForm = () => {
+interface EvaluationFormProps {
+    chartId: string;
+    summaryId: string;
+    user: User;
+    review: Review | undefined;
+}
+
+export const EvaluationForm = ({
+    chartId,
+    summaryId,
+    user,
+    review,
+}: EvaluationFormProps) => {
+    const dispatch = useDispatch();
+    const { methods, errors, isValid, trigger } = useEvaluationForm(
+        review?.rating
+    );
+
+    const onSubmit = (rating: Omit<Rating, 'completed'>) => {
+        dispatch(
+            reviewsActions.review({
+                chartId,
+                summaryId,
+                userMainEmail: user.userMainEmail,
+                rating,
+            })
+        );
+    };
+
     return (
         <Box
-            component="form"
             sx={{
                 padding: 2,
                 maxWidth: 800,
@@ -18,14 +51,22 @@ export const EvaluationForm = () => {
                 mt: 2,
             }}
         >
-            <MedicalAccuracy />
-            <ConcisenessCompleteness />
-            <LanguageClarity />
-            <Hallucinations />
-            <OverallScore />
-            <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-                Submit Evaluation
-            </Button>
+            <FormProvider {...methods}>
+                <form
+                    onSubmit={methods.handleSubmit(onSubmit)}
+                    onChange={() => {
+                        onSubmit(methods.getValues());
+                        trigger();
+                    }}
+                >
+                    <MedicalAccuracy />
+                    <ConcisenessCompleteness />
+                    <LanguageClarity />
+                    <Hallucinations />
+                    <OverallScore />
+                    <SubmitButton errors={errors} isValid={isValid} />
+                </form>
+            </FormProvider>
         </Box>
     );
 };
