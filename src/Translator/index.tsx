@@ -1,13 +1,13 @@
 import { BaseGrid } from 'components';
 import { selectChart, selectUser } from 'features';
-import { getChartId, useDownloadTranslation } from 'helpers';
-import { useMemo } from 'react';
+import { useDownloadTranslation } from 'helpers';
 import { useSelector } from 'react-redux';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import type { RootState } from 'store';
 import { Chart } from 'validators';
 
 import { useChartTranslations } from './useChartTranslations';
+import { useTranslationNotes } from './useTranslationNotes';
 
 export function Translator() {
     const { chartId, language } = useParams<{
@@ -19,33 +19,16 @@ export function Translator() {
     const chart = useSelector<RootState, Chart | null>((state) =>
         selectChart(state, chartId)
     );
-    const translatedChartId = useMemo(() => {
-        if (!chart || !language) return undefined;
-        return getChartId({
-            specialty: chart.specialty,
-            name: chart.name,
-            language,
-        });
-    }, [chart, language]);
-
-    const translatedChart = useSelector<RootState, Chart | null>((state) =>
-        selectChart(state, translatedChartId)
-    );
-
     const navigate = useNavigate();
-    const translatedRawNotes = useMemo(() => {
-        if (!chart || !language) return [];
-        if (translatedChart) return translatedChart.notes;
-        return chart.notes.map((n) => ({
-            ...n,
-            content: '',
-        }));
-    }, [chart, language, translatedChart]);
 
+    const { translatedRawNotes, translatedChartId } = useTranslationNotes({
+        chart,
+        language,
+    });
     const { updateNote, insertNote, deleteNote, reInsertDeletedNote } =
         useChartTranslations({
-            chartId,
-            originalChartId: chart?.id,
+            chartId: translatedChartId,
+            originalChartId: chartId,
             translatedRawNotes,
             user,
         });
