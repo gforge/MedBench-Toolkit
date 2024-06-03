@@ -26,7 +26,7 @@ export const Hallucinations = () => {
                 <Select
                     labelId="hallucination-count-label"
                     id="hallucination-count"
-                    value={hallucinationCount}
+                    value={hallucinationCount === -1 ? '' : hallucinationCount}
                     label="Number of hallucinations"
                     onChange={({ target: { value } }) => {
                         if (typeof value !== 'number')

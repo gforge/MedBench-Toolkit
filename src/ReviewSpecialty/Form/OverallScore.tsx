@@ -26,7 +26,7 @@ export const OverallScore = () => {
                     fullWidth
                     label="Comments and reflections on the overall evaluation"
                     variant="outlined"
-                    value={null}
+                    value={''}
                     multiline
                     rows={4}
                     margin="normal"

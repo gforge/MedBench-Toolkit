@@ -1,14 +1,15 @@
-import { Button, Paper, Stack, Typography } from '@mui/material';
-import { buildFakeNote, ChartTabs, MarkdownTypography } from 'components';
-import { selectUser, type Summary, useCharts2Review } from 'features';
+import { buildFakeNote, ChartTabs, LoginPrompt } from 'components';
+import { selectUser, useCharts2Review } from 'features';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
-import { EvaluationForm } from './Form';
-import { ReviewInstructions } from './Instructions';
+import { ReviewHeader } from './Header';
+import { InvalidSpecialty } from './InvalidSpecialty';
 import { ReviewNavigator } from './Navigator';
+import { NoChartsFound } from './NoChartsFound';
 import { ChartBox, FlexBox, ReviewBox } from './styles';
+import { SummaryTabs } from './SummaryTabs';
 
 const useFakeCharts = () => {
     const { specialty, language } = useParams<{
@@ -26,7 +27,7 @@ const useFakeCharts = () => {
                 text: buildFakeNote().content,
                 createdBy: 'AI',
                 final: true,
-            } as Summary,
+            },
             review: undefined,
         })),
     }));
@@ -44,45 +45,21 @@ export function ReviewSpecialty() {
     const [no, setNo] = useState(0);
 
     if (!user) {
-        // Get URI component - note that start path is #/review
         const redirect = encodeURIComponent(location.pathname);
-        return (
-            <Paper sx={{ padding: '10px' }}>
-                <Typography variant="h6">
-                    You need to be logged in to access this page.
-                </Typography>
-                <Link to={`/login?redirect=${redirect}`}>
-                    <Button variant="contained" color="primary">
-                        Login
-                    </Button>
-                </Link>
-            </Paper>
-        );
+        return <LoginPrompt redirect={redirect} />;
     }
 
     if (!specialty || !language) {
-        return (
-            <Paper sx={{ padding: '10px' }}>
-                Invalid specialty. No {specialty} in {language} found.
-            </Paper>
-        );
+        return <InvalidSpecialty specialty={specialty} language={language} />;
     }
 
     if (!charts.length) {
-        return (
-            <Paper sx={{ padding: '10px' }}>
-                No charts found for {specialty} in {language}.
-            </Paper>
-        );
+        return <NoChartsFound specialty={specialty} language={language} />;
     }
 
     const {
         chart: { notes, medications, lab },
-        summaries: [
-            {
-                summary: { text: summary },
-            },
-        ],
+        summaries,
     } = charts[no];
 
     return (
@@ -103,19 +80,8 @@ export function ReviewSpecialty() {
                     />
                 </ChartBox>
                 <ReviewBox>
-                    <Stack
-                        direction="row"
-                        spacing={2}
-                        justifyContent="space-between"
-                        sx={{ marginBottom: '10px' }}
-                    >
-                        <Typography variant="h6">Review summaries</Typography>
-                        <Stack direction="row" gap={2}>
-                            <ReviewInstructions />
-                        </Stack>
-                    </Stack>
-                    <MarkdownTypography content={summary} />
-                    <EvaluationForm />
+                    <ReviewHeader />
+                    <SummaryTabs summaries={summaries} />
                 </ReviewBox>
             </FlexBox>
         </>

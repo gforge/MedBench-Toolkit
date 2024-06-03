@@ -5,6 +5,7 @@ export * from './ChartTabs';
 export * from './CustomMDEditor';
 export * from './helpers';
 export * from './LabValues';
+export * from './LoginPrompt';
 export * from './MarkDownTypography';
 export * from './Medications';
 export * from './Original';

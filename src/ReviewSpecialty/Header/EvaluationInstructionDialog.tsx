@@ -1,4 +1,3 @@
-import { ArrowRightOutlined, Info } from '@mui/icons-material';
 import {
     Button,
     Dialog,
@@ -6,38 +5,14 @@ import {
     DialogContent,
     DialogTitle,
     List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
     ListItemTextProps,
-    Tooltip,
     Typography,
-    TypographyProps,
 } from '@mui/material';
-import { useState } from 'react';
 
-export const ReviewInstructions = () => {
-    const [open, setOpen] = useState(false);
-    return (
-        <>
-            <Tooltip title="Instructions for evaluating fictional medical charts">
-                <span>
-                    <Button
-                        startIcon={<Info />}
-                        variant={open ? 'contained' : 'outlined'}
-                        size="small"
-                        onClick={() => setOpen(true)}
-                    >
-                        Info
-                    </Button>
-                </span>
-            </Tooltip>
-            <EvaluationInstructionDialog open={open} setOpen={setOpen} />
-        </>
-    );
-};
+import { DialogListItem } from './DialogListItem';
+import { EvaluationCriteria } from './EvaluationCriteria';
 
-const EvaluationInstructionDialog = ({
+export const EvaluationInstructionDialog = ({
     open,
     setOpen,
 }: {
@@ -130,90 +105,5 @@ const EvaluationInstructionDialog = ({
                 </Button>
             </DialogActions>
         </Dialog>
-    );
-};
-
-const DialogListItem = ({
-    primary,
-    secondary,
-}: Pick<ListItemTextProps, 'primary' | 'secondary'>) => (
-    <ListItem>
-        <ListItemIcon>
-            <ArrowRightOutlined />
-        </ListItemIcon>
-        <ListItemText primary={primary} secondary={secondary} />
-    </ListItem>
-);
-
-const EvaluationCriteria = ({ variant }: Pick<TypographyProps, 'variant'>) => {
-    const criteria: { primary: string; secondary: string[] }[] = [
-        {
-            primary: 'Medical Accuracy',
-            secondary: [
-                'Diagnosis: Major factual errors to Completely accurate',
-                'Past medical history: Major factual errors to Completely accurate',
-                'Hospital course: Major factual errors to Completely accurate',
-                'Planned follow-up: Major factual errors to Completely accurate',
-            ],
-        },
-        {
-            primary: 'Conciseness and Completeness',
-            secondary: [
-                'Conciseness: Very poorly summarised to Very well summarised',
-                'Completeness: Very poorly summarised to Very well summarised',
-            ],
-        },
-        {
-            primary: 'Language and Clarity',
-            secondary: [
-                'Language: Not understandable to Completely understandable',
-                'Clarity: Very unclear to Very clear',
-            ],
-        },
-        {
-            primary: 'Hallucinations',
-            secondary: [
-                'Number of hallucinations: >4 to None',
-                'Exemplify which hallucinations you found',
-            ],
-        },
-        {
-            primary: 'Overall',
-            secondary: [
-                'Overall score: Unusable to Superhuman or excellent performance',
-                'General comments: Free text',
-            ],
-        },
-    ];
-
-    return (
-        <>
-            <Typography variant={variant} gutterBottom>
-                Here are the evaluation criteria:
-            </Typography>
-            <List dense>
-                {criteria.map((criterion, index) => (
-                    <ListItem key={index} alignItems="flex-start">
-                        <ListItemText
-                            primary={criterion.primary}
-                            secondary={
-                                <List dense>
-                                    {criterion.secondary.map(
-                                        (text, subIndex) => (
-                                            <ListItem key={subIndex}>
-                                                <ListItemIcon>
-                                                    <ArrowRightOutlined />
-                                                </ListItemIcon>
-                                                <ListItemText primary={text} />
-                                            </ListItem>
-                                        )
-                                    )}
-                                </List>
-                            }
-                        />
-                    </ListItem>
-                ))}
-            </List>
-        </>
     );
 };

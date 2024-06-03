@@ -32,7 +32,7 @@ export const FlexBox = styled('div')`
     flex-wrap: wrap;
     justify-content: center;
     align-items: top;
-    height: calc(100% - 30px - 20px); // Remove the height from the navigator
+    height: calc(100% - 30px - 30px); // Remove the height from the navigator
     width: 100%;
     overflow-y: auto;
 `;
