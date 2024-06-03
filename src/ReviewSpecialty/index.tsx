@@ -1,5 +1,5 @@
 import { buildFakeNote, ChartTabs, LoginPrompt } from 'components';
-import { selectUser, useCharts2Review } from 'features';
+import { selectReviews, selectUser, useCharts2Review } from 'features';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
@@ -17,6 +17,8 @@ const useFakeCharts = () => {
         language: string;
     }>();
     const allCharts = useCharts2Review({ specialty, language });
+    const reviews = useSelector(selectReviews);
+    const user = useSelector(selectUser);
 
     return allCharts.map(({ chart }) => ({
         chart,
@@ -28,7 +30,12 @@ const useFakeCharts = () => {
                 createdBy: 'AI',
                 final: true,
             },
-            review: undefined,
+            review: reviews.find(
+                (r) =>
+                    r.chartId === chart.id &&
+                    r.summaryId === summaryId &&
+                    r.userMainEmail === user?.userMainEmail
+            ),
         })),
     }));
 };
@@ -81,7 +88,7 @@ export function ReviewSpecialty() {
                 </ChartBox>
                 <ReviewBox>
                     <ReviewHeader />
-                    <SummaryTabs summaries={summaries} />
+                    <SummaryTabs summaries={summaries} user={user} />
                 </ReviewBox>
             </FlexBox>
         </>

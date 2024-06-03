@@ -7,13 +7,15 @@ import { reducers } from './reducers';
 
 const rememberedKeys = ['charts', 'summaries', 'reviews'];
 
-const isCharts = (state: unknown, key: string): state is RootState['charts'] =>
-    key === 'charts';
+const isCharts = (
+    _state: unknown,
+    key: string
+): _state is RootState['charts'] => key === 'charts';
 
 const isSummaries = (
-    state: unknown,
+    _state: unknown,
     key: string
-): state is RootState['summaries'] => key === 'summaries';
+): _state is RootState['summaries'] => key === 'summaries';
 
 const compressState = (state: unknown): string => JSON.stringify(state);
 const decompressState = (state: string, key: string): unknown => {
