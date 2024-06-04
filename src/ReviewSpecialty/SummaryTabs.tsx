@@ -25,12 +25,18 @@ export const SummaryTabs = ({ summaries, user }: SummaryTabsProps) => {
                 justifyContent="space-between"
                 sx={{ marginBottom: '10px' }}
             ></Stack>
-            <Tabs value={tabIndex} onChange={handleTabChange}>
-                {summaries.map((summary) => (
-                    <Tab
-                        key={summary.summary.summaryId}
-                        label={summary.summary.summaryId}
-                    />
+            <Tabs
+                value={tabIndex}
+                onChange={handleTabChange}
+                sx={{
+                    position: 'sticky',
+                    top: 0,
+                    zIndex: 1,
+                    background: 'white',
+                }}
+            >
+                {summaries.map(({ summary: { summaryId } }, index) => (
+                    <Tab key={summaryId} label={`Version ${index + 1}`} />
                 ))}
             </Tabs>
             {summaries.map(
