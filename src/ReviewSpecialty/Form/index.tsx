@@ -1,7 +1,6 @@
 import { Box } from '@mui/material';
-import { type Review, reviewsActions, type User } from 'features';
+import { type Review } from 'features';
 import { FormProvider } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 import { type Rating } from 'validators';
 
 import { ConcisenessCompleteness } from './ConcisenessCompleteness';
@@ -13,33 +12,14 @@ import { SubmitButton } from './SubmitButton';
 import { useEvaluationForm } from './useEvaluationForm';
 
 interface EvaluationFormProps {
-    chartId: string;
-    summaryId: string;
-    user: User;
     review: Review | undefined;
+    onSubmit: (rating: Omit<Rating, 'completed'> & { partial?: true }) => void;
 }
 
-export const EvaluationForm = ({
-    chartId,
-    summaryId,
-    user,
-    review,
-}: EvaluationFormProps) => {
-    const dispatch = useDispatch();
+export const EvaluationForm = ({ review, onSubmit }: EvaluationFormProps) => {
     const { methods, errors, isValid, trigger } = useEvaluationForm(
         review?.rating
     );
-
-    const onSubmit = (rating: Omit<Rating, 'completed'>) => {
-        dispatch(
-            reviewsActions.review({
-                chartId,
-                summaryId,
-                userMainEmail: user.userMainEmail,
-                rating,
-            })
-        );
-    };
 
     return (
         <Box
@@ -55,7 +35,7 @@ export const EvaluationForm = ({
                 <form
                     onSubmit={methods.handleSubmit(onSubmit)}
                     onChange={() => {
-                        onSubmit(methods.getValues());
+                        onSubmit({ ...methods.getValues(), partial: true });
                         trigger();
                     }}
                 >

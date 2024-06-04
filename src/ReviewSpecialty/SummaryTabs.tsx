@@ -1,7 +1,9 @@
-import { Stack, Tab, Tabs } from '@mui/material';
+import { Tab, Tabs } from '@mui/material';
 import { MarkdownTypography } from 'components';
-import type { Review, Summary, User } from 'features';
-import { useState } from 'react';
+import { type Review, reviewsActions, type Summary, type User } from 'features';
+import { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { type Rating } from 'validators';
 
 import { EvaluationForm } from './Form';
 
@@ -17,14 +19,30 @@ export const SummaryTabs = ({ summaries, user }: SummaryTabsProps) => {
         setTabIndex(newValue);
     };
 
+    const dispatch = useDispatch();
+    const prepOnSubmit = useCallback(
+        ({ chartId, summaryId }: { chartId: string; summaryId: string }) =>
+            ({
+                partial,
+                ...rating
+            }: Omit<Rating, 'completed'> & { partial?: boolean }) => {
+                dispatch(
+                    reviewsActions.review({
+                        chartId,
+                        summaryId,
+                        userMainEmail: user.userMainEmail,
+                        rating,
+                    })
+                );
+                if (!partial && tabIndex < summaries.length - 1) {
+                    setTabIndex((prev) => prev + 1);
+                }
+            },
+        [dispatch, user.userMainEmail, tabIndex, summaries.length]
+    );
+
     return (
         <div>
-            <Stack
-                direction="row"
-                spacing={2}
-                justifyContent="space-between"
-                sx={{ marginBottom: '10px' }}
-            ></Stack>
             <Tabs
                 value={tabIndex}
                 onChange={handleTabChange}
@@ -46,10 +64,12 @@ export const SummaryTabs = ({ summaries, user }: SummaryTabsProps) => {
                             <>
                                 <MarkdownTypography content={text} />
                                 <EvaluationForm
-                                    chartId={chartId}
-                                    summaryId={summaryId}
-                                    user={user}
+                                    key={`chart-${chartId}-summary-${summaryId}`}
                                     review={review}
+                                    onSubmit={prepOnSubmit({
+                                        chartId,
+                                        summaryId,
+                                    })}
                                 />
                             </>
                         )}

@@ -4,6 +4,7 @@ export interface ReviewNavigatorProps {
     no: number;
     specialty: string;
     language: string;
+    isDone: boolean;
     navigateNext: (() => void) | undefined;
     navigateBack: (() => void) | undefined;
 }
@@ -12,6 +13,7 @@ export const ReviewNavigator = ({
     no,
     specialty,
     language,
+    isDone,
     navigateNext,
     navigateBack,
 }: ReviewNavigatorProps) => {
@@ -41,9 +43,14 @@ export const ReviewNavigator = ({
             >
                 <Typography
                     variant="h6"
-                    sx={{ flexGrow: 1, textAlign: 'center' }}
+                    sx={{
+                        flexGrow: 1,
+                        textAlign: 'center',
+                        color: isDone ? '#00421e' : undefined,
+                    }}
                 >
                     Case no {no + 1}
+                    {isDone ? ' (Done)' : ''}
                 </Typography>
             </Tooltip>
             <Button
