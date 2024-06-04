@@ -2,16 +2,26 @@ import { Rating } from 'validators';
 
 function isPartialRating(ratings: Rating) {
     return (
-        !ratings.diagnosis ||
-        !ratings.medicalHistory ||
-        !ratings.hospitalCourse ||
-        !ratings.followUp ||
-        !ratings.conciseness ||
-        !ratings.completeness ||
-        !ratings.language ||
-        !ratings.clarity ||
-        !ratings.hallucinations ||
-        !ratings.overall
+        ratings.diagnosis === undefined ||
+        ratings.diagnosis === null ||
+        ratings.medicalHistory === undefined ||
+        ratings.medicalHistory === null ||
+        ratings.hospitalCourse === undefined ||
+        ratings.hospitalCourse === null ||
+        ratings.followUp === undefined ||
+        ratings.followUp === null ||
+        ratings.conciseness === undefined ||
+        ratings.conciseness === null ||
+        ratings.completeness === undefined ||
+        ratings.completeness === null ||
+        ratings.language === undefined ||
+        ratings.language === null ||
+        ratings.clarity === undefined ||
+        ratings.clarity === null ||
+        ratings.hallucinations === undefined ||
+        ratings.hallucinations === null ||
+        ratings.overall === undefined ||
+        ratings.overall === null
     );
 }
 
