@@ -1,6 +1,6 @@
 import { ChartTabs } from 'components';
 import { User } from 'features';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ReviewHeader } from './Header';
 import { ReviewNavigator, ReviewNavigatorProps } from './Navigator';
