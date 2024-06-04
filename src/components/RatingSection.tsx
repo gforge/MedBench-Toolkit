@@ -19,7 +19,7 @@ export const RatingSection = ({
     const { control } = useFormContext();
 
     return (
-        <Box sx={{ marginY: 2 }}>
+        <Box sx={{ marginY: 2 }} onMouseLeave={() => setHover(-1)}>
             <Tooltip title={help} placement="right">
                 <Typography component="legend">{label}</Typography>
             </Tooltip>
