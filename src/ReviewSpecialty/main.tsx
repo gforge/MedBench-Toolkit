@@ -10,6 +10,7 @@ import { ReviewChart } from './ReviewChart';
 import { ReviewChart as ReviewChartType } from './types';
 import { useNavigatoChartNo } from './useNavigatoChartNo';
 
+const summaries: Record<string, string> = {};
 const useFakeCharts = ({
     specialty,
     language,
@@ -23,21 +24,27 @@ const useFakeCharts = ({
 
     return allCharts.map(({ chart }) => ({
         chart,
-        summaries: ['AI', 'Human'].map((summaryId) => ({
-            summary: {
-                chartId: chart.id,
-                summaryId,
-                text: buildFakeNote().content,
-                createdBy: 'AI',
-                final: true,
-            },
-            review: reviews.find(
-                (r) =>
-                    r.chartId === chart.id &&
-                    r.summaryId === summaryId &&
-                    r.userMainEmail === user?.userMainEmail
-            ),
-        })),
+        summaries: ['AI', 'Human'].map((summaryId) => {
+            const reviewId = `${chart.id}-${summaryId}`;
+            if (!summaries[reviewId]) {
+                summaries[reviewId] = buildFakeNote().content;
+            }
+            return {
+                summary: {
+                    chartId: chart.id,
+                    summaryId,
+                    text: summaries[reviewId],
+                    createdBy: 'AI',
+                    final: true,
+                },
+                review: reviews.find(
+                    (r) =>
+                        r.chartId === chart.id &&
+                        r.summaryId === summaryId &&
+                        r.userMainEmail === user?.userMainEmail
+                ),
+            };
+        }),
     }));
 };
 
@@ -98,6 +105,7 @@ export function ReviewSpecialty() {
 
     return (
         <ReviewChart
+            key={`${specialty}-${language}-${no}`}
             specialty={specialty}
             language={language}
             chart={charts[no]}

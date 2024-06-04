@@ -56,7 +56,6 @@ export const { reducer: userReducer, actions: userActions } = createSlice({
             );
 
             if (!existingUser || existingUser.password !== password) {
-                console.log(availableUsers);
                 throw new Error('Invalid email or password');
             }
 
