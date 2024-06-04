@@ -23,7 +23,6 @@ const stripFirstHashtag = (content: string): string => {
     if (!content) return '';
 
     const hasH1 = content.startsWith('# ');
-    console.log(hasH1, content, content.replaceAll(/(^|\n)#(#+) /g, '$1 '));
     if (hasH1) {
         return content;
     }

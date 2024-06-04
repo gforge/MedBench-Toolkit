@@ -110,19 +110,17 @@ export function migrateCharts(
         return storedData;
     }
 
-    console.log('Migrating charts...');
     const oldCharts: Chart[] = (oldChart2Summarize?.charts ?? []).map(
         convertOldSummary
     );
-    console.log('...');
+
     const oldTranslateCharts: Chart[] = (
         oldCharts2Translate?.charts ?? []
     ).flatMap(convertOldTranslate);
-    console.log('...2', storedData);
+
     const nonExistantCharts = [...oldCharts, ...oldTranslateCharts].filter(
         (chart) => !storedData.charts.some((c) => c.id === chart.id)
     );
-    console.log('charts:', nonExistantCharts.length);
 
     storedData.charts = [...storedData.charts, ...nonExistantCharts].map(
         (c) => ({ ...c, createdBy: '@@@migrated@@@' })
@@ -141,7 +139,6 @@ export function migrateCharts(
 
     removeItemFromRemember('charts4summary');
     removeItemFromRemember('charts2translate');
-    console.log('Migrated charts:', storedData.charts.length);
 
     return storedData;
 }

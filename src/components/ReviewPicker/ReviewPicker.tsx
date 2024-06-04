@@ -10,7 +10,6 @@ export const ReviewPicker = ({
     const [selectedSpecialty, setSelectedSpecialty] = useState<string>();
     const [selectedLanguage, setSelectedLanguage] = useState<string>();
     if (selectedLanguage && selectedSpecialty) {
-        console.log(`Selected ${selectedLanguage} for ${selectedSpecialty}`);
         activateReview({
             specialty: selectedSpecialty,
             language: selectedLanguage,

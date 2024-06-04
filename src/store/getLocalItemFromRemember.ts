@@ -5,7 +5,6 @@ export const getLocalItemFromRemember = <T>(key: string): T | null => {
 };
 
 export const removeItemFromRemember = (key: string): void => {
-    console.log(`${prefix}${key}`, prefix);
     window.localStorage.removeItem(`${prefix}${key}`);
 };
 
