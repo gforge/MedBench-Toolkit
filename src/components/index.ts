@@ -12,7 +12,7 @@ export * from './Original';
 export * from './RatingSection';
 export * from './RatingSectionGroup';
 export * from './ResponesiveSummaryTextField';
-export * from './ReviewStart';
+export * from './ReviewPicker';
 export * from './TextCapture';
 export * from './Translation';
 export * from './TranslationNoteList';

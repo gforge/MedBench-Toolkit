@@ -11,7 +11,7 @@ import { Greet } from './Greet';
 import { useUpdateStoreWithPreloadedData } from './helpers';
 import { Login, Signup } from './Login';
 import { Review } from './Review';
-import { ReviewSpecialty } from './ReviewSpecialty';
+import { ReviewSpecialty, ReviewStart } from './ReviewSpecialty';
 import { SummaryWriter } from './SummaryWriter';
 import { SummaryWriterList } from './SummaryWriterList';
 import { Translations } from './Translations';
@@ -35,7 +35,11 @@ export function App() {
                     <Route path="/summarise/:id" element={<SummaryWriter />} />
                     <Route path="/summaries" element={<SummaryWriterList />} />
                     <Route
-                        path="/review/:specialty/:language"
+                        path="/review/:specialty/:language/*"
+                        element={<ReviewStart />}
+                    />
+                    <Route
+                        path={'/review/:specialty/:language/:no'}
                         element={<ReviewSpecialty />}
                     />
                     <Route path="/review" element={<Review />} />

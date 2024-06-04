@@ -1,12 +1,12 @@
 import { Chip, Paper, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 
-import { ReviewStartProps } from './types';
+import { ReviewPickerProps } from './types';
 
-export const ReviewStart = ({
+export const ReviewPicker = ({
     specialties,
     activateReview,
-}: ReviewStartProps) => {
+}: ReviewPickerProps) => {
     const [selectedSpecialty, setSelectedSpecialty] = useState<string>();
     const [selectedLanguage, setSelectedLanguage] = useState<string>();
     if (selectedLanguage && selectedSpecialty) {

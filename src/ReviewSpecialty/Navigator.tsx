@@ -1,19 +1,19 @@
 import { Box, Button, Tooltip, Typography } from '@mui/material';
 
-interface ReviewNavigatorProps {
+export interface ReviewNavigatorProps {
     no: number;
-    setNo: React.Dispatch<React.SetStateAction<number>>;
-    total: number;
     specialty: string;
     language: string;
+    navigateNext: (() => void) | undefined;
+    navigateBack: (() => void) | undefined;
 }
 
 export const ReviewNavigator = ({
     no,
-    setNo,
-    total,
     specialty,
     language,
+    navigateNext,
+    navigateBack,
 }: ReviewNavigatorProps) => {
     return (
         <Box
@@ -30,8 +30,8 @@ export const ReviewNavigator = ({
         >
             <Button
                 variant="outlined"
-                onClick={() => setNo((no) => Math.max(no - 1, 0))}
-                disabled={no === 0}
+                onClick={navigateBack}
+                disabled={!navigateBack}
                 sx={{ minWidth: '40px' }}
             >
                 &larr;
@@ -48,8 +48,8 @@ export const ReviewNavigator = ({
             </Tooltip>
             <Button
                 variant="outlined"
-                onClick={() => setNo((no) => Math.min(no + 1, total - 1))}
-                disabled={no === total - 1}
+                onClick={navigateNext}
+                disabled={!navigateNext}
                 sx={{ minWidth: '40px' }}
             >
                 &rarr;

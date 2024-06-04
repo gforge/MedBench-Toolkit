@@ -4,7 +4,7 @@
  */
 type Specialties = Record<string, string[]>;
 
-export interface ReviewStartProps {
+export interface ReviewPickerProps {
     specialties: Specialties;
     activateReview: (args: { specialty: string; language: string }) => void;
 }

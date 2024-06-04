@@ -1,4 +1,4 @@
-import { ReviewStart } from 'components';
+import { ReviewPicker } from 'components';
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -33,14 +33,14 @@ export function Review() {
     const navigate = useNavigate();
     const activateReview = useCallback(
         ({ specialty, language }: { specialty: string; language: string }) => {
-            navigate(`/review/${specialty}/${language}`);
+            navigate(`/review/${specialty}/${language}/0`);
         },
         [navigate]
     );
 
     return (
         <>
-            <ReviewStart
+            <ReviewPicker
                 specialties={specialties2choosefrom}
                 activateReview={activateReview}
             />

@@ -1,11 +1,11 @@
 import { Paper } from '@mui/material';
 import { Meta, StoryObj } from '@storybook/react';
 
-import { ReviewStart } from './ReviewStart';
+import { ReviewPicker } from './ReviewPicker';
 
-const meta: Meta<typeof ReviewStart> = {
-    title: 'Text/ReviewStart',
-    component: ReviewStart,
+const meta: Meta<typeof ReviewPicker> = {
+    title: 'Text/ReviewPicker',
+    component: ReviewPicker,
     decorators: (Story) => (
         <Paper sx={{ padding: '10px', width: '500px' }}>
             <Story />
