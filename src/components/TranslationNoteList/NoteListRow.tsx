@@ -8,12 +8,12 @@ import { EditableTd } from './EditableTd';
 import { LanguageButton } from './LanguageButton';
 import { StyledTd as Td } from './StyledTd';
 import { NoteListRowProps } from './types';
-import { UploadTranslationButton } from './UploadTranslationButton';
+// TODO: drop entire upload - not used due to new automated upload
+// import { UploadTranslationButton } from './UploadTranslationButton';
 
 export const NoteListRow = ({
     chart,
     translate,
-    uploadTranslation,
     deleteChart,
     setActive,
     setChartName,
@@ -63,7 +63,7 @@ export const NoteListRow = ({
                         onClick={() => setActive(chart)}
                         size="small"
                     >
-                        Translate
+                        New language
                     </Button>
                     {translations.map((language) => (
                         <LanguageButton
@@ -74,10 +74,6 @@ export const NoteListRow = ({
                             deleteChart={deleteChart}
                         />
                     ))}
-                    <UploadTranslationButton
-                        chart={chart}
-                        upload={uploadTranslation}
-                    />
                     <Button
                         variant="contained"
                         color="error"
