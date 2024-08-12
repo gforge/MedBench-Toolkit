@@ -1,4 +1,4 @@
-# The MedBench toolkit
+# The MedBench toolkit (Deprecated)
 
 This repo is for aiding in aiding interaction with the MedBench medical charts. This for:
 
